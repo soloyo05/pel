@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú Visual Navegable</title>
+  <style>
+    body {
+      background: #111;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .menu-item {
+      background: #222;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .menu-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .menu-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .menu-item.focused {
+      outline: 3px solid yellow;
+      transform: scale(1.08);
+      background: #333;
+      box-shadow: 0 0 15px #ffc107;
+    }
+
+    .menu-item:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/film-reel.png"/><br>Películas</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/tv.png"/><br>Series</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/music.png"/><br>Música</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/controller.png"/><br>Juegos</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/news.png"/><br>Noticias</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/globe.png"/><br>Mundo</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/mortarboard.png"/><br>Educación</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/soccer-ball.png"/><br>Deportes</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/briefcase.png"/><br>Trabajo</a></div>
+    <div class="menu-item" tabindex="0"><a href="#"><img src="https://img.icons8.com/fluency/96/paint-palette.png"/><br>Arte</a></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const items = Array.from(document.querySelectorAll('.menu-item'));
+      let currentItem = items[0];
+      currentItem.classList.add("focused");
+      currentItem.focus();
+
+      function setFocus(item) {
+        if (!item) return;
+        currentItem.classList.remove("focused");
+        currentItem = item;
+        currentItem.classList.add("focused");
+        currentItem.focus();
+      }
+
+      function getClosest(current, direction) {
+        const currentRect = current.getBoundingClientRect();
+        let minDistance = Infinity;
+        let target = null;
+
+        items.forEach(item => {
+          if (item === current) return;
+          const rect = item.getBoundingClientRect();
+          let isCandidate = false;
+
+          switch (direction) {
+            case "ArrowUp":
+              isCandidate = rect.bottom <= currentRect.top;
+              break;
+            case "ArrowDown":
+              isCandidate = rect.top >= currentRect.bottom;
+              break;
+            case "ArrowLeft":
+              isCandidate = rect.right <= currentRect.left;
+              break;
+            case "ArrowRight":
+              isCandidate = rect.left >= currentRect.right;
+              break;
+          }
+
+          if (isCandidate) {
+            const dx = rect.left - currentRect.left;
+            const dy = rect.top - currentRect.top;
+            const distance = Math.hypot(dx, dy);
+            if (distance < minDistance) {
+              minDistance = distance;
+              target = item;
+            }
+          }
+        });
+
+        return target;
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+          const next = getClosest(currentItem, e.key);
+          if (next) setFocus(next);
+        } else if (e.key === "Enter") {
+          const link = currentItem.querySelector("a");
+          if (link) link.click();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
