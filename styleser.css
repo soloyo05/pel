@@ -1,0 +1,246 @@
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000000;
+    }
+
+.pagination {
+    position: sticky;
+    top: 0px;
+    background-color: #000000;
+    padding: 10px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    color: #51ff00;
+}
+
+.pagination a.active {
+    background-color: #ffcb00;
+    color: #000000;
+}
+
+.pagination a.disabled {
+  color: #aaa;
+  pointer-events: none;
+}
+
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 44px 0px 0px 0px;
+}
+
+.menu-item {
+  width: 150px;
+  outline: none;
+  text-align: center;
+  transition: transform 0.2s ease;
+  background-color: #0f0e0e;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.menu-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+}
+
+.menu-item a {
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+
+.menu-item p {
+  color: #24ff00;
+  font-size: 15px;
+  margin: 5px 0 0;
+}
+
+.menu-item:focus {
+  outline: 3px solid #00f7ff;
+  transform: scale(1.05);
+  box-shadow: 0 0 26px #00f5ff;
+  background-color: #33daed;
+  z-index: 5;
+}
+
+.menu-item:focus p {
+  color: #000000;
+  font-weight: bold;
+}
+
+.page-nav:focus,
+.pageNumber:focus {
+  outline: none;
+  border: 2px solid #007BFF;
+  border-radius: 5px;
+}
+
+.search-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #00ff88;
+    border-radius: 8px;
+    color: white;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+    background: #ff00002b;
+    border: none;
+    color: #ffe600;
+    font-size: 18px;
+    outline: none;
+    width: 140px;
+}
+
+.search-box input::placeholder {
+  color: #888;
+}
+
+.home-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #bc00ff;
+    border-radius: 8px;
+    color: #00ff88;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.home-button:hover {
+  background-color: #00ff88;
+  color: #000;
+}
+
+.home-button:focus {
+  outline: 2px solid #00f7ff;
+}
+body.light-mode {
+  background-color: #ffffff;
+  color: #000;
+}
+
+body.light-mode .menu-item {
+  background-color: #f0f0f0;
+}
+
+body.light-mode .menu-item p {
+  color: #000;
+}
+
+#helpOverlay {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 99;
+  font-size: 14px;
+}
+
+#pageNumbers {
+  display: flex;
+  overflow-x: auto;
+  max-width: 80vw;
+  gap: 5px;
+  scroll-behavior: smooth;
+}
+
+#pageNumbers::-webkit-scrollbar {
+  height: 6px;
+}
+
+#pageNumbers::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.fixed-help-bar {
+  position: fixed;
+  top: 50px; /* debajo del botón de inicio y búsqueda */
+  left: 0;
+  width: 100%;
+  background-color: #000000;
+  color: #00ff88;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 14px;
+  z-index: 15;
+  font-weight: bold;
+  border-bottom: 1px solid #00ff88;
+}
+
+
+@media (max-width: 480px) {
+  .search-box {
+    top: 4px;
+    right: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .search-box input {
+    width: 55px;
+    font-size: 14px;
+  }
+    .home-button {
+        top: 4px;
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+  .pagination {
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 5px;
+  }
+  .pagination a {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+#pageNumbers {
+    display: flex;
+    overflow-x: auto;
+    max-width: 27vw;
+    gap: 5px;
+    scroll-behavior: smooth;
+}
+
+    .fixed-help-bar {
+        font-size: 12px;
+        padding: 9px 0px 2px 0px;
+        position: fixed;
+        top: 36px;
+    }
+}
