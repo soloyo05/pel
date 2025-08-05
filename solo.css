@@ -189,6 +189,16 @@ body.light-mode .menu-item p {
   background-color: #888;
   border-radius: 4px;
 }
+h1 {
+    position: sticky;
+    font-size: 9px;
+    top: 0px;
+    color: #ffc800;
+   
+}
+.menu-item:focus h1 {
+    color: black;
+}
 
 
 @media (max-width: 480px) {
@@ -235,4 +245,11 @@ body.light-mode .menu-item p {
     z-index: 99;
     font-size: 14px;
 }
+    h1 {
+    position: sticky;
+    font-size: 13px;
+    top: 0px;
+    color: #ffc800;
 }
+}
+
