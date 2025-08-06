@@ -261,7 +261,7 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    padding: 50px 0px 0px 0px;
+    padding: 65px 0px 0px 0px;
 }
 .menu-item {
     width: 170px;
@@ -294,4 +294,5 @@ h1 {
         top: 36px;
     }
 }
+
 
