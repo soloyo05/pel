@@ -52,6 +52,26 @@
   border-radius: 10px;
   padding: 5px;
 }
+    .menu-item {
+        position: relative;
+        display: inline-block;
+    }
+
+    .new-tag {
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        background-color: #ff0000; /* Rojo brillante */
+        color: white;
+        font-weight: bold;
+        padding: 5px 10px;
+        font-size: 12px;
+        transform: rotate(-45deg);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        z-index: 10;
+        white-space: nowrap;
+        border-radius: 4px;
+    }
 
 .menu-item img {
   width: 100%;
@@ -294,5 +314,6 @@ h1 {
         top: 36px;
     }
 }
+
 
 
