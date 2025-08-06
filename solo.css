@@ -68,7 +68,7 @@
 
 .menu-item p {
   color: #24ff00;
-  font-size: 15px;
+  font-size: 16px;
   margin: 5px 0 0;
 }
 
@@ -79,10 +79,14 @@
   background-color: #33daed;
   z-index: 5;
 }
-
 .menu-item:focus p {
-  color: #000000;
-  font-weight: bold;
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+    background: #ebff00;
+    padding: 2px;
+    border: solid 2px black;
+    border-radius: 6px;
 }
 
 .page-nav:focus,
@@ -282,5 +286,6 @@ h1 {
     border-radius: 6px;
 }
 }
+
 
 
