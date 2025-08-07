@@ -52,6 +52,27 @@
   border-radius: 10px;
   padding: 5px;
 }
+    .menu-item {
+        position: relative;
+        display: inline-block;
+    }
+
+.new-tag {
+    position: absolute;
+    top: 13px;
+    left: -6px;
+    background-color: #ff0000;
+    border: solid 1px #000000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 12px;
+    transform: rotate(-34deg);
+    box-shadow: 0 2px 23px rgb(255 0 0 / 69%);
+    z-index: 9;
+    white-space: nowrap;
+    border-radius: 4px;
+}
 
 .menu-item img {
   width: 100%;
@@ -286,6 +307,7 @@ h1 {
     border-radius: 6px;
 }
 }
+
 
 
 
