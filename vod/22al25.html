@@ -1,0 +1,3450 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <title>ESTRENOS RECIENTES</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000000;
+    }
+
+.pagination {
+    position: sticky;
+    top: 0px;
+    background-color: #000000;
+    padding: 10px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    color: #51ff00;
+}
+
+.pagination a.active {
+    background-color: #ffcb00;
+    color: #000000;
+}
+
+.pagination a.disabled {
+  color: #aaa;
+  pointer-events: none;
+}
+
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 0px 0px 0px;
+}
+
+.menu-item {
+  width: 150px;
+  outline: none;
+  text-align: center;
+  transition: transform 0.2s ease;
+  background-color: #0f0e0e;
+  border-radius: 10px;
+  padding: 5px;
+}
+    .menu-item {
+        position: relative;
+        display: inline-block;
+    }
+
+.new-tag {
+    position: absolute;
+    top: 13px;
+    left: -6px;
+    background-color: #ff0000;
+    border: solid 1px #000000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 12px;
+    transform: rotate(-34deg);
+    box-shadow: 0 2px 23px rgb(255 0 0 / 69%);
+    z-index: 9;
+    white-space: nowrap;
+    border-radius: 4px;
+}
+
+.menu-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+}
+
+.menu-item a {
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+
+.menu-item p {
+  color: #24ff00;
+  font-size: 16px;
+  margin: 5px 0 0;
+}
+
+.menu-item:focus {
+  outline: 3px solid #00f7ff;
+  transform: scale(1.05);
+  box-shadow: 0 0 26px #00f5ff;
+  background-color: #33daed;
+  z-index: 5;
+}
+
+
+
+.menu-item:focus p {
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+    background: #ebff00;
+    padding: 2px;
+    border: solid 2px black;
+    border-radius: 6px;
+}
+
+.page-nav:focus,
+.pageNumber:focus {
+  outline: none;
+  border: 2px solid #007BFF;
+  border-radius: 5px;
+}
+
+.search-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #00ff88;
+    border-radius: 8px;
+    color: white;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+    background: #ff00002b;
+    border: none;
+    color: #ffe600;
+    font-size: 18px;
+    outline: none;
+    width: 140px;
+}
+
+.search-box input::placeholder {
+  color: #888;
+}
+
+.home-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #bc00ff;
+    border-radius: 8px;
+    color: #00ff88;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.home-button:hover {
+  background-color: #00ff88;
+  color: #000;
+}
+
+.home-button:focus {
+  outline: 2px solid #00f7ff;
+}
+body.light-mode {
+  background-color: #ffffff;
+  color: #000;
+}
+
+body.light-mode .menu-item {
+  background-color: #f0f0f0;
+}
+
+body.light-mode .menu-item p {
+  color: #000;
+}
+
+#helpOverlay {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 99;
+  font-size: 14px;
+}
+
+#pageNumbers {
+  display: flex;
+  overflow-x: auto;
+  max-width: 80vw;
+  gap: 5px;
+  scroll-behavior: smooth;
+}
+
+#pageNumbers::-webkit-scrollbar {
+  height: 6px;
+}
+
+#pageNumbers::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+  /* Estilo del modal de video */
+  .modal-video {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  }
+  .modal-video.active {
+    display: flex;
+  }
+  #player {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .close-video {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    background: #ff00004a;
+    color: #ffffff80;
+    border: none;
+    width: 104px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1010;
+    opacity: 0.8;
+}
+  .close-video:hover {
+    opacity: 1;
+  }
+  .video-title {
+    position: absolute;
+    top: -15px;
+    left: 0%;
+    transform: translateX(0%);
+    color: #ffffff6b;
+    background: rgb(0 0 0 / 30%);
+    padding: 0px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+  /* Asegurar que Plyr ocupe bien el espacio */
+  .plyr__video-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+h1 {
+    position: sticky;
+    font-size: 11px;
+    top: 0px;
+    color: #ffc800;
+   
+}
+.menu-item:focus h1 {
+    font-size: 12px;
+    color: #000000;
+    font-family: math;
+    background: #00ff40db;
+    padding: 2px;
+    border: solid 1px black;
+    border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .search-box {
+    top: 4px;
+    right: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .search-box input {
+    width: 55px;
+    font-size: 14px;
+  }
+    .home-button {
+        top: 4px;
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+  .pagination {
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 5px;
+  }
+  .pagination a {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+#pageNumbers {
+    display: flex;
+    overflow-x: auto;
+    max-width: 27vw;
+    gap: 5px;
+    scroll-behavior: smooth;
+}
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 0px 0px 0px;
+}
+.menu-item {
+    width: 170px;
+}
+.menu-item p {
+    color: #24ff00;
+    font-size: 19px;
+    margin: 5px 0 0;
+}
+h1 {
+    position: sticky;
+    font-size: 13px;
+    top: 0px;
+    color: #ffc800;
+}
+.menu-item:focus h1 {
+    font-size: 12px;
+    color: #000000;
+    font-family: system-ui;
+    background: #00ff40db;
+    padding: 2px;
+    border: solid 1px black;
+    border-radius: 6px;
+}
+}
+
+  </style>
+</head>
+<body>
+
+<a href="https://jdm.free.nf/jdm/principal1.html" class="home-button" tabindex="0">🏠 Inicio</a>
+
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Buscar..." />
+</div>
+
+<div id="helpOverlay">
+  Usa las flechas para navegar.<br />
+  🔴 Inicio, 🟡 Buscar, 🟢 Ayuda, 🔵 Modo claro/oscuro
+</div>
+<div id="helpOverlay2">
+ ESTRENO
+</div>
+
+
+<!-- Modal de video con Plyr -->
+<div class="modal-video" id="videoModal">
+  <button class="close-video" id="closeVideo">0 cerrar</button>
+  <video id="player" controls></video>
+  <p class="video-title" id="videoTitle">Reproduciendo video...</p>
+</div>
+<!-- Paginación -->
+<div class="pagination" id="pagination">
+  <a href="#" id="prevPage" class="page-nav" tabindex="0">⬅️</a>
+  <div id="pageNumbers"></div>
+  <a href="#" id="nextPage" class="page-nav" tabindex="0">➡️</a>
+</div>
+
+
+<!-- Contenido -->
+<div class="menu-container" id="menuContainer">
+
+
+<!-- 
+############   agregar esto para una etiqueta     <span class="new-tag">ESTRENO</span>   ###################
+
+
+<div class="menu-item" tabindex="0">
+    <span class="new-tag">ESTRENO</span>
+      <a href="URL">
+        <img src="JPG" alt="TITULO">
+        <p>TITULO</p>
+      </a>
+    </div>
+
+ -->
+
+
+<!--    ########################    === AÑO: 2025  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Peter%20Pans%20Neverland%20Nightmare%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oyd8yTJ8nF7uob9bq1zKDCuKOhb.jpg" alt="Peter Pan: Pesadilla en Nunca Jamás (2025)">
+        <h1>Terror, Suspense, Fantasía, 89 minutos</h1>
+        <p>Peter Pan: Pesadilla en Nunca Jamás (2025)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Titanic%20The%20Digital%20Resurrection%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mJNpxvtUNRVOfhFwukNewSf3gkf.jpg" alt="Titanic: La resurrección digital (2025)">
+        <h1>Documental, Película de TV, 90 minutos</h1>
+        <p>Titanic: La resurrección digital (2025)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Heart%20Eyes%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cQdfSHkmPnSS3AncCz13H0fCUoq.jpg" alt="El asesino con ojos de corazón (2025)">
+        <h1>Terror, Comedia, Romance, 97 minutos</h1>
+        <p>El asesino con ojos de corazón (2025)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Electric%20State%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/swUvAF9d9WKWGQwVCPDu8Qi8ilZ.jpg" alt="Estado eléctrico (2025)">
+        <h1>Ciencia ficción, Aventura, Acción, 125 minutos</h1>
+        <p>Estado eléctrico (2025)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Den%20of%20Thieves%202%20Pantera%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cD5WrzWVjA5Q5rHNLoZ1DsZIOLR.jpg" alt="Juego de Ladrones 2: Pantera (2025)">
+        <h1>Acción, Crimen, Suspense, 144 minutos</h1>
+        <p>Juego de Ladrones 2: Pantera (2025)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Flight%20Risk%202025.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8T6nkYb4W8BIeafmFffyfsRciTL.jpg" alt="Amenaza en el aire (2025)">
+        <h1>Acción, Suspense, 91 minutos</h1>
+        <p>Amenaza en el aire (2025)</p>
+    </a>
+</div>
+
+
+<!--    ########################    === AÑO: 2024  ===      ###############################    -->
+
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/You%20Cant%20Run%20Forever%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zUYEt6OWkppLIJuDpxVqLVLq5JY.jpg" alt="Corre o muere (2024)">
+        <h1>Suspense, 102 minutos</h1>
+        <p>Corre o muere (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Day%20the%20Earth%20Blew%20Up%20A%20Looney%20Tunes%20Movie%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xSd2zSbIIuyz6MYZmCXzeVvlxsz.jpg" alt="El día que la Tierra explotó: Una película de los Looney Tunes (2024)">
+        <h1>Animación, Familia, Comedia, Aventura, Ciencia ficción, 90 minutos</h1>
+        <p>El día que la Tierra explotó: Una película de los Looney Tunes (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Paradox%20Effect%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aRnCzJL8spJkfoiuld78LKOabiD.jpg" alt="The Paradox Effect (2024)">
+        <h1>Acción, Suspense, 83 minutos</h1>
+        <p>The Paradox Effect (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bonhoeffer%20Pastor%20Spy%20Assassin%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dV7w0eavvFLmMpLO26aOHyfIb7f.jpg" alt="Bonhoeffer: Pastor. Spy. Assassin (2024)">
+        <h1>Historia, Drama, Bélica, 132 minutos</h1>
+        <p>Bonhoeffer: Pastor. Spy. Assassin (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Moana%202%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bit1B5F7IQydiWqdwAAD8f9TkXs.jpg" alt="Vaiana 2 (2024)">
+        <h1>Animación, Aventura, Familia, Comedia, 100 minutos</h1>
+        <p>Vaiana 2 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mufasa%20The%20Lion%20King%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dmw74cWIEKaEgl5Dv3kUTcCob6D.jpg" alt="Mufasa: El rey león (2024)">
+        <h1>Aventura, Familia, Animación, 118 minutos</h1>
+        <p>Mufasa: El rey león (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lion%20King%202%201998.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dmw74cWIEKaEgl5Dv3kUTcCob6D.jpg" alt="Mufasa: El rey león (2024)">
+        <h1>Aventura, Familia, Animación, 118 minutos</h1>
+        <p>Mufasa: El rey león (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/September%205%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lHNSCUtThlJlHYqWKuBaQk5tjMM.jpg" alt="Septiembre 5 (2024)">
+        <h1>Suspense, Drama, Historia, 94 minutos</h1>
+        <p>Septiembre 5 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Order%202001.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/drpv6huMVntREXchPrrwTZcAcmQ.jpg" alt="The Order (La hermandad silenciosa) (2024)">
+        <h1>Crimen, Drama, Suspense, 116 minutos</h1>
+        <p>The Order (La hermandad silenciosa) (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Devara%20Parte%201%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lQfuaXjANoTsdx5iS0gCXlK9D2L.jpg" alt="Devara: Parte 1 (2024)">
+        <h1>Acción, Drama, 175 minutos</h1>
+        <p>Devara: Parte 1 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Love%20in%2039%20Degrees%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9vcohEsWqLlFtDANavII0Webhdu.jpg" alt="Amor a 39 grados (2024)">
+        <h1>Romance, Drama, Comedia, 115 minutos</h1>
+        <p>Amor a 39 grados (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Silent%20Hour%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nOCPjP1kPxfn4PFwbpMlOzedjNW.jpg" alt="La hora del silencio (2024)">
+        <h1>Crimen, Suspense, Acción, 99 minutos</h1>
+        <p>La hora del silencio (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jack%20in%20Time%20for%20Christmas%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pbIjAyxIbmzr9mOAYTQCwUko36S.jpg" alt="A tiempo para Navidad (2024)">
+        <h1>Comedia, Aventura, Película de TV, 65 minutos</h1>
+        <p>A tiempo para Navidad (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Killers%20Game%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/81PSS5l5Yr3gfdYKts9I3z2aPkG.jpg" alt="El juego del asesino (2024)">
+        <h1>Acción, Comedia, Suspense, 104 minutos</h1>
+        <p>El juego del asesino (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Last%20Stop%20in%20Yuma%20County%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rStnfUmv3oNCLC1iZvwzYHJnXRZ.jpg" alt="The Last Stop in Yuma County (2024)">
+        <h1>Crimen, Suspense, Drama, 91 minutos</h1>
+        <p>The Last Stop in Yuma County (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Strangers%20Chapter%201%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1rTRllZNEAX30dTxYL1hONR6gPj.jpg" alt="Strangers: Capítulo 1 (2024)">
+        <h1>Terror, Suspense, 91 minutos</h1>
+        <p>Strangers: Capítulo 1 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Canary%20Black%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iCNkHfsB3mCOCwDLOmjIZotGPID.jpg" alt="Canario Negro (2024)">
+        <h1>Acción, Suspense, Crimen, 103 minutos</h1>
+        <p>Canario Negro (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Jack%20in%20the%20Box%20Rises%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uHfddXNm1pOZDn4D8ttsZi1jcgT.jpg" alt="The Jack in the Box: El ascenso (2024)">
+        <h1>Terror, 88 minutos</h1>
+        <p>The Jack in the Box: El ascenso (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Napad-Justice%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/guXYrVOdyTCmBtH8voVPmeroW6S.jpg" alt="El Atraco (2024)">
+        <h1>Crimen, Drama, 113 minutos</h1>
+        <p>El Atraco (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Outside%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oRtmSBegijsysFcA5Kwn2WmMdL4.jpg" alt="Ahí afuera (2024)">
+        <h1>Terror, Suspense, 142 minutos</h1>
+        <p>Ahí afuera (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Shadow%20Strays%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3IAc7zbVFAXKYKorMQ6TBVqhJjo.jpg" alt="Fuera de las sombras (2024)">
+        <h1>Acción, Crimen, Suspense, 145 minutos</h1>
+        <p>Fuera de las sombras (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lonely%20Planet%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pN9Vw5A3Eu868XqidnKcTdUW1Kq.jpg" alt="Una aventura en Marruecos (2024)">
+        <h1>Romance, Drama, 96 minutos</h1>
+        <p>Una aventura en Marruecos (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Trouble%20(Strul)%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aCuEbAjkYk4ROnkluUQ1hO4tGHf.jpg" alt="Problemas... (2024)">
+        <h1>Acción, Comedia, Crimen, 98 minutos</h1>
+        <p>Problemas... (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Officer%20Black%20Belt%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/53B5aAkXlbT1zufzJGblpR0y7tE.jpg" alt="Agente cinturón negro (2024)">
+        <h1>Acción, Comedia, Crimen, 108 minutos</h1>
+        <p>Agente cinturón negro (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Its%20Whats%20Inside%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/d58FW4YuWNj6V64flFxj12rOVvr.jpg" alt="Lo que hay dentro (2024)">
+        <h1>Comedia, Misterio, Ciencia ficción, 104 minutos</h1>
+        <p>Lo que hay dentro (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/House%20of%20Spoils%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zcJVEJaEe32GfbLpHt4OSW2PBzV.jpg" alt="La casa de los susurros (2024)">
+        <h1>Terror, Suspense, 101 minutos</h1>
+        <p>La casa de los susurros (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cabrini%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lQziV6stVMBsi6snbyrlRa0WWue.jpg" alt="Una mujer italiana (Cabrini) (2024)">
+        <h1>Historia, Drama, 142 minutos</h1>
+        <p>Una mujer italiana (Cabrini) (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20True%20Gentleman%20(Tam%20Bir%20Centilmen)%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c1vHz6Sl8U2GhV88ev6xOVZgBGz.jpg" alt="Un auténtico caballero (2024)">
+        <h1>Romance, Drama, 110 minutos</h1>
+        <p>Un auténtico caballero (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Divorce%20(Rozwodnicy)%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/r0ZdpHIvojr6k9KMizU2e47bxDM.jpg" alt="Divorciados (2024)">
+        <h1>Comedia, Drama, 91 minutos</h1>
+        <p>Divorciados (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bangkok%20Breaking%20Heaven%20and%20Hell%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/45Yxq9aEfMgPEq6bGZG0BgbDQge.jpg" alt="Corrupción en Bangkok: Entre el cielo y el infierno (2024)">
+        <h1>Acción, Crimen, Drama, Suspense, 147 minutos</h1>
+        <p>Corrupción en Bangkok: Entre el cielo y el infierno (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Rez%20Ball%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/b3wlEN6rrITSm6SUzu2NbEFmDdB.jpg" alt="Rez Ball (2024)">
+        <h1>Drama, 113 minutos</h1>
+        <p>Rez Ball (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Uglies%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rsNSv2alCHJK72JvB81aSdk9Fms.jpg" alt="Los feos (2024)">
+        <h1>Ciencia ficción, Aventura, Acción, 100 minutos</h1>
+        <p>Los feos (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Exorcism%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ioQCdjn2YPfAJMfJlgzNdXgYZrr.jpg" alt="El exorcismo de Georgetown (2024)">
+        <h1>Terror, Suspense, 96 minutos</h1>
+        <p>El exorcismo de Georgetown (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20American%20Society%20of%20Magical%20Negroes%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9NcwZYTErGSS7jzRDYPTjQOCQe3.jpg" alt="La sociedad americana de negros mágicos (2024)">
+        <h1>Fantasía, Comedia, 105 minutos</h1>
+        <p>La sociedad americana de negros mágicos (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Land%20of%20Bad%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pRPI8pl9YOrHoDMCr1VLGgEk5PE.jpg" alt="Misión hostil (2024)">
+        <h1>Acción, Bélica, Suspense, 113 minutos</h1>
+        <p>Misión hostil (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Immaculate%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/74VLJ09lDqNvJHeIgmwJHtualhR.jpg" alt="Inmaculada (2024)">
+        <h1>Terror, Misterio, Suspense, 89 minutos</h1>
+        <p>Inmaculada (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Arthur%20the%20King%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/q1DDwFuWeQlwR0lcjFiEsM8iRkd.jpg" alt="Arthur (2024)">
+        <h1>Aventura, Drama, 107 minutos</h1>
+        <p>Arthur (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Darkness%20of%20Man%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nFBjI5qFkqfvEvEx6VaylKGSOqp.jpg" alt="Colateral (2024)">
+        <h1>Acción, Crimen, Suspense, 108 minutos</h1>
+        <p>Colateral (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/David%201997.mkv">
+        <img src="" alt="David (2024)">
+        <h1>Documental, 18 minutos</h1>
+        <p>David (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Box%202009.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ovVqTtB452wl24FWaFHA7VoD9nV.jpg" alt="The Box (2024)">
+        <h1>10 minutos</h1>
+        <p>The Box (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blackthorn%202011.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AcVdu9aKgeeYpSQmMF7al4BeJUY.jpg" alt="Blackthorn (2024)">
+        <h1>Terror, Crimen, Misterio, 6 minutos</h1>
+        <p>Blackthorn (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lisa%20Frankenstein%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5US9yKtf3STseAhYawGAnRH75S3.jpg" alt="Lisa Frankenstein (2024)">
+        <h1>Terror, Comedia, Romance, 102 minutos</h1>
+        <p>Lisa Frankenstein (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Ministry%20of%20Ungentlemanly%20Warfare%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zhvyWzZii2SWpsrcUvLZJNaJyoG.jpg" alt="El ministerio de la Guerra Sucia (2024)">
+        <h1>Acción, Comedia, Bélica, 120 minutos</h1>
+        <p>El ministerio de la Guerra Sucia (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Fall%20Guy%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/A5LijwDVZsupBTL0qKoagMfUiKR.jpg" alt="El especialista (2024)">
+        <h1>Acción, Comedia, Romance, 127 minutos</h1>
+        <p>El especialista (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Damaged%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pgcq9W2J74vtbmNFfhqgxAsS9Rx.jpg" alt="Herido (2024)">
+        <h1>Acción, Drama, Suspense, Crimen, 98 minutos</h1>
+        <p>Herido (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Family%20Affair%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jMEyDtLhD2n8rmyPoizJzmXD9JZ.jpg" alt="Un asunto familiar (2024)">
+        <h1>Romance, Comedia, 114 minutos</h1>
+        <p>Un asunto familiar (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ordinary%20Angels%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/x1jkzJGnerhMrweZsoCVgefPQ0L.jpg" alt="Ángeles Inesperados (2024)">
+        <h1>Drama, 118 minutos</h1>
+        <p>Ángeles Inesperados (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Imaginary%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6jrq4lA5KV3oIFnCYGDueSMTENd.jpg" alt="Imaginary (2024)">
+        <h1>Terror, Misterio, 104 minutos</h1>
+        <p>Imaginary (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Django%201966.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cSDLfOP9ciC2OOBnzRob9ifZICh.jpg" alt="Django (2024)">
+        <h1>Documental</h1>
+        <p>Django (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Cellar%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tNUzN0zqewZEmvnmyFSiGUKUS82.jpg" alt="The Cellar (2024)">
+        <h1>Terror, 85 minutos</h1>
+        <p>The Cellar (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Legendary%202010.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xFOuZdzGolUePuaJzzrT2ggIGgm.jpg" alt="Legendary (2024)">
+        <h1>Fantasía, Acción, Drama, 9 minutos</h1>
+        <p>Legendary (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fatima%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/h6q3lMGGpj4gzFqXNnGp0d5lQRq.jpg" alt="Fátima (2024)">
+        <h1>Documental, Familia, Drama, Misterio, 16 minutos</h1>
+        <p>Fátima (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ultraviolet%202006.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ZdA1zU9TzwH2QNhiPtEoTruf0f.jpg" alt="Ultraviolet (2024)">
+        <h1>Drama, 24 minutos</h1>
+        <p>Ultraviolet (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Halloween%202%201981.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ltdO9Ap6mlCX80jbn4YGyWjTCY4.jpg" alt="NXT Halloween Havoc 2024 (2024)">
+        <h1>148 minutos</h1>
+        <p>NXT Halloween Havoc 2024 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Edge%20of%20the%20World%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gdZ4REoGYhUk4OoN9bqY2U1xykm.jpg" alt="Miraculous World: Las Aventuras de Ladybug en Londres, la carrera contra el tiempo (2024)">
+        <h1>Animación, Aventura, Acción, Fantasía, 50 minutos</h1>
+        <p>Miraculous World: Las Aventuras de Ladybug en Londres, la carrera contra el tiempo (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Aftermath%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/v9knhuvYKwMUAta6fltNOuun3zF.jpg" alt="Aftermath (2024)">
+        <h1>Acción, Suspense, 95 minutos</h1>
+        <p>Aftermath (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Chain%20Reaction%201996.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4enyvJCAUq0DwCcf0OFZ15V3ieP.jpg" alt="Chain Reaction (2024)">
+        <h1>Acción, 27 minutos</h1>
+        <p>Chain Reaction (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/City%20Hunter%201993.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fDvLdchCAhBNaTFs7CFwxtl7qWl.jpg" alt="City Hunter (2024)">
+        <h1>Acción, 105 minutos</h1>
+        <p>City Hunter (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Happy%20Birthday%20to%20Me%201981.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hYf0T63IlrYJOHJvw06jf7NpVL7.jpg" alt="ಹ್ಯಾಪಿ ಬರ್ತಡೇ ಟು ಮಿ (2024)">
+        <h1>112 minutos</h1>
+        <p>ಹ್ಯಾಪಿ ಬರ್ತಡೇ ಟು ಮಿ (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/I%20See%20You%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mk9jICB3vhe6qa2SphMY38QUAfr.jpg" alt="Do You See What I See: Cerita Horor #64 - First Love (2024)">
+        <h1>Drama, Terror, Suspense, 109 minutos</h1>
+        <p>Do You See What I See: Cerita Horor #64 - First Love (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ride%20or%20Die%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5jI2vEHJReAx8iFDmhC2O3yW37w.jpg" alt="Bad Boys: Ride or Die (2024)">
+        <h1>Acción, Comedia, Crimen, Suspense, Aventura, 115 minutos</h1>
+        <p>Bad Boys: Ride or Die (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/What%20We%20Wanted%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zSzA0H1Ya9edqXAsIMFJ7F1rwle.jpg" alt="Lo que quisimos ser (2024)">
+        <h1>Drama, Comedia, Romance, 84 minutos</h1>
+        <p>Lo que quisimos ser (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/On%20the%20Rocks%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mJ5eNzCXpOEQN9NA5AsUgsS5Dv0.jpg" alt="Hanukkah on the Rocks (2024)">
+        <h1>Romance, 84 minutos</h1>
+        <p>Hanukkah on the Rocks (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Derailed%202002.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8OwQhT4ElvLvGd11QOXfVRrwYfy.jpg" alt="Derailed (2024)">
+        <h1>Drama, 5 minutos</h1>
+        <p>Derailed (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Victory%201981.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pdNME6BYJQaytCHAQOnP8jYe6iq.jpg" alt="Victory (2024)">
+        <h1>Drama, 22 minutos</h1>
+        <p>Victory (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Big%20Trip%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/e6bBATHNYD0ffPqdlBmXycZQIWX.jpg" alt="El Gran Viaje 3: Carrera Alrededor del Mundo (2024)">
+        <h1>Animación, Comedia, Aventura, Acción, Familia, 85 minutos</h1>
+        <p>El Gran Viaje 3: Carrera Alrededor del Mundo (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Gods%20Not%20Dead%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iuJLgIcuItRyfcwi8j3ZUeCuej0.jpg" alt="Dios No Está Muerto: En Dios Confiamos (2024)">
+        <h1>Drama, 96 minutos</h1>
+        <p>Dios No Está Muerto: En Dios Confiamos (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mary%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oIkS6IRBmj1g2EUUgJOMRwk5hRh.jpg" alt="María (2024)">
+        <h1>Drama, Historia, Acción, 112 minutos</h1>
+        <p>María (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Crow%201994.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uUUx4kN6uCvXnjGWOv79gUBxdYE.jpg" alt="El cuervo (2024)">
+        <h1>Acción, Fantasía, Terror, 111 minutos</h1>
+        <p>El cuervo (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sucker%20Punch%202011.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oW5r6jxmjC4hJczaR69gOzJqW24.jpg" alt="한대만 (2024)">
+        <h1>15 minutos</h1>
+        <p>한대만 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Luce%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zBqQig7aetfl7qZisjWwpN61rQN.jpg" alt="Luce (2024)">
+        <h1>Drama, 93 minutos</h1>
+        <p>Luce (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Burn%20Out%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ehhjz84zc4VUGMkWHE67hK7dDzh.jpg" alt="Burn Out (2024)">
+        <h1>Drama, 10 minutos</h1>
+        <p>Burn Out (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Aftermath%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/v9knhuvYKwMUAta6fltNOuun3zF.jpg" alt="Aftermath (2024)">
+        <h1>Acción, Suspense, 95 minutos</h1>
+        <p>Aftermath (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lock%20Up%201989.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6UX0b5OVHGwymViHggnxGmNl1Vn.jpg" alt="Lock Up (2024)">
+        <h1>Terror, Misterio, Suspense, 11 minutos</h1>
+        <p>Lock Up (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dont%20let%20go%202019.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fd8rwIoZBDPZzkQBxic61912pbV.jpg" alt="Lass nicht los (2024)">
+        <h1>Drama, 13 minutos</h1>
+        <p>Lass nicht los (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ma%202019.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hPEJz1VIcLS12dQRc3LSyEtT4vZ.jpg" alt="Ma (2024)">
+        <h1>Drama, 17 minutos</h1>
+        <p>Ma (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Breakthrough%202019.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jnDZ2Y4hlawc0zMWjHfqoqBAN0l.jpg" alt="Breakthrough (2024)">
+        <h1>Animación, 4 minutos</h1>
+        <p>Breakthrough (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Dark%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/afdk7KPePDyJV1092sCK8Ml7dCZ.jpg" alt="The Dark (2024)">
+        <h1>Suspense, 18 minutos</h1>
+        <p>The Dark (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20prodigy%202019.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/g8qHZWjLbW2FRx7e8XXiFPXduHN.jpg" alt="The Prodigy (2024)">
+        <h1>Terror, 82 minutos</h1>
+        <p>The Prodigy (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hard%20to%20Kill%201990.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/s1EaC7yi34NCBNELcCDtkp6aGE3.jpg" alt="TNA Hard To Kill 2024 (2024)">
+        <h1>Acción, 175 minutos</h1>
+        <p>TNA Hard To Kill 2024 (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Nostalgia%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jbpBFJBds0ULDdTkpnOTL6u8Kic.jpg" alt="Nostalgia (2024)">
+        <h1>1 minutos</h1>
+        <p>Nostalgia (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mine%202016.mkv">
+        <img src="" alt="Mine - ? (2024)">
+        <h1>5 minutos</h1>
+        <p>Mine - ? (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20One%202001.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uZQkvLOewY0dhuIliNCK0CQM9tm.jpg" alt="The One (2024)">
+        <h1></h1>
+        <p>The One (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Duel%202016.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qQ1NdBqWXvPc9xVkqrqxYFHBOf4.jpg" alt="The Duel (2024)">
+        <h1>Comedia, Drama, 99 minutos</h1>
+        <p>The Duel (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Face%20Off%201997.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2mg6ktvWxsOG9iMBP4P1pwOYltk.jpg" alt="Lật Mặt 7: Một Điều Ước (2024)">
+        <h1>Familia, Drama, 139 minutos</h1>
+        <p>Lật Mặt 7: Một Điều Ước (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Killer%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6PCnxKZZIVRanWb710pNpYVkCSw.jpg" alt="The Killer (2024)">
+        <h1>Acción, Suspense, Crimen, 126 minutos</h1>
+        <p>The Killer (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mother%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lPAXtuaCIJBQ3XNXvsdpFIE668K.jpg" alt="Mother (2024)">
+        <h1>Drama, 2 minutos</h1>
+        <p>Mother (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Return%20to%20sender%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2lYe79lR80Ty5avD549lsTLuXUo.jpg" alt="Return to Sender (2024)">
+        <h1>Película de TV, Comedia, Romance, 90 minutos</h1>
+        <p>Return to Sender (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Captive%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vFbma4ZZVzJjoSNOZBAJVLpN5iY.jpg" alt="Captive (2024)">
+        <h1>Drama, 15 minutos</h1>
+        <p>Captive (2024)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20choice%202016.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/a2oZ4PItkFmQooLr3IyZ3IepPe8.jpg" alt="The Choice (2024)">
+        <h1>Drama</h1>
+        <p>The Choice (2024)</p>
+    </a>
+</div>
+
+<!--    ########################    === AÑO: 2023  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dungeons%20and%20Dragons%20Honor%20Among%20Thieves%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6dW83oZuprt6mw1rIJrTJjuSVX3.jpg" alt="Dungeons &amp; Dragons: Honor entre ladrones (2023)">
+        <h1>Aventura, Fantasía, Comedia, 134 minutos</h1>
+        <p>Dungeons &amp; Dragons: Honor entre ladrones (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Which%20Brings%20Me%20to%20You%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rlGrG9KCcDTGGHH8OWCfJWfEeU1.jpg" alt="Todo me lleva a ti (2023)">
+        <h1>Romance, Comedia, Drama, 98 minutos</h1>
+        <p>Todo me lleva a ti (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Uprising%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/u4YyRnqRIJUj7fWXi6hG88e7Ikh.jpg" alt="Uprising (2023)">
+        <h1>Historia, Western, 97 minutos</h1>
+        <p>Uprising (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Flamin%20Hot%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gHghpc8mhVi7P5YilodDt7NLEtU.jpg" alt="Flamin'Hot: La historia de los Cheetos picantes (2023)">
+        <h1>Drama, Historia, 99 minutos</h1>
+        <p>Flamin'Hot: La historia de los Cheetos picantes (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/White%20Bird%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/d4n0Lx65xc1A65QaNUYwzYT5k8g.jpg" alt="Alas blancas (2023)">
+        <h1>Drama, 121 minutos</h1>
+        <p>Alas blancas (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Good%20Mother%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/asfSEhBEiZ0V6ECZaJBYbfZHUMx.jpg" alt="Detrás de la verdad (2023)">
+        <h1>Suspense, 90 minutos</h1>
+        <p>Detrás de la verdad (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20New%20Breed%20of%20Criminal%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eUFKQaowjmff3qJHCxpGtf4vbep.jpg" alt="A New Breed of Criminal (2023)">
+        <h1>Crimen, 87 minutos</h1>
+        <p>A New Breed of Criminal (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Stolen%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xR5Endhjm4soY6fPgXY0jrpDZvL.jpg" alt="Stolen (2023)">
+        <h1>Drama, Suspense, 94 minutos</h1>
+        <p>Stolen (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Shepherd%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bG9EYmj2GLd67mUDedpnBcSw69d.jpg" alt="Shepherd (2023)">
+        <h1>Drama</h1>
+        <p>Shepherd (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ride%20On%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xVaQeXWMbjIX75yaIrpQkXUVfPv.jpg" alt="El especialista (Ride On) (2023)">
+        <h1>Acción, Comedia, Drama, 126 minutos</h1>
+        <p>El especialista (Ride On) (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Freelance%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AbOgZFAKSrYfnfMHd4vUq61J0LV.jpg" alt="Freelance (2023)">
+        <h1>Acción, Comedia, 109 minutos</h1>
+        <p>Freelance (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Royal%20Hotel%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xStGvxhaEQQVXYfyZbdi9gL6dUT.jpg" alt="Hotel Royal (2023)">
+        <h1>Drama, Suspense, 90 minutos</h1>
+        <p>Hotel Royal (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Out%20of%20Exile%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6pbHAW7XFntmZNIRiDlO80U7qJn.jpg" alt="Out of Exile (2023)">
+        <h1>Suspense, Drama, Acción, Crimen, 107 minutos</h1>
+        <p>Out of Exile (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Desperation%20Road%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2piKHGDVn4Orm0FTbDdcsZdI38r.jpg" alt="Caminos desesperados (2023)">
+        <h1>Suspense, Acción, Crimen, Drama, 112 minutos</h1>
+        <p>Caminos desesperados (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Price%20We%20Pay%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/Ar03uAaL42gPln6CzdPBgu52EV.jpg" alt="El precio de la venganza (2023)">
+        <h1>Acción, Suspense, Misterio, Crimen, Terror, 85 minutos</h1>
+        <p>El precio de la venganza (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Last%20Rifleman%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1DIP9QC0iwPLyADfBuVe9PnkMF.jpg" alt="El último soldado (2023)">
+        <h1>Drama, Historia, Bélica, 100 minutos</h1>
+        <p>El último soldado (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Ritual%20Killer%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qARIn0ltJe4sjXjIA1VzsH21lIY.jpg" alt="El asesino del ritual (2023)">
+        <h1>Misterio, Suspense, Acción, Drama, 92 minutos</h1>
+        <p>El asesino del ritual (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Baby%20Ruby%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xsQyj1RWeKYafKaDRDfA3x5IVcZ.jpg" alt="Baby Ruby (2023)">
+        <h1>Suspense, Terror, Drama, 93 minutos</h1>
+        <p>Baby Ruby (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Anyone%20But%20You%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vXT7jcza5CPEL9Fo4VSgW5hV7gb.jpg" alt="Cualquiera menos tú (2023)">
+        <h1>Romance, Comedia, 103 minutos</h1>
+        <p>Cualquiera menos tú (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Retribution%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sf8bmlofyWyRaaaWC9gR79It8qO.jpg" alt="Retribution (2023)">
+        <h1>Suspense, Acción, Aventura, 91 minutos</h1>
+        <p>Retribution (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Migration%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/diEeiB2DmZZadHISkg24RO2n0rT.jpg" alt="Migración. Un viaje patas arriba (2023)">
+        <h1>Familia, Comedia, Aventura, Animación, 82 minutos</h1>
+        <p>Migración. Un viaje patas arriba (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sound%20of%20Freedom%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aKfNw4vqbI62HAMI04imwAPjC05.jpg" alt="Sound of Freedom (2023)">
+        <h1>Acción, Drama, 131 minutos</h1>
+        <p>Sound of Freedom (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Marsh%20Kings%20Daughter%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pZI7MIHgiwYrG1juIwsk23UrE5c.jpg" alt="La hija del pantano (2023)">
+        <h1>Suspense, Crimen, Misterio, 109 minutos</h1>
+        <p>La hija del pantano (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Deep%20Fear%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jK5zAYcdJoXlst98mdBzWFn74rT.jpg" alt="Miedo profundo (2023)">
+        <h1>Terror, Suspense, Acción, Misterio, 84 minutos</h1>
+        <p>Miedo profundo (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Aporia%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zYt35YGKoc85LXULzMKDfJ8qX1C.jpg" alt="Aporia (2023)">
+        <h1>Ciencia ficción, Drama, 104 minutos</h1>
+        <p>Aporia (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Scarygirl%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1tcLXVaXFG9OObnCN3a5KrymrQG.jpg" alt="Arkie (2023)">
+        <h1>Animación, Aventura, Familia, Fantasía, 90 minutos</h1>
+        <p>Arkie (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Left%20Behind%20Rise%20of%20the%20Antichrist%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AbjrvfrKkxx7bNNX3W5cAE5Y3Q2.jpg" alt="Apocalipsis: El despertar del anticristo (2023)">
+        <h1>Ciencia ficción, Acción, Suspense, Fantasía, 120 minutos</h1>
+        <p>Apocalipsis: El despertar del anticristo (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Oppenheimer%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5t05uhX5ULn8Um2f1ZuznVvIffU.jpg" alt="Oppenheimer (2023)">
+        <h1>Drama, Historia, 181 minutos</h1>
+        <p>Oppenheimer (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Miracle%20Club%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6puaZpSOY529atoXPpB84Zj0VML.jpg" alt="El Club de los Milagros (2023)">
+        <h1>Comedia, Drama, 90 minutos</h1>
+        <p>El Club de los Milagros (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Exorcist%20Believer%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/f0N4Cx0XMbQIHnyAMByLLC0xovm.jpg" alt="El exorcista: Creyente (2023)">
+        <h1>Terror, Suspense, 121 minutos</h1>
+        <p>El exorcista: Creyente (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cobweb%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/o0ndJZaa9ZFFfpnl1IejajXv0II.jpg" alt="No tengas miedo (2023)">
+        <h1>Terror, 88 minutos</h1>
+        <p>No tengas miedo (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Kandahar%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qE2EsMv37IjXLjc6ixOU3LeRtZl.jpg" alt="Operación Kandahar (2023)">
+        <h1>Acción, Suspense, Bélica, 119 minutos</h1>
+        <p>Operación Kandahar (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Resurrection%20of%20Charles%20Manson%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jdkQCHDsPhPH28MDOsJDaSDgg81.jpg" alt="El Regreso De Manson (2023)">
+        <h1>Terror, Suspense, 78 minutos</h1>
+        <p>El Regreso De Manson (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Asteroid%20City%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/s7LIE7oNZ6WU4ajf1FaXWyMYdpX.jpg" alt="Asteroid City (2023)">
+        <h1>Comedia, Drama, 105 minutos</h1>
+        <p>Asteroid City (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/One%20Ranger%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6cVA4AGoex1PLZE8voy8ez7VWYb.jpg" alt="Un Guardabosque (2023)">
+        <h1>Acción, Suspense, 95 minutos</h1>
+        <p>Un Guardabosque (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Blackening%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qAITCebHexMiWHggOFh9Wz2fQNb.jpg" alt="The Blackening (2023)">
+        <h1>Terror, Comedia, 97 minutos</h1>
+        <p>The Blackening (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/River%20Wild%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hfZTmxZ4FwzoVqMfrVpiwXM35eW.jpg" alt="River Wild (2023)">
+        <h1>Misterio, Suspense, Aventura, 91 minutos</h1>
+        <p>River Wild (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Devils%20Peak%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aVAPGUKcIc2U4PvhYms6JCmigR6.jpg" alt="El pico del diablo (2023)">
+        <h1>Misterio, Suspense, Drama, Crimen, 98 minutos</h1>
+        <p>El pico del diablo (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/About%20My%20Father%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jFkGF6Nl46GkASRgdgFsvTn6ZfR.jpg" alt="Todo sobre mi padre (2023)">
+        <h1>Comedia, 90 minutos</h1>
+        <p>Todo sobre mi padre (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Are%20You%20There%20God%20Its%20Me%20Margaret%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ov5q8zr2865zMyMnRkrv0nCqgUj.jpg" alt="¿Estás ahí, Dios? Soy yo, Margaret (2023)">
+        <h1>Comedia, Drama, 105 minutos</h1>
+        <p>¿Estás ahí, Dios? Soy yo, Margaret (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Big%20George%20Foreman%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ue2W0lfk6DVCQCQc1d2k64xz1xh.jpg" alt="Big George Foreman (2023)">
+        <h1>Historia, Drama, 129 minutos</h1>
+        <p>Big George Foreman (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/My%20Sisters%20Keeper%202009.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/60fPi1MwKH3nd2pl9n2p2hDHsHl.jpg" alt="My Sister's Keeper (2023)">
+        <h1>Documental, 60 minutos</h1>
+        <p>My Sister's Keeper (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Polite%20Society%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qW9vJw4lvQU8JEfwEJ1rXSxOwch.jpg" alt="Una sociedad educada (2023)">
+        <h1>Comedia, Acción, Drama, 104 minutos</h1>
+        <p>Una sociedad educada (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Infinity%20Pool%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kOFKpWdNu8Q14PyOUL87LcNpNZD.jpg" alt="Piscina infinita (2023)">
+        <h1>Terror, Ciencia ficción, 118 minutos</h1>
+        <p>Piscina infinita (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Popes%20Exorcist%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2z1PVqfzvT4KjPNpQRfy5HpsyIW.jpg" alt="El exorcista del papa (2023)">
+        <h1>Terror, Suspense, 103 minutos</h1>
+        <p>El exorcista del papa (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/John%20Wick%20Chapter%204%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mj2Z9HnRSIEk3n7yVPoOY4Uzzfh.jpg" alt="John Wick 4 (2023)">
+        <h1>Acción, Suspense, Crimen, 170 minutos</h1>
+        <p>John Wick 4 (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Renfield%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5dRS9I4zAxsUm3za9dg1nFDDwoO.jpg" alt="Renfield (2023)">
+        <h1>Comedia, Fantasía, Terror, 93 minutos</h1>
+        <p>Renfield (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/65%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dhqu9rInT9IOa2w0TU22YMEgGus.jpg" alt="65 (2023)">
+        <h1>Acción, Aventura, Ciencia ficción, 93 minutos</h1>
+        <p>65 (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Shazam%20Fury%20of%20the%20Gods%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xCxwaQeoIr4FcjlPgHfzog0x4B8.jpg" alt="¡Shazam! La furia de los dioses (2023)">
+        <h1>Comedia, Acción, Fantasía, 130 minutos</h1>
+        <p>¡Shazam! La furia de los dioses (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Creed%203%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fcFMd3HdyX7r5gtFwVnn2qr5Yhq.jpg" alt="Creed III (2023)">
+        <h1>Drama, Acción, 116 minutos</h1>
+        <p>Creed III (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ant%20Man%20and%20the%20Wasp%20Quantumania%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lKHy0ntGPdQeFwvNq8gK1D0anEr.jpg" alt="Ant-Man y la Avispa: Quantumanía (2023)">
+        <h1>Acción, Aventura, Ciencia ficción, 125 minutos</h1>
+        <p>Ant-Man y la Avispa: Quantumanía (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jesus%20Revolution%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ajQaw8mMCU30OR3y2eeHrLLxzpr.jpg" alt="Jesus Revolution (2023)">
+        <h1>Drama, Historia, 120 minutos</h1>
+        <p>Jesus Revolution (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Transfusion%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zTQ2o0gzVZOblt6KlV3bSKg0y8z.jpg" alt="Legado de sangre (2023)">
+        <h1>Crimen, Acción, Drama, 105 minutos</h1>
+        <p>Legado de sangre (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/We%20Have%20a%20Ghost%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/byZCKMtAWIVI4iBIEY64Wd1Eh1l.jpg" alt="Un fantasma anda suelto por casa (2023)">
+        <h1>Terror, Comedia, 127 minutos</h1>
+        <p>Un fantasma anda suelto por casa (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cocaine%20Bear%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yGCpehozPDlaczL4Fas1d01mfAH.jpg" alt="Oso vicioso (2023)">
+        <h1>Suspense, Comedia, Crimen, 95 minutos</h1>
+        <p>Oso vicioso (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Operation%20Fortune%20Ruse%20de%20Guerre%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/37zlKKOEJ2CqCYTF8rmCSPYo3Dv.jpg" alt="Operación Fortune: El gran engaño (2023)">
+        <h1>Acción, Comedia, Suspense, 113 minutos</h1>
+        <p>Operación Fortune: El gran engaño (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/On%20a%20Wing%20and%20Prayer%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/m5nXOX4GmuCNzv29qswOZrMWU5P.jpg" alt="Vuelo al límite (2023)">
+        <h1>Drama, 102 minutos</h1>
+        <p>Vuelo al límite (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Plane%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/juoinefK6tMbjwJhRpRvbAAmrTB.jpg" alt="El piloto (2023)">
+        <h1>Acción, Aventura, Suspense, 107 minutos</h1>
+        <p>El piloto (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Money%20Shot%20The%20Pornhub%20Story%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uJldamB3Le1eELdjqaBd4APGU49.jpg" alt="Hasta el fondo: La historia de Pornhub (2023)">
+        <h1>Documental, 95 minutos</h1>
+        <p>Hasta el fondo: La historia de Pornhub (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Geronimo%201962.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uM1G5Ht7dQt4CQQUKhy8ilQO1Qb.jpg" alt="Geronimo (2023)">
+        <h1>Comedia, Terror, 14 minutos</h1>
+        <p>Geronimo (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pamela%20a%20Love%20Story%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tIwGc0kW15I5OfWN7q8W31nCpGD.jpg" alt="Pamela Anderson: Una historia de amor (2023)">
+        <h1>Documental, 113 minutos</h1>
+        <p>Pamela Anderson: Una historia de amor (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/You%20People%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c0dfDXSu6esHRdE6mx2SzehvaDv.jpg" alt="La gente como vosotros (2023)">
+        <h1>Romance, Comedia, 118 minutos</h1>
+        <p>La gente como vosotros (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jeanne%20du%20Barry%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bB2gII3YgyzA9rEtHwDe4xbImuM.jpg" alt="Jeanne du Barry (2023)">
+        <h1>Drama, Historia, Romance, 117 minutos</h1>
+        <p>Jeanne du Barry (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wanted%202008.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5KsCeZMxwzpyR7pjyoAurohjaFI.jpg" alt="Wanted (2023)">
+        <h1>Suspense</h1>
+        <p>Wanted (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hypnotic%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7X1GFIYePoJ6NpSCJRgc4gFpVaN.jpg" alt="Hypnotic (2023)">
+        <h1>Misterio, Ciencia ficción, Suspense, Acción, Drama, 93 minutos</h1>
+        <p>Hypnotic (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Run%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zAghlI5x1RLfaYyGHMFQ9aDCLzd.jpg" alt="Run (2023)">
+        <h1>Drama, 6 minutos</h1>
+        <p>Run (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spell%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/das3DZl7lvxyBi0w73WiRmKMmnx.jpg" alt="SPELL (2023)">
+        <h1>6 minutos</h1>
+        <p>SPELL (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Come%20Play%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/Ag9CNskWl7kf1qaPUHZzoY0X4RJ.jpg" alt="Nāc ārā! (2023)">
+        <h1>Documental, 25 minutos</h1>
+        <p>Nāc ārā! (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Super%20Mario%20Bros%20Movie%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zNKs1T0VZuJiVuhuL5GSCNkGdxf.jpg" alt="Super Mario Bros: La película (2023)">
+        <h1>Familia, Fantasía, Comedia, Aventura, Animación, 92 minutos</h1>
+        <p>Super Mario Bros: La película (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/White%20Men%20Cant%20Jump%201992.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6IRvcldz1q9beCRAHOJtHe7tN3.jpg" alt="Los blancos no la saben meter (2023)">
+        <h1>Comedia, Drama, 101 minutos</h1>
+        <p>Los blancos no la saben meter (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Kitchen%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pKctCAgjvZUNzj4tvh5HXXwQ2O8.jpg" alt="La Cocina (2023)">
+        <h1>Ciencia ficción, Suspense, Drama, Aventura, Comedia, 109 minutos</h1>
+        <p>La Cocina (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Attila%202001.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jFOlKs7zFzzVsNQmEDkcb0WlP7d.jpg" alt="Attila (2023)">
+        <h1>Documental, 80 minutos</h1>
+        <p>Attila (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Joy%20Ride%202001.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oRcAeRi1SqlGC2uI1r1ckq9Sx1B.jpg" alt="Locas en apuros (2023)">
+        <h1>Comedia, 94 minutos</h1>
+        <p>Locas en apuros (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Air%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4ypRUscxdPXjF2o3BzsKsCUrkpK.jpg" alt="Air (2023)">
+        <h1>Drama, Historia, 111 minutos</h1>
+        <p>Air (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Ladybug%202018.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fJQB1CAKZOiBNZLd4RBXvg35aaB.jpg" alt="Prodigiosa: Las aventuras de Ladybug - La película (2023)">
+        <h1>Animación, Fantasía, Acción, Romance, Familia, 100 minutos</h1>
+        <p>Prodigiosa: Las aventuras de Ladybug - La película (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Otherhood%202019.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aNDfreGad57McupmDSHZcY9Hyth.jpg" alt="Otherhood (2023)">
+        <h1>3 minutos</h1>
+        <p>Otherhood (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20wandering%20earth%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dCDAPDbySxYewfSzWGvQssy04sW.jpg" alt="La Tierra Errante II (2023)">
+        <h1>Ciencia ficción, Acción, Aventura, 173 minutos</h1>
+        <p>La Tierra Errante II (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Island%202005.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/l3ysmDejyuh4DKZYhY09R2e6StD.jpg" alt="The Island (2023)">
+        <h1>Acción, Crimen, Suspense, 93 minutos</h1>
+        <p>The Island (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Book%20club%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/idew42l7ILdyR97XC9yG4hFUy1Z.jpg" alt="El club de los lectores criminales (2023)">
+        <h1>Terror, Suspense, 89 minutos</h1>
+        <p>El club de los lectores criminales (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Every%20day%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1Gu13WHKjKJaiDBoz0SKfh66Ndy.jpg" alt="Every Day (2023)">
+        <h1>Drama, 97 minutos</h1>
+        <p>Every Day (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Joy%202015.mkv">
+        <img src="" alt="Joy (2023)">
+        <h1>Documental</h1>
+        <p>Joy (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20last%20word%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nm8efAaQPGVPwjpOrXes8J8fP0Q.jpg" alt="The Last Word (2023)">
+        <h1>Comedia, Drama, 80 minutos</h1>
+        <p>The Last Word (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20walk%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2VGYWOjgNs6Vk8Dd8mnhijrPZyV.jpg" alt="The Walk (2023)">
+        <h1>Drama, 11 minutos</h1>
+        <p>The Walk (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20veil%202016.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ekk9tsz6WOvxN1ckEFtc1HIq8LQ.jpg" alt="The Veil (2023)">
+        <h1>Terror, Suspense, Drama, Ciencia ficción, 70 minutos</h1>
+        <p>The Veil (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20lovers%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bAqOy35AS4MKK2i3CuFmoJAHxxi.jpg" alt="The Lovers (2023)">
+        <h1>Drama, Romance, 70 minutos</h1>
+        <p>The Lovers (2023)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Home%20again%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vXZatVxY0JaXaa1E3xTTBMj8yvl.jpg" alt="Coming Home Again (2023)">
+        <h1>Drama, 86 minutos</h1>
+        <p>Coming Home Again (2023)</p>
+    </a>
+</div>
+
+<!--    ########################    === AÑO: 2022  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Love%20in%20the%20Villa%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3ziXJdpG9htlXsu21zOfvcPrkJ8.jpg" alt="La villa del amor (2022)">
+        <h1>Romance, Comedia, 115 minutos</h1>
+        <p>La villa del amor (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Last%20Manhunt%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ifnOVSIuQpL8TC0bn4mBiX0cOr9.jpg" alt="La última cacería (2022)">
+        <h1>Western, Crimen, Drama, Romance, 103 minutos</h1>
+        <p>La última cacería (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mindcage%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9NMR51VWzfNK36thfBxwJRFVwBQ.jpg" alt="Jaula mental (2022)">
+        <h1>Misterio, Suspense, Crimen, 97 minutos</h1>
+        <p>Jaula mental (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ash%20and%20Dust%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uaLf0Jos4vBbjIEtKTO6dpZv7F7.jpg" alt="The Voice of Dust and Ash (2022)">
+        <h1>Documental, 84 minutos</h1>
+        <p>The Voice of Dust and Ash (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Boon%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6WD5wdt4SFylLyE66SoE3kEZskB.jpg" alt="Boon: El protector (2022)">
+        <h1>Acción, Crimen, Suspense, Drama, Misterio, 95 minutos</h1>
+        <p>Boon: El protector (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lamborghini%20The%20Legend%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lFU87NOeh6l4eos0Ahgigp6rL4P.jpg" alt="Lamborghini: El hombre detrás de la leyenda (2022)">
+        <h1>Drama, Historia, 97 minutos</h1>
+        <p>Lamborghini: El hombre detrás de la leyenda (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Women%20Talking%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3wTWpJU6BMzMflrTGjD6CSwroqm.jpg" alt="Ellas hablan (2022)">
+        <h1>Drama, 104 minutos</h1>
+        <p>Ellas hablan (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Magic%20Flute%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ccmtOFDFKU2hhKBVPGj6UntmozH.jpg" alt="La flauta mágica (2022)">
+        <h1>Aventura, Fantasía, Música, Familia, 125 minutos</h1>
+        <p>La flauta mágica (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Prancer%20A%20Christmas%20Tale%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4edWl217pGZOyMJh2ABC1brMgT1.jpg" alt="Prancer: un cuento de Navidad (2022)">
+        <h1>Familia, Fantasía, 105 minutos</h1>
+        <p>Prancer: un cuento de Navidad (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Avatar%20The%20Way%20of%20Water%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ckeTumMS4G31UQ9NNkmtW2QhfMF.jpg" alt="Avatar: El sentido del agua (2022)">
+        <h1>Ciencia ficción, Aventura, Acción, 192 minutos</h1>
+        <p>Avatar: El sentido del agua (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/American%20Carnage%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fWa89Rr95zFYqTKVfDPKpjrofsM.jpg" alt="Pesadilla americana (2022)">
+        <h1>Misterio, Suspense, Comedia, Terror, 101 minutos</h1>
+        <p>Pesadilla americana (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pearl%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/z5uIG81pXyHKg7cUFIu84Wjn4NS.jpg" alt="Pearl (2022)">
+        <h1>Terror, Suspense, 101 minutos</h1>
+        <p>Pearl (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Fabelmans%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wcgPDyvKkgo2agNXcdE1eXLGzmf.jpg" alt="Los Fabelman (2022)">
+        <h1>Drama, 151 minutos</h1>
+        <p>Los Fabelman (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dead%20for%20A%20Dollar%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oFAA2YHODrQVEGoRJS4VKH7Vqov.jpg" alt="El cazador de recompensas (2022)">
+        <h1>Western, Suspense, Acción, 114 minutos</h1>
+        <p>El cazador de recompensas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Puss%20in%20Boots%20The%20Last%20Wish%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/b5Jb7GoQaqIXy4VEdnQa0UrQZI.jpg" alt="El Gato con Botas: El último deseo (2022)">
+        <h1>Animación, Aventura, Fantasía, Comedia, Familia, 103 minutos</h1>
+        <p>El Gato con Botas: El último deseo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Man%20Called%20Otto%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8bNLrZt9lrmnt6LsaGG8GfDfgYR.jpg" alt="El peor vecino del mundo (2022)">
+        <h1>Comedia, Drama, 126 minutos</h1>
+        <p>El peor vecino del mundo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Brian%20and%20Charles%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uWTVL4X0kvaDQmpWwXSfxxzwfnO.jpg" alt="Brian y Charles (2022)">
+        <h1>Comedia, Drama, Ciencia ficción, 91 minutos</h1>
+        <p>Brian y Charles (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Poker%20Face%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qvcDAQEk305csl4ivZGWdr7lSD3.jpg" alt="Poker Face (2022)">
+        <h1>Suspense, Crimen, 94 minutos</h1>
+        <p>Poker Face (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Medieval%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eeUNWsdoiOijOZAMaWFDA5Pb1n8.jpg" alt="Medieval (2022)">
+        <h1>Acción, Drama, Historia, 126 minutos</h1>
+        <p>Medieval (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Studio%20666%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vMEZTTeb73tVTWASyG8T4hKAS7j.jpg" alt="Terror en el Estudio 666 (2022)">
+        <h1>Terror, Comedia, Música, 108 minutos</h1>
+        <p>Terror en el Estudio 666 (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Three%20Thousand%20Years%20of%20Longing%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/edbQazMpjkp0iQZjvvQWVb3IstJ.jpg" alt="Tres mil años esperándote (2022)">
+        <h1>Drama, Fantasía, Romance, 108 minutos</h1>
+        <p>Tres mil años esperándote (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Breaking%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8ZlGTEmhzlsm6SRKYAsF4iqUm0L.jpg" alt="Grieta (2022)">
+        <h1>Crimen, Drama, Suspense, 103 minutos</h1>
+        <p>Grieta (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Whale%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/l6Jbj5dnljC3qJ4Lkpzgu9tK13M.jpg" alt="La ballena (The Whale) (2022)">
+        <h1>Drama, 117 minutos</h1>
+        <p>La ballena (The Whale) (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Terrifier%202%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1jpaJU7mqyzCWkLwakpVxlBv9lA.jpg" alt="Terrifier 2 (2022)">
+        <h1>Terror, Suspense, 138 minutos</h1>
+        <p>Terrifier 2 (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Roald%20Dahls%20Matilda%20the%20Musical%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7iUkSvlCnYdyl9tSKexwHK9Mo8p.jpg" alt="Matilda de Roald Dahl: El musical (2022)">
+        <h1>Familia, Comedia, Fantasía, 117 minutos</h1>
+        <p>Matilda de Roald Dahl: El musical (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ray%20Donovan%20The%20Movie%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/62raVY2pcmPuv305xMbsDBtqJuq.jpg" alt="Ray Donovan, la película (2022)">
+        <h1>Crimen, Drama, Película de TV, 100 minutos</h1>
+        <p>Ray Donovan, la película (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/I%20Wanna%20Dance%20with%20Somebody%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hs4v44DWULjEaXOcyILX0qturQC.jpg" alt="Whitney Houston. I Wanna Dance with Somebody (2022)">
+        <h1>Música, Historia, Drama, 144 minutos</h1>
+        <p>Whitney Houston. I Wanna Dance with Somebody (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Paradise%20City%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lvm6yZsdgnM0vJeM4mlOAUVeDES.jpg" alt="Paradise City (2022)">
+        <h1>Acción, Crimen, Suspense, 93 minutos</h1>
+        <p>Paradise City (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Detective%20Knight%20Rogue%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uPef3gXYTQpiQYTbuk1CXkzWzHa.jpg" alt="Detective Knight: Sin piedad (2022)">
+        <h1>Acción, Crimen, Suspense, 105 minutos</h1>
+        <p>Detective Knight: Sin piedad (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Strange%20World%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c16eybXiG9ysoTu7yV460w0Jj43.jpg" alt="Mundo extraño (2022)">
+        <h1>Animación, Familia, Aventura, Ciencia ficción, Fantasía, 102 minutos</h1>
+        <p>Mundo extraño (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Prizefighter%20The%20Life%20of%20Jem%20Belcher%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yjFCfffM2TTwWpxQYFZuqlnueeu.jpg" alt="La forja de un campeón (2022)">
+        <h1>Historia, Drama, 106 minutos</h1>
+        <p>La forja de un campeón (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Black%20Panther%20Wakanda%20Forever%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mYpT2R7639KvKZ668uoQGS2QNFp.jpg" alt="Black Panther: Wakanda Forever (2022)">
+        <h1>Acción, Aventura, Ciencia ficción, 162 minutos</h1>
+        <p>Black Panther: Wakanda Forever (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jerry%20and%20Marge%20Go%20Large%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pKbarYkAYFFZS4wiLvbwUCqRNFe.jpg" alt="La fórmula ganadora de Jerry y Marge (2022)">
+        <h1>Comedia, Drama, 96 minutos</h1>
+        <p>La fórmula ganadora de Jerry y Marge (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wrong%20Place%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rWBXVkDXdXuY1zmkonDYTiO9Yi6.jpg" alt="En el lugar equivocado (2022)">
+        <h1>Suspense, Drama, Crimen, Acción, 96 minutos</h1>
+        <p>En el lugar equivocado (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Violent%20Night%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/piA9ny345UyIMGp0lKYtPJ3RKCa.jpg" alt="Noche de paz (2022)">
+        <h1>Acción, Comedia, Fantasía, 101 minutos</h1>
+        <p>Noche de paz (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Time%20Capsule%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5PwABE5EWj1WLKQ9yLxH1Uk3Km3.jpg" alt="El Amor Más Allá del Tiempo (2022)">
+        <h1>Drama, Romance, Ciencia ficción, 105 minutos</h1>
+        <p>El Amor Más Allá del Tiempo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Return%20to%20Me%202000.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4ZOSMR9ZgPtGXpevl0l55sSxaY9.jpg" alt="Return to Me (2022)">
+        <h1>Drama, 95 minutos</h1>
+        <p>Return to Me (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Call%20Jane%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sdP0gc5ehx7iM9j4lzbA0aNQCtS.jpg" alt="Todas somos Jane (2022)">
+        <h1>Drama, Historia, 121 minutos</h1>
+        <p>Todas somos Jane (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Prey%20for%20the%20Devil%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hbtJK32km46jTmlvBXgR8SunfAp.jpg" alt="Reza por el diablo (2022)">
+        <h1>Terror, Suspense, 93 minutos</h1>
+        <p>Reza por el diablo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Orphan%20First%20Kill%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eed4qNf174pcT65it1PBbaTTL3x.jpg" alt="La huérfana: Primer asesinato (2022)">
+        <h1>Terror, Suspense, 99 minutos</h1>
+        <p>La huérfana: Primer asesinato (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Black%20Adam%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/moDLTCdLx38kMhN53KOTw0LdWMh.jpg" alt="Black Adam (2022)">
+        <h1>Acción, Aventura, Ciencia ficción, 124 minutos</h1>
+        <p>Black Adam (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Vengeance%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zwBjTDwXsrDhKY80zIX7F4oi1is.jpg" alt="Venganza (2022)">
+        <h1>Comedia, Misterio, Suspense, 107 minutos</h1>
+        <p>Venganza (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Secret%20Headquarters%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hpH62pdEhkeXnbj4qchqz4QssuR.jpg" alt="El cuartel secreto (2022)">
+        <h1>Acción, Aventura, Comedia, Ciencia ficción, Familia, 104 minutos</h1>
+        <p>El cuartel secreto (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fall%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tsjVxiuGyvMC4IbI2gjmDYpcYjU.jpg" alt="Fall (2022)">
+        <h1>Suspense, 107 minutos</h1>
+        <p>Fall (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Banshees%20of%20Inisherin%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/24zHdUTv3dHOB9VLsPPvx0WGntA.jpg" alt="Almas en pena de Inisherin (2022)">
+        <h1>Drama, Comedia, 114 minutos</h1>
+        <p>Almas en pena de Inisherin (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bros%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/i4kdD9YIlnMNQtJrteioyPP5tnm.jpg" alt="Bros: Más que amigos (2022)">
+        <h1>Comedia, Romance, 115 minutos</h1>
+        <p>Bros: Más que amigos (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lyle%20Lyle%20Crocodile%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sF6VVT4VhyjEzXiDOKvj5n4u64X.jpg" alt="Lilo, mi amigo el cocodrilo (2022)">
+        <h1>Comedia, Familia, Música, 106 minutos</h1>
+        <p>Lilo, mi amigo el cocodrilo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Smile%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qJO54b6LsBmEkMxdW8ZziL9Mnam.jpg" alt="Smile (2022)">
+        <h1>Terror, Misterio, 115 minutos</h1>
+        <p>Smile (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Woman%20King%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rLEeiar1YUW4EB6By4tSKWA4whZ.jpg" alt="La mujer rey (2022)">
+        <h1>Acción, Drama, Historia, 135 minutos</h1>
+        <p>La mujer rey (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Abandoned%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9L9uR1gtXr9WgZkNTGc7bThO6Dm.jpg" alt="Abandoned (2022)">
+        <h1>Terror, Misterio, Suspense, 102 minutos</h1>
+        <p>Abandoned (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Christmas%20on%20Mistletoe%20Farm%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fBPi8qnCmC8m8Xsx7SkFbvPEimt.jpg" alt="Navidad en la granja (2022)">
+        <h1>Familia, Comedia, 104 minutos</h1>
+        <p>Navidad en la granja (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/R.I.P.D%202%20Rise%20of%20the%20Damned%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oJJWjiMKExSi241NpKUqVIxWfH6.jpg" alt="R.I.P.D. 2: La rebelión de los condenados (2022)">
+        <h1>Fantasía, Acción, Comedia, 102 minutos</h1>
+        <p>R.I.P.D. 2: La rebelión de los condenados (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Corrective%20Measures%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/n4NtkOODUUZ2ZxEpOmBhEOHiwhp.jpg" alt="Fuga de Prisión (2022)">
+        <h1>Ciencia ficción, Acción, Suspense, Aventura, 106 minutos</h1>
+        <p>Fuga de Prisión (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Frank%20and%20Penelope%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5NpXoAi3nEQkEgLO09nmotPfyNa.jpg" alt="Frank y Penelope Hasta que la Muerte nos Separe (2022)">
+        <h1>Suspense, Terror, Crimen, 112 minutos</h1>
+        <p>Frank y Penelope Hasta que la Muerte nos Separe (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hostile%20Territory%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1N8MewUU5eumjdD99YuOYQq434y.jpg" alt="Territorio hostil (2022)">
+        <h1>Western, Acción, Drama, Historia, 94 minutos</h1>
+        <p>Territorio hostil (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Men%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8bcHelHF3TZcBQtfvXsKOmfjhPc.jpg" alt="Men (2022)">
+        <h1>Terror, Suspense, Fantasía, 100 minutos</h1>
+        <p>Men (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Requin%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/paC5cDd4ClDBegVSvPVslYHKdgt.jpg" alt="Sharkwater (2022)">
+        <h1>Terror, Misterio, Suspense, 89 minutos</h1>
+        <p>Sharkwater (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Invitation%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/65U0lox03NVBEHF6xGzwxU7vp42.jpg" alt="La invitación (2022)">
+        <h1>Terror, Suspense, 105 minutos</h1>
+        <p>La invitación (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Nope%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tfZPQAHZ3xKSdilLywRzHj8xH7p.jpg" alt="¡Nop! (2022)">
+        <h1>Terror, Ciencia ficción, Suspense, 135 minutos</h1>
+        <p>¡Nop! (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Black%20Phone%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1D2R2wIgbTyXTPzmyJIKSbVN9wG.jpg" alt="Black Phone (2022)">
+        <h1>Terror, Suspense, 102 minutos</h1>
+        <p>Black Phone (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Good%20Luck%20to%20You%20Leo%20Grande%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/m84Qa4lsS3Hf1I8OR4WBs8N5pT1.jpg" alt="Buena suerte, Leo Grande (2022)">
+        <h1>Romance, Drama, 97 minutos</h1>
+        <p>Buena suerte, Leo Grande (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mortal%20Kombat%20Legends%20Snow%20Blind%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1hJufJphSKP7WaVEfyDYAtmfcU.jpg" alt="Mortal Kombat Leyendas: Frío y Penumbra (2022)">
+        <h1>Animación, Acción, Fantasía, 82 minutos</h1>
+        <p>Mortal Kombat Leyendas: Frío y Penumbra (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mrs%20Harris%20goes%20to%20Paris%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hZhYBbfjtEadc7d3BUwaZIiCuQ3.jpg" alt="El viaje a París de la señora Harris (2022)">
+        <h1>Drama, Comedia, Historia, 116 minutos</h1>
+        <p>El viaje a París de la señora Harris (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Where%20the%20Crawdads%20Sing%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fmKCI3tweszvv1S7MoK0OCWsvht.jpg" alt="La chica salvaje (2022)">
+        <h1>Drama, Misterio, Romance, 126 minutos</h1>
+        <p>La chica salvaje (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wire%20Room%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jwGSzu7Nd5hUWCLMhdxKln8fsjd.jpg" alt="Bajo vigilancia (2022)">
+        <h1>Acción, Crimen, 97 minutos</h1>
+        <p>Bajo vigilancia (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Elvis%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/z4miRBGEqhkIkUr0ausHLfUytgq.jpg" alt="Elvis (2022)">
+        <h1>Drama, Música, Historia, 159 minutos</h1>
+        <p>Elvis (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Redeeming%20Love%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vBpxJkFsfSjghmrizJr5xhQyACQ.jpg" alt="Amor redentor (2022)">
+        <h1>Romance, Drama, Western, 134 minutos</h1>
+        <p>Amor redentor (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Top%20Gun%20Maverick%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AlWpEpQq0RgZIXVHAHZtFhEvRgd.jpg" alt="Top Gun: Maverick (2022)">
+        <h1>Acción, Drama, 131 minutos</h1>
+        <p>Top Gun: Maverick (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Samaritan%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/s2cAyMmzQi2913AxUPSsfma5Efa.jpg" alt="Samaritan (2022)">
+        <h1>Ciencia ficción, Crimen, Acción, 102 minutos</h1>
+        <p>Samaritan (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Catch%20The%20Fair%20One%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4POHMXUtpZp0NSthj8yDsPz2zWB.jpg" alt="Hasta el final (2022)">
+        <h1>Suspense, Misterio, 85 minutos</h1>
+        <p>Hasta el final (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Carter%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5fHE4pgAOpebZKj9Wsk4aasLxkM.jpg" alt="Carter (2022)">
+        <h1>Terror, Comedia, Aventura, Acción, Suspense, 86 minutos</h1>
+        <p>Carter (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/X%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4pCSBPHUPia93rppHF3UX4cLQ9M.jpg" alt="X (2022)">
+        <h1>Terror, Suspense, 105 minutos</h1>
+        <p>X (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Zombies%203%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/966ceZHDYvXQOvGYu1pvxiB0A54.jpg" alt="Z-O-M-B-I-E-S 3 (2022)">
+        <h1>Fantasía, Comedia, Familia, Película de TV, 88 minutos</h1>
+        <p>Z-O-M-B-I-E-S 3 (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dont%20Make%20me%20Go%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2KYg095m7kgKBXAHH8cjkzHTOuH.jpg" alt="No me dejes marchar (2022)">
+        <h1>Drama, 109 minutos</h1>
+        <p>No me dejes marchar (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Borrego%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ohVi0I3VYD5Rx1Tze7tMcZ9NQj6.jpg" alt="Borrego – Sal Del Camino (2022)">
+        <h1>Crimen, Suspense, 102 minutos</h1>
+        <p>Borrego – Sal Del Camino (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jurassic%20World%20Dominion%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AoMMjYFvaxX2aELmpRv6d7EAFmm.jpg" alt="Jurassic World: Dominion (2022)">
+        <h1>Aventura, Acción, Ciencia ficción, 147 minutos</h1>
+        <p>Jurassic World: Dominion (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Bunker%20Game%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1DUyyU8mcMqVQOemKuuhx9fITii.jpg" alt="The Bunker Game (2022)">
+        <h1>Terror, Misterio, Suspense, 92 minutos</h1>
+        <p>The Bunker Game (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lost%20City%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2qZurhERKxv2YOkZGDaSxsNN89a.jpg" alt="La ciudad perdida (2022)">
+        <h1>Acción, Aventura, Comedia, 112 minutos</h1>
+        <p>La ciudad perdida (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Indemnity%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3XtbJmd9vMDieuHVDBwwGtWZlmR.jpg" alt="Sin Culpa (2022)">
+        <h1>Acción, Suspense, Crimen, 124 minutos</h1>
+        <p>Sin Culpa (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hot%20Seat%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vgQsA6rGxJfsETgKU3cxvlme7yU.jpg" alt="Punto de mira (2022)">
+        <h1>Suspense, Acción, 98 minutos</h1>
+        <p>Punto de mira (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Halftime%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sQfhjQKYR3CAh0c5fHAsnIdchoa.jpg" alt="Jennifer Lopez: Halftime (2022)">
+        <h1>Documental, Música, 95 minutos</h1>
+        <p>Jennifer Lopez: Halftime (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Doctor%20Strange%20in%20the%20Multiverse%20of%20Madness%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xu0RftYPT4crY4ZSf9SMa5UM8dr.jpg" alt="Doctor Strange en el multiverso de la locura (2022)">
+        <h1>Fantasía, Acción, Aventura, 126 minutos</h1>
+        <p>Doctor Strange en el multiverso de la locura (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Fourth%20Musketeer%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6DdDsgqMaQ7v0e9tGTPcIExc7kl.jpg" alt="D'Artagnan El 4º Mosquetero (2022)">
+        <h1>Acción, Aventura, 85 minutos</h1>
+        <p>D'Artagnan El 4º Mosquetero (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/9%20Bullets%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hNaLkaWYN5eeNwnxHnhGgQPr2aT.jpg" alt="9 Balas (2022)">
+        <h1>Acción, Suspense, 96 minutos</h1>
+        <p>9 Balas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spiderhead%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5eNrWoqKwpvrH8N4gajZsw0yUee.jpg" alt="Spiderhead (2022)">
+        <h1>Ciencia ficción, Suspense, 106 minutos</h1>
+        <p>Spiderhead (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Unbearable%20Weight%20of%20Massive%20Talent%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nLXJRnVQlajzNYd8xDHC553Yi8H.jpg" alt="El insoportable peso de un talento descomunal (2022)">
+        <h1>Acción, Comedia, Crimen, 106 minutos</h1>
+        <p>El insoportable peso de un talento descomunal (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Interceptor%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/v3lOCuNTxBJAI68MrEJ95FQby4A.jpg" alt="Interceptor (2022)">
+        <h1>Acción, Suspense, Aventura, 96 minutos</h1>
+        <p>Interceptor (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Valet%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aRPYEiXKgOmZ4mwZ8BQwFMp2Ejw.jpg" alt="El aparcacoches (2022)">
+        <h1>Comedia, Romance, 124 minutos</h1>
+        <p>El aparcacoches (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fantastic%20Beasts%20The%20Secrets%20of%20Dumbledore%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yOeuJdwag4bAlnvgrdweRoiuXGC.jpg" alt="Animales fantásticos: Los secretos de Dumbledore (2022)">
+        <h1>Fantasía, Aventura, 143 minutos</h1>
+        <p>Animales fantásticos: Los secretos de Dumbledore (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Father%20Stu%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hQ7rObRPHpLwyfz0a2wasTAXfSK.jpg" alt="El milagro del padre Stu (2022)">
+        <h1>Drama, 125 minutos</h1>
+        <p>El milagro del padre Stu (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Memory%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zUa7VyFnt4Wj3NYIlh8fn8xkVqq.jpg" alt="La memoria de un asesino (2022)">
+        <h1>Acción, Suspense, Crimen, 114 minutos</h1>
+        <p>La memoria de un asesino (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sneakerella%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vkxKo08e8PhIKz6itm2b83scYQ7.jpg" alt="Sneakerella: Cenicienta en zapatillas (2022)">
+        <h1>Música, Comedia, Familia, 110 minutos</h1>
+        <p>Sneakerella: Cenicienta en zapatillas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Senior%20Year%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hGlpctlRkYqcfFxbNqmz8flQfRy.jpg" alt="Vuelta al insti (2022)">
+        <h1>Comedia, 113 minutos</h1>
+        <p>Vuelta al insti (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Morbius%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4jcJHqIVsb4MFdYrDajXeEVlDvH.jpg" alt="Morbius (2022)">
+        <h1>Acción, Ciencia ficción, Fantasía, 109 minutos</h1>
+        <p>Morbius (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Eraser%20Reborn%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8aqBvfg8Gm8KfAk6rd7ygNWPXzZ.jpg" alt="El protector: Renacer (2022)">
+        <h1>Acción, Crimen, Suspense, 102 minutos</h1>
+        <p>El protector: Renacer (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Firestarter%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/904bAGLYH20vkKzAgl6pCSuuLTI.jpg" alt="Ojos de fuego (2022)">
+        <h1>Terror, Ciencia ficción, 94 minutos</h1>
+        <p>Ojos de fuego (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Northman%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rdx0bIkwxW3EHvWn5kxZBFUT1Am.jpg" alt="El hombre del norte (2022)">
+        <h1>Acción, Aventura, Fantasía, 137 minutos</h1>
+        <p>El hombre del norte (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Scream%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uWKJyIISWzP7KmB2vcgrX7xyhUh.jpg" alt="Scream (2022)">
+        <h1>Terror, Misterio, 120 minutos</h1>
+        <p>Scream (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Batman%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mo7teil1qH0SxgLijnqeYP1Eb4w.jpg" alt="Batman (2022)">
+        <h1>Crimen, Misterio, Suspense, 176 minutos</h1>
+        <p>Batman (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Bad%20Guys%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/j0moebdCWDjjwS6bz1ohrsRp1Vp.jpg" alt="Los tipos malos 2 (2022)">
+        <h1>Animación, Familia, Comedia, Crimen, Aventura, 104 minutos</h1>
+        <p>Los tipos malos 2 (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sonic%20the%20Hedgehog%202%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sJiHVM0A3OXDVxl4Z6a7ihMPHfm.jpg" alt="Sonic 2: La película (2022)">
+        <h1>Acción, Aventura, Familia, Comedia, 122 minutos</h1>
+        <p>Sonic 2: La película (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Contractor%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/l1h0vckonVoVFgUzXS4phDhcXDt.jpg" alt="El contratista (2022)">
+        <h1>Acción, Suspense, 103 minutos</h1>
+        <p>El contratista (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Mystery%20of%20Marilyn%20Monroe%20The%20Unheard%20Tapes%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wizYwoGqL2hVTFcHHAyi2dfYGnk.jpg" alt="El misterio de Marilyn Monroe: Las cintas inéditas (2022)">
+        <h1>Documental, 101 minutos</h1>
+        <p>El misterio de Marilyn Monroe: Las cintas inéditas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fortress%20Snipers%20Eye%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xFhSje6pSrE6OYBCF2FQ5GzAuEy.jpg" alt="La fortaleza 2 (2022)">
+        <h1>Acción, Suspense, Crimen, 87 minutos</h1>
+        <p>La fortaleza 2 (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ambulance%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/y7Lnz3ayJyW9IWmbA0M19vpBbu4.jpg" alt="Ambulance. Plan de huida (2022)">
+        <h1>Suspense, Acción, Crimen, 136 minutos</h1>
+        <p>Ambulance. Plan de huida (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20survivor%202021.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vmvqom1VsQlY510BvUDqEDvwxcF.jpg" alt="El superviviente de Auschwitz (2022)">
+        <h1>Historia, Acción, Drama, 129 minutos</h1>
+        <p>El superviviente de Auschwitz (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/365%20Days%20This%20Day%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/k3J2GdYxhR6U2RfsHZOsmHVKW7m.jpg" alt="365 días: Aquel día (2022)">
+        <h1>Romance, Drama, 111 minutos</h1>
+        <p>365 días: Aquel día (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bulldozer%202021.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wMk6lLKD4tk2LHBJr26pgXrVvcI.jpg" alt="Bulldozer (2022)">
+        <h1>Crimen, Acción, Suspense, 83 minutos</h1>
+        <p>Bulldozer (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Devil%20You%20Know%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eyvT9TpBSZsFMSu0TZmvALeocnd.jpg" alt="El diablo que conoces (2022)">
+        <h1>Suspense, Drama, Crimen, 116 minutos</h1>
+        <p>El diablo que conoces (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Uncharted%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6hlI9Ea1O4IeJ2cj7OiNinqg8Qd.jpg" alt="Uncharted (2022)">
+        <h1>Acción, Aventura, 115 minutos</h1>
+        <p>Uncharted (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20In%20Between%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4LPgEgDdipSYSU4ABafINfyGWow.jpg" alt="Entre dos mundos (2022)">
+        <h1>Romance, Ciencia ficción, Drama, 116 minutos</h1>
+        <p>Entre dos mundos (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/All%20the%20Old%20Knives%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sRavSsrDC2L5d2FBCTMRBkWhcZ4.jpg" alt="Una cita con el pasado (2022)">
+        <h1>Suspense, Acción, 101 minutos</h1>
+        <p>Una cita con el pasado (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bull%20Shark%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wGE4ImqYjJZQi3xFu4I2OLm8m0w.jpg" alt="Bull Shark (2022)">
+        <h1>Terror, Suspense, 80 minutos</h1>
+        <p>Bull Shark (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Outfit%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sHxBAfd0CUvxvvXVLfTDuhqYGM0.jpg" alt="El sastre de la mafia (2022)">
+        <h1>Crimen, Drama, Suspense, Misterio, 106 minutos</h1>
+        <p>El sastre de la mafia (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Better%20Nate%20Than%20Ever%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tO3PY6NUisTs0CQHbwA4qGh1A1h.jpg" alt="El sueño de Nate (2022)">
+        <h1>Música, Familia, Comedia, 92 minutos</h1>
+        <p>El sueño de Nate (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Bubble%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/erMqgXfOUqM1GFf7Io5Pe57W5kU.jpg" alt="La burbuja (2022)">
+        <h1>Comedia, 127 minutos</h1>
+        <p>La burbuja (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Moonfall%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nRUN5ywlehfB8opryZkXwfYSGAl.jpg" alt="Moonfall (2022)">
+        <h1>Ciencia ficción, Aventura, Acción, 130 minutos</h1>
+        <p>Moonfall (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Black%20Crab%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pfgfS62kahCuCl1QazWiRwbnWR2.jpg" alt="Cangrejo negro (2022)">
+        <h1>Acción, Suspense, 112 minutos</h1>
+        <p>Cangrejo negro (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Rescued%20by%20Ruby%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3Lj8U4iOShgHY0A9QulBMx8NuOs.jpg" alt="El rescate de Ruby (2022)">
+        <h1>Familia, Drama, 93 minutos</h1>
+        <p>El rescate de Ruby (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Adam%20Project%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/k5waciRFMN5bwudDrgFLffoAorm.jpg" alt="El Proyecto Adam (2022)">
+        <h1>Aventura, Ciencia ficción, Acción, Comedia, 106 minutos</h1>
+        <p>El Proyecto Adam (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Turning%20Red%202022.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/djM4COTksd5YRIdd9uEl8eA3iaa.jpg" alt="Red (2022)">
+        <h1>Animación, Familia, Comedia, Fantasía, 100 minutos</h1>
+        <p>Red (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blacklight%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tEiLdCrQi4yCdgNYnAFRD14VTJP.jpg" alt="El Mediador (2022)">
+        <h1>Acción, Suspense, Aventura, 108 minutos</h1>
+        <p>El Mediador (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Texas%20Chainsaw%20Massacre%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2VnuxwgdMBEgVO7VKvkW6nmYfaM.jpg" alt="La matanza de Texas (2022)">
+        <h1>Terror, 83 minutos</h1>
+        <p>La matanza de Texas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Restless%20(Sans%20Repit)%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1RbvTtVXwmjJqB9cZXBtM5uz5ou.jpg" alt="Sin respiro (2022)">
+        <h1>Acción, Suspense, Crimen, 95 minutos</h1>
+        <p>Sin respiro (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Desperate%20Riders%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3AqV9ygw2hrDQ0AIGPdTee9ocqd.jpg" alt="Desperate Riders (2022)">
+        <h1>Western, Acción, Drama, 90 minutos</h1>
+        <p>Desperate Riders (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Kings%20Daughter%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3G6IxvCvCjVLd8dJLwUXm3bv2n8.jpg" alt="La hija del rey (2022)">
+        <h1>Fantasía, Aventura, Familia, 94 minutos</h1>
+        <p>La hija del rey (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Harry%20Potter%2020th%20Anniversary%20Return%20to%20Hogwarts%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jAwbyTKDbw7iqYptPMSlPfFsbPU.jpg" alt="Harry Potter, 20º Aniversario: Regreso a Hogwarts (2022)">
+        <h1>Documental, 90 minutos</h1>
+        <p>Harry Potter, 20º Aniversario: Regreso a Hogwarts (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Catwoman%20Hunted%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bQ2DkTs3g1fUp6IyVerXfMwYYmV.jpg" alt="Catwoman: La caza (2022)">
+        <h1>Animación, Acción, Crimen, 78 minutos</h1>
+        <p>Catwoman: La caza (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ice%20Age%20Adventures%20of%20Buck%20Wild%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iDah4ZcDX3F316LcLlmNNAzsRqF.jpg" alt="Ice Age: Las aventuras de Buck (2022)">
+        <h1>Animación, Comedia, Familia, Aventura, 82 minutos</h1>
+        <p>Ice Age: Las aventuras de Buck (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Home%20Team%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/t6EHm3HB5CROiEKBAheoCQyNvbG.jpg" alt="Jugar en casa (2022)">
+        <h1>Familia, Comedia, Drama, 95 minutos</h1>
+        <p>Jugar en casa (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Tom%20and%20Jerry%20Cowboy%20Up%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jpEWy0Pz41gkIE65Og8lvIaCvN4.jpg" alt="Tom y Jerry: ¡Arriba, vaquero! (2022)">
+        <h1>Animación, Comedia, Familia, Western, 75 minutos</h1>
+        <p>Tom y Jerry: ¡Arriba, vaquero! (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Royal%20Treatment%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xMFF6OryNYWdnp2L8RUAVeVnMzG.jpg" alt="Tratamiento real (2022)">
+        <h1>Romance, Comedia, 96 minutos</h1>
+        <p>Tratamiento real (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hotel%20Transylvania%20Transformania%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xNF8AxJc966FWk4SYqXxGHaZLHZ.jpg" alt="Hotel Transilvania: Transformanía (2022)">
+        <h1>Animación, Comedia, Familia, Aventura, Fantasía, 92 minutos</h1>
+        <p>Hotel Transilvania: Transformanía (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20House%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wdRK70SDxjhj3e3vJoYQaRZf4sD.jpg" alt="La casa (2022)">
+        <h1>Animación, Drama, Comedia, Terror, Fantasía, 97 minutos</h1>
+        <p>La casa (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Four%20to%20Dinner%202022.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kJjs82rZwErWjlKv2jOmXXjSfro.jpg" alt="4 mitades (2022)">
+        <h1>Comedia, Romance, 104 minutos</h1>
+        <p>4 mitades (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Motherly%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wmh1likQEetSLIUs5MAvfWjEayY.jpg" alt="Instinto materno (2022)">
+        <h1>Suspense, Terror, 80 minutos</h1>
+        <p>Instinto materno (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Always%201989.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6Khb9pSFqHbAFdBkpPWAJUjBjjR.jpg" alt="Always (2022)">
+        <h1>Suspense</h1>
+        <p>Always (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Assistant%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1TeUMvE2vs0cuAnLKaPR2qsvonT.jpg" alt="The Assistant (2022)">
+        <h1>Crimen, Acción, Suspense, 124 minutos</h1>
+        <p>The Assistant (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dangerous%20Liaisons%201988.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rnUc9Yy2pWWfdhrPgkkVZWLci0r.jpg" alt="Las amistades peligrosas (2022)">
+        <h1>Drama, Romance, 109 minutos</h1>
+        <p>Las amistades peligrosas (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hater%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/reufAUM5lx8XIC9jRnErNnkG9Dr.jpg" alt="The Hater (2022)">
+        <h1>Comedia, 107 minutos</h1>
+        <p>The Hater (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/365%20Days%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/k3J2GdYxhR6U2RfsHZOsmHVKW7m.jpg" alt="365 días: Aquel día (2022)">
+        <h1>Romance, Drama, 111 minutos</h1>
+        <p>365 días: Aquel día (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Burn%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iSaR0y3M2HS2Ffdjkn043ieUMkA.jpg" alt="Quemadura (2022)">
+        <h1>Suspense, Crimen, 100 minutos</h1>
+        <p>Quemadura (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Scream%201996.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uWKJyIISWzP7KmB2vcgrX7xyhUh.jpg" alt="Scream (2022)">
+        <h1>Terror, Misterio, 120 minutos</h1>
+        <p>Scream (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Alone%20in%20the%20Dark%202005.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/huwSsxRnIiFuoxfrFWqUnA2vKRn.jpg" alt="Alone in the Dark (2022)">
+        <h1>Terror, Suspense, 90 minutos</h1>
+        <p>Alone in the Dark (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Far%20and%20Away%201992.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ce66ewX8MIZgHy9iqOp86BB8Ogv.jpg" alt="Kingdom 2: Far and Away (2022)">
+        <h1>Acción, Aventura, Bélica, 134 minutos</h1>
+        <p>Kingdom 2: Far and Away (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20wife%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iyH7xiOA8Bf5K7ou3e1A0zGYj5a.jpg" alt="The Wife (2022)">
+        <h1>Drama, Romance, 100 minutos</h1>
+        <p>The Wife (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Alien%20vs%20predator%202004.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7pp460bxrRLpFFOCXwsb1e94VAE.jpg" alt="Alien vs Predator (2022)">
+        <h1>Animación, 2 minutos</h1>
+        <p>Alien vs Predator (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Terminal%202018.mp4">
+        <img src="" alt="Terminal (2022)">
+        <h1>Comedia, 10 minutos</h1>
+        <p>Terminal (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Ledge%202011.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bSZhgnlqfajabEHfXVmwCZIcpSI.jpg" alt="El abismo (2022)">
+        <h1>Suspense, Aventura, 86 minutos</h1>
+        <p>El abismo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20house%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wdRK70SDxjhj3e3vJoYQaRZf4sD.jpg" alt="La casa (2022)">
+        <h1>Animación, Drama, Comedia, Terror, Fantasía, 97 minutos</h1>
+        <p>La casa (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Collide%202016.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7MAElUYN8q0oDxxqX5roSd9aFiD.jpg" alt="Collide (2022)">
+        <h1>Crimen, Suspense, 80 minutos</h1>
+        <p>Collide (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Boss%20Baby%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oYqSHD0bYRZFyZIocUsKXzDJULK.jpg" alt="El extra navideño del Bebé Jefazo (2022)">
+        <h1>Animación, Familia, Aventura, 46 minutos</h1>
+        <p>El extra navideño del Bebé Jefazo (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20ring%203%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/agGG7Zzd0tJAF4hxiaWvi8EQhXU.jpg" alt="El museo del terror: los anillos infernales (2022)">
+        <h1>Terror, 82 minutos</h1>
+        <p>El museo del terror: los anillos infernales (2022)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20invitation%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/65U0lox03NVBEHF6xGzwxU7vp42.jpg" alt="La invitación (2022)">
+        <h1>Terror, Suspense, 105 minutos</h1>
+        <p>La invitación (2022)</p>
+    </a>
+</div>
+    
+
+
+
+
+
+    <!-- Agrega más items aquí -->
+
+
+
+  </div>
+
+  <!-- Script -->
+
+<script>
+// Detectar si es Android
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
+// Aplicar solo si es Android
+if (isAndroid()) {
+  // Modificar todos los enlaces de video
+  document.querySelectorAll('.menu-item a').forEach(link => {
+    const videoUrl = link.getAttribute('href');
+    // Verificar si es un enlace de video
+    if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.mkv') || videoUrl.endsWith('.webm'))) {
+      // Evitar que el enlace haga algo por defecto
+      link.removeAttribute('href');
+      link.style.cursor = 'pointer';
+
+      // Guardar la URL original como atributo de datos
+      link.setAttribute('data-video-url', videoUrl);
+
+      // Evento de clic
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+        window.location.href = intentUrl;
+      });
+
+      // Soporte para Enter en teclado o control remoto
+      link.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+          e.preventDefault();
+          const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+          window.location.href = intentUrl;
+        }
+      });
+    }
+  });
+}
+
+// #############   COLORES DEL CONTROL REMOTO
+window.addEventListener('keydown', (event) => {
+  const keyCode = event.keyCode;
+  switch (keyCode) {
+    case 403: // Rojo
+      document.getElementById('homeButton')?.focus();
+      break;
+    case 404: // Verde
+      const help = document.getElementById('helpOverlay');
+      if (help) help.style.display = help.style.display === 'none' ? 'block' : 'none';
+      break;
+    case 405: // Amarillo
+      document.getElementById('searchInput')?.focus();
+      break;
+    case 406: // Azul
+      document.body.classList.toggle('light-mode');
+      break;
+  }
+});
+
+// #############   BUSCADOR
+document.getElementById('searchInput').addEventListener('input', function () {
+  const searchTerm = this.value.toLowerCase();
+  const items = document.querySelectorAll('.menu-item');
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(searchTerm) ? 'inline-block' : 'none';
+  });
+});
+
+// #############   BOTON INICIO
+document.addEventListener("keydown", function (event) {
+  if (event.keyCode === 403) {
+    const homeBtn = document.getElementById("homeButton");
+    if (homeBtn) {
+      homeBtn.focus();
+    }
+  }
+  if (document.activeElement.id === "homeButton" && (event.key === "Enter" || event.keyCode === 13)) {
+    window.location.href = document.getElementById("homeButton").href;
+  }
+});
+
+// #############   PAGINACIÓN Y NAVEGACIÓN
+document.addEventListener("DOMContentLoaded", () => {
+  const itemsPerPage = 35;
+  const allItems = Array.from(document.querySelectorAll(".menu-item"));
+  const totalItems = allItems.length;
+  let totalPages = Math.ceil(totalItems / itemsPerPage);
+  let currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+  currentPage = Math.max(1, Math.min(currentPage, totalPages));
+  const pageNumbersContainer = document.getElementById("pageNumbers");
+  const prevBtn = document.getElementById("prevPage");
+  const nextBtn = document.getElementById("nextPage");
+
+  function createPagination() {
+    if (!pageNumbersContainer.childElementCount) {
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLink = document.createElement("a");
+        pageLink.href = `?page=${i}`;
+        pageLink.textContent = i;
+        pageLink.classList.add("pageNumber");
+        pageLink.setAttribute("tabindex", "0");
+        if (i === currentPage) pageLink.classList.add("active");
+        pageLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (currentPage !== i) {
+            currentPage = i;
+            showCurrentPage();
+            history.pushState({}, "", `?page=${currentPage}`);
+            focusIndex((currentPage - 1) * itemsPerPage);
+          }
+        });
+        pageNumbersContainer.appendChild(pageLink);
+      }
+    }
+  }
+
+  function updatePaginationUI() {
+    document.querySelectorAll(".pageNumber").forEach(p => p.classList.remove("active"));
+    const active = document.querySelector(`.pageNumber[href="?page=${currentPage}"]`);
+    if (active) active.classList.add("active");
+    prevBtn.classList.toggle("disabled", currentPage === 1);
+    nextBtn.classList.toggle("disabled", currentPage === totalPages);
+  }
+
+  function showCurrentPage() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    for (let i = 0; i < totalItems; i++) {
+      allItems[i].style.display = (i >= start && i < end) ? "inline-block" : "none";
+    }
+    updatePaginationUI();
+  }
+
+  function focusIndex(i) {
+    requestAnimationFrame(() => {
+      if (allItems[i]) {
+        allItems[i].focus();
+        localStorage.setItem("lastFocusIndex", i);
+      }
+    });
+  }
+
+  createPagination();
+  showCurrentPage();
+
+  const lastIndex = parseInt(localStorage.getItem("lastFocusIndex"));
+  if (!isNaN(lastIndex) && allItems[lastIndex]) {
+    const inPage = (lastIndex >= (currentPage - 1) * itemsPerPage && lastIndex < currentPage * itemsPerPage);
+    setTimeout(() => {
+      if (inPage) {
+        focusIndex(lastIndex);
+      } else {
+        focusIndex((currentPage - 1) * itemsPerPage);
+      }
+    }, 100);
+  }
+
+  // Navegación con flechas
+  document.addEventListener("keydown", e => {
+    const focused = document.activeElement;
+    const currentRect = focused?.getBoundingClientRect?.() || {};
+
+    function findClosestItem(direction) {
+      let minDistance = Infinity;
+      let target = null;
+      for (let item of allItems) {
+        if (item.offsetParent === null) continue;
+        const rect = item.getBoundingClientRect();
+        let valid = false;
+        let distance = Infinity;
+        if (direction === "ArrowRight" && rect.left > currentRect.right) {
+          distance = Math.abs(rect.top - currentRect.top) + (rect.left - currentRect.right);
+          valid = true;
+        }
+        if (direction === "ArrowLeft" && rect.right < currentRect.left) {
+          distance = Math.abs(rect.top - currentRect.top) + (currentRect.left - rect.right);
+          valid = true;
+        }
+        if (direction === "ArrowDown" && rect.top > currentRect.bottom) {
+          distance = Math.abs(rect.left - currentRect.left) + (rect.top - currentRect.bottom);
+          valid = true;
+        }
+        if (direction === "ArrowUp" && rect.bottom < currentRect.top) {
+          distance = Math.abs(rect.left - currentRect.left) + (currentRect.top - rect.bottom);
+          valid = true;
+        }
+        if (valid && distance < minDistance) {
+          minDistance = distance;
+          target = item;
+        }
+      }
+      return target;
+    }
+
+    switch (e.key) {
+      case "ArrowRight":
+      case "ArrowLeft":
+      case "ArrowDown":
+      case "ArrowUp": {
+        const next = findClosestItem(e.key);
+        if (next) {
+          next.focus();
+          localStorage.setItem("lastFocusIndex", allItems.indexOf(next));
+        }
+        break;
+      }
+      case "Enter": {
+        const link = focused?.querySelector("a");
+        if (link) {
+          // En Android, ya no tiene href, pero manejamos el Enter
+          if (isAndroid() && link.hasAttribute('data-video-url')) {
+            const videoUrl = link.getAttribute('data-video-url');
+            const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+            window.location.href = intentUrl;
+          } else {
+            // En PC o TV: sigue el enlace normal
+            link.click();
+          }
+        }
+        break;
+      }
+      case "ChannelUp":
+      case "MediaTrackPrevious":
+      case "PageUp": {
+        const prev = currentPage > 1 ? currentPage - 1 : totalPages;
+        if (currentPage !== prev) {
+          currentPage = prev;
+          showCurrentPage();
+          history.pushState({}, "", `?page=${currentPage}`);
+          focusIndex((currentPage - 1) * itemsPerPage);
+        }
+        break;
+      }
+      case "ChannelDown":
+      case "MediaTrackNext":
+      case "PageDown": {
+        const next = currentPage < totalPages ? currentPage + 1 : 1;
+        if (currentPage !== next) {
+          currentPage = next;
+          showCurrentPage();
+          history.pushState({}, "", `?page=${currentPage}`);
+          focusIndex((currentPage - 1) * itemsPerPage);
+        }
+        break;
+      }
+    }
+  });
+
+  // Swipe
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let lastSwipeTime = 0;
+  document.addEventListener("touchstart", e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener("touchend", e => {
+    touchEndX = e.changedTouches[0].screenX;
+    const now = Date.now();
+    if (now - lastSwipeTime > 400) {
+      handleSwipe();
+      lastSwipeTime = now;
+    }
+  });
+  function handleSwipe() {
+    const deltaX = touchEndX - touchStartX;
+    if (Math.abs(deltaX) < 50) return;
+    const newPage = deltaX < 0
+      ? (currentPage < totalPages ? currentPage + 1 : 1)
+      : (currentPage > 1 ? currentPage - 1 : totalPages);
+    if (newPage !== currentPage) {
+      currentPage = newPage;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  }
+
+  allItems.forEach((item, i) => {
+    item.addEventListener("focus", () => localStorage.setItem("lastFocusIndex", i));
+  });
+
+  prevBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const prev = currentPage > 1 ? currentPage - 1 : totalPages;
+    if (prev !== currentPage) {
+      currentPage = prev;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  });
+  nextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const next = currentPage < totalPages ? currentPage + 1 : 1;
+    if (next !== currentPage) {
+      currentPage = next;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

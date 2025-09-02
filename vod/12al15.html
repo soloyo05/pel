@@ -1,0 +1,3991 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <title>ESTRENOS RECIENTES</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000000;
+    }
+
+.pagination {
+    position: sticky;
+    top: 0px;
+    background-color: #000000;
+    padding: 10px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    color: #51ff00;
+}
+
+.pagination a.active {
+    background-color: #ffcb00;
+    color: #000000;
+}
+
+.pagination a.disabled {
+  color: #aaa;
+  pointer-events: none;
+}
+
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 0px 0px 0px;
+}
+
+.menu-item {
+  width: 150px;
+  outline: none;
+  text-align: center;
+  transition: transform 0.2s ease;
+  background-color: #0f0e0e;
+  border-radius: 10px;
+  padding: 5px;
+}
+    .menu-item {
+        position: relative;
+        display: inline-block;
+    }
+
+.new-tag {
+    position: absolute;
+    top: 13px;
+    left: -6px;
+    background-color: #ff0000;
+    border: solid 1px #000000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 12px;
+    transform: rotate(-34deg);
+    box-shadow: 0 2px 23px rgb(255 0 0 / 69%);
+    z-index: 9;
+    white-space: nowrap;
+    border-radius: 4px;
+}
+
+.menu-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+}
+
+.menu-item a {
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+
+.menu-item p {
+  color: #24ff00;
+  font-size: 16px;
+  margin: 5px 0 0;
+}
+
+.menu-item:focus {
+  outline: 3px solid #00f7ff;
+  transform: scale(1.05);
+  box-shadow: 0 0 26px #00f5ff;
+  background-color: #33daed;
+  z-index: 5;
+}
+
+
+
+.menu-item:focus p {
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+    background: #ebff00;
+    padding: 2px;
+    border: solid 2px black;
+    border-radius: 6px;
+}
+
+.page-nav:focus,
+.pageNumber:focus {
+  outline: none;
+  border: 2px solid #007BFF;
+  border-radius: 5px;
+}
+
+.search-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #00ff88;
+    border-radius: 8px;
+    color: white;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+    background: #ff00002b;
+    border: none;
+    color: #ffe600;
+    font-size: 18px;
+    outline: none;
+    width: 140px;
+}
+
+.search-box input::placeholder {
+  color: #888;
+}
+
+.home-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    background-color: #1c1c1c;
+    padding: 8px 12px;
+    border: 2px solid #bc00ff;
+    border-radius: 8px;
+    color: #00ff88;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.home-button:hover {
+  background-color: #00ff88;
+  color: #000;
+}
+
+.home-button:focus {
+  outline: 2px solid #00f7ff;
+}
+body.light-mode {
+  background-color: #ffffff;
+  color: #000;
+}
+
+body.light-mode .menu-item {
+  background-color: #f0f0f0;
+}
+
+body.light-mode .menu-item p {
+  color: #000;
+}
+
+#helpOverlay {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 99;
+  font-size: 14px;
+}
+
+#pageNumbers {
+  display: flex;
+  overflow-x: auto;
+  max-width: 80vw;
+  gap: 5px;
+  scroll-behavior: smooth;
+}
+
+#pageNumbers::-webkit-scrollbar {
+  height: 6px;
+}
+
+#pageNumbers::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+  /* Estilo del modal de video */
+  .modal-video {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  }
+  .modal-video.active {
+    display: flex;
+  }
+  #player {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .close-video {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    background: #ff00004a;
+    color: #ffffff80;
+    border: none;
+    width: 104px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1010;
+    opacity: 0.8;
+}
+  .close-video:hover {
+    opacity: 1;
+  }
+  .video-title {
+    position: absolute;
+    top: -15px;
+    left: 0%;
+    transform: translateX(0%);
+    color: #ffffff6b;
+    background: rgb(0 0 0 / 30%);
+    padding: 0px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+  /* Asegurar que Plyr ocupe bien el espacio */
+  .plyr__video-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+h1 {
+    position: sticky;
+    font-size: 11px;
+    top: 0px;
+    color: #ffc800;
+   
+}
+.menu-item:focus h1 {
+    font-size: 12px;
+    color: #000000;
+    font-family: math;
+    background: #00ff40db;
+    padding: 2px;
+    border: solid 1px black;
+    border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .search-box {
+    top: 4px;
+    right: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .search-box input {
+    width: 55px;
+    font-size: 14px;
+  }
+    .home-button {
+        top: 4px;
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+  .pagination {
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 5px;
+  }
+  .pagination a {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+#pageNumbers {
+    display: flex;
+    overflow-x: auto;
+    max-width: 27vw;
+    gap: 5px;
+    scroll-behavior: smooth;
+}
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 0px 0px 0px;
+}
+.menu-item {
+    width: 170px;
+}
+.menu-item p {
+    color: #24ff00;
+    font-size: 19px;
+    margin: 5px 0 0;
+}
+h1 {
+    position: sticky;
+    font-size: 13px;
+    top: 0px;
+    color: #ffc800;
+}
+.menu-item:focus h1 {
+    font-size: 12px;
+    color: #000000;
+    font-family: system-ui;
+    background: #00ff40db;
+    padding: 2px;
+    border: solid 1px black;
+    border-radius: 6px;
+}
+}
+
+  </style>
+</head>
+<body>
+
+<a href="https://jdm.free.nf/jdm/principal1.html" class="home-button" tabindex="0">🏠 Inicio</a>
+
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Buscar..." />
+</div>
+
+<div id="helpOverlay">
+  Usa las flechas para navegar.<br />
+  🔴 Inicio, 🟡 Buscar, 🟢 Ayuda, 🔵 Modo claro/oscuro
+</div>
+<div id="helpOverlay2">
+ ESTRENO
+</div>
+
+
+<!-- Modal de video con Plyr -->
+<div class="modal-video" id="videoModal">
+  <button class="close-video" id="closeVideo">0 cerrar</button>
+  <video id="player" controls></video>
+  <p class="video-title" id="videoTitle">Reproduciendo video...</p>
+</div>
+<!-- Paginación -->
+<div class="pagination" id="pagination">
+  <a href="#" id="prevPage" class="page-nav" tabindex="0">⬅️</a>
+  <div id="pageNumbers"></div>
+  <a href="#" id="nextPage" class="page-nav" tabindex="0">➡️</a>
+</div>
+
+
+<!-- Contenido -->
+<div class="menu-container" id="menuContainer">
+
+
+<!-- 
+############   agregar esto para una etiqueta     <span class="new-tag">ESTRENO</span>   ###################
+
+
+<div class="menu-item" tabindex="0">
+    <span class="new-tag">ESTRENO</span>
+      <a href="URL">
+        <img src="JPG" alt="TITULO">
+        <p>TITULO</p>
+      </a>
+    </div>
+
+ -->
+
+
+
+    <!--    ########################    === AÑO: 2015  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/No%20Escape%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5lD3a5DP7LRqBvDjduELvqK9xJo.jpg" alt="Golpe de estado (2015)">
+        <h1>Suspense, Acción, 101 minutos</h1>
+        <p>Golpe de estado (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Trainwreck%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9dcw4gxzjYWDzZvKQEnn6eBCMnK.jpg" alt="Y de repente tú (2015)">
+        <h1>Comedia, Romance, 125 minutos</h1>
+        <p>Y de repente tú (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Man%20from%20U.N.C.L.E.%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nOSICEZIpShPXmTIETEZ7iuNWcM.jpg" alt="Operación U.N.C.L.E. (2015)">
+        <h1>Comedia, Acción, Aventura, 116 minutos</h1>
+        <p>Operación U.N.C.L.E. (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/In%20the%20Heart%20of%20the%20Sea%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xjE8aylY2QCpcE0R8eIJ6fFAWa0.jpg" alt="En el corazón del mar (2015)">
+        <h1>Suspense, Drama, Aventura, Acción, Historia, 121 minutos</h1>
+        <p>En el corazón del mar (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mad%20Max%20Fury%20Road%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fnY0VRsb31A5RLVCBjuR6EFUlo2.jpg" alt="Mad Max: Furia en la carretera (2015)">
+        <h1>Acción, Aventura, Ciencia ficción, 120 minutos</h1>
+        <p>Mad Max: Furia en la carretera (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Danish%20Girl%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8XubRv1OkM2RkksxVpkG8qoROM8.jpg" alt="La chica danesa (2015)">
+        <h1>Drama, 120 minutos</h1>
+        <p>La chica danesa (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Curve%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9AGJMNrUfBMIGkCeKNccQbj0Nyg.jpg" alt="Curve (La curva de la muerte) (2015)">
+        <h1>Terror, Suspense, 82 minutos</h1>
+        <p>Curve (La curva de la muerte) (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Scream%206%202023.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dGY4iiOZxGD5W3hFnae4H3BM1sp.jpg" alt="恐すぎる携帯動画 絶叫投稿13連発 6 (2015)">
+        <h1>Terror, 50 minutos</h1>
+        <p>恐すぎる携帯動画 絶叫投稿13連発 6 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Insidious%20Chapter%203%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yc8vkZgbaJjaZjEE1K1qMrDWiB5.jpg" alt="Insidious: Capítulo 3 (2015)">
+        <h1>Terror, Suspense, 98 minutos</h1>
+        <p>Insidious: Capítulo 3 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Terminator%20Genisys%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5N5PnUoywvOduFb4Qw6HD2LkMtu.jpg" alt="Terminator Génesis (2015)">
+        <h1>Ciencia ficción, Acción, Suspense, Aventura, 126 minutos</h1>
+        <p>Terminator Génesis (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Creed%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fTdozSSr2cTZcioldjfVUbBzhrW.jpg" alt="Creed. La leyenda de Rocky (2015)">
+        <h1>Acción, Drama, 132 minutos</h1>
+        <p>Creed. La leyenda de Rocky (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Area%2051%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ochcUJTPQSfU5fDMA21y4xoDzeX.jpg" alt="Área 51 (2015)">
+        <h1>Terror, Ciencia ficción, Misterio, 91 minutos</h1>
+        <p>Área 51 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hot%20Tub%20Time%20Machine%202%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ppxZ3dtdCDGS2yNfBVy0eK2WSZ0.jpg" alt="Jacuzzi al pasado 2 (2015)">
+        <h1>Comedia, 93 minutos</h1>
+        <p>Jacuzzi al pasado 2 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cleveland%20Abduction%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xSfHS7KnZWJrMf6l54UU7yKAsAI.jpg" alt="Los secuestros de Cleveland (2015)">
+        <h1>Drama, Crimen, Película de TV, 88 minutos</h1>
+        <p>Los secuestros de Cleveland (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Robin%20Robin%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vPLiA275R1xeg7RhkTLFO0WXGpy.jpg" alt="Robin Hood, la verdadera historia (2015)">
+        <h1>Comedia, Aventura, 87 minutos</h1>
+        <p>Robin Hood, la verdadera historia (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Legend%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/grolIiQjCFeXCTUGe5vWx85uyw0.jpg" alt="Legend (2015)">
+        <h1>Crimen, Suspense, 127 minutos</h1>
+        <p>Legend (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Revenant%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/k3Jh7J5GGMx1lmr7qmynRxOvOK5.jpg" alt="El renacido (2015)">
+        <h1>Western, Drama, Aventura, 156 minutos</h1>
+        <p>El renacido (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/It%20Follows%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/r0G73SD2Ij0BQGgKqkjjO6Mx4wn.jpg" alt="It Follows (2015)">
+        <h1>Terror, Misterio, 100 minutos</h1>
+        <p>It Follows (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Polaroid%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/UfTMfM0ZtuFP10pG3kCCKw5pEo.jpg" alt="Polaroid (2015)">
+        <h1>Terror, 15 minutos</h1>
+        <p>Polaroid (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Divergent%20Series%20Insurgent%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/auUoVDnrPTtfn9zqQ5KKUvjwRZN.jpg" alt="La serie Divergente: Insurgente (2015)">
+        <h1>Acción, Ciencia ficción, Suspense, 119 minutos</h1>
+        <p>La serie Divergente: Insurgente (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cinderella%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pEZPAykrk8ySdzjRSMfMrd0qtO0.jpg" alt="Cenicienta (2015)">
+        <h1>Romance, Fantasía, Familia, Drama, 112 minutos</h1>
+        <p>Cenicienta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Boy%20Next%20Door%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qraS3pMk3lDyNnsYRAxlNwPCzDV.jpg" alt="Obsesión (2015)">
+        <h1>Suspense, 91 minutos</h1>
+        <p>Obsesión (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ooops%20Noah%20is%20Gone%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/thXBQpTEW24Zk98kURviovBMROJ.jpg" alt="¡Upsss! ¿Dónde está Noé...? (2015)">
+        <h1>Animación, Aventura, Comedia, Familia, 86 minutos</h1>
+        <p>¡Upsss! ¿Dónde está Noé...? (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hunger%20Games%20Mockingjay%20Part%202%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3qQPBc7JVGXJGo0Av5jrqndcdTm.jpg" alt="Los Juegos del Hambre: Sinsajo - Parte 2 (2015)">
+        <h1>Acción, Aventura, Ciencia ficción, 137 minutos</h1>
+        <p>Los Juegos del Hambre: Sinsajo - Parte 2 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Age%20of%20Adaline%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/q8r8UFAmb5qAfz4W7wEXCJoCEBr.jpg" alt="El secreto de Adaline (2015)">
+        <h1>Romance, Fantasía, Drama, 112 minutos</h1>
+        <p>El secreto de Adaline (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ludo%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4PNAj4Bt1dm6EOTOQsH8Ya5MmMi.jpg" alt="Ludo (2015)">
+        <h1>Terror, 90 minutos</h1>
+        <p>Ludo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bad%20Asses%20on%20the%20Bayou%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/klVmkXfA2BFU98igDouhdNl03Xe.jpg" alt="Un tipo duro 3: En el pantano (2015)">
+        <h1>Comedia, Acción, 85 minutos</h1>
+        <p>Un tipo duro 3: En el pantano (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Knight%20of%20Cups%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3DSUUyTwDHMsiH305usXR1EoLML.jpg" alt="Knight of Cups (2015)">
+        <h1>Drama, Romance, 118 minutos</h1>
+        <p>Knight of Cups (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Star%20wars%20episode%20VII%20the%20force%20awakens%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vI86GLIkT5pP3ZfNs2EvmTrBLBm.jpg" alt="Star Wars: El despertar de la fuerza (2015)">
+        <h1>Aventura, Acción, Ciencia ficción, 136 minutos</h1>
+        <p>Star Wars: El despertar de la fuerza (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Falling%20Down%201993.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9Fy6KQAMhgWf0ZLrgSEma5Ne60S.jpg" alt="Persona 3 La Pelicula 3:  El Descenso (2015)">
+        <h1>Aventura, Acción, Animación, Drama, Fantasía, Ciencia ficción, 87 minutos</h1>
+        <p>Persona 3 La Pelicula 3:  El Descenso (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fifty%20Shades%20of%20Grey%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mNZcZOIlTwDKd30xLnRR4p0ZELg.jpg" alt="Cincuenta sombras de Grey (2015)">
+        <h1>Drama, Romance, Suspense, 125 minutos</h1>
+        <p>Cincuenta sombras de Grey (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ip%20Man%203%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1wBnEGU0OXtgtDvTtgvYEODwcwi.jpg" alt="Ip Man 3 (2015)">
+        <h1>Acción, Drama, Historia, 105 minutos</h1>
+        <p>Ip Man 3 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spy%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4DjDCZw0YPhXq2lr0uargYZc6b4.jpg" alt="Espías (2015)">
+        <h1>Acción, Comedia, Crimen, 120 minutos</h1>
+        <p>Espías (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lost%20Girls%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oqJ1i9LN3uCxzOMtk0borF8vA04.jpg" alt="Pojkarna (2015)">
+        <h1>Drama, Fantasía, 106 minutos</h1>
+        <p>Pojkarna (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Twilight%202008.mkv">
+        <img src="" alt="The Twilight (2015)">
+        <h1>Terror, 10 minutos</h1>
+        <p>The Twilight (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wicked%20Flying%20Monkeys%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jFXjoiype6DvaKZhQTbvh8mlmzI.jpg" alt="Guardianes de Oz (2015)">
+        <h1>Fantasía, Animación, Aventura, 86 minutos</h1>
+        <p>Guardianes de Oz (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hot%20Pursuit%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uZIzR1bbZcpX23w71RTq72mqNuY.jpg" alt="¡Pisándonos los tacones! (2015)">
+        <h1>Acción, Comedia, 87 minutos</h1>
+        <p>¡Pisándonos los tacones! (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Diablo%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uFQduVyYIinJy3eLjozgfl6Xtcn.jpg" alt="Diablo (2015)">
+        <h1>Acción, Suspense, 91 minutos</h1>
+        <p>Diablo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Look%20Whos%20Back%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/52VJRdbpcK5dLVSI2K46XSxpQbq.jpg" alt="Ha vuelto (2015)">
+        <h1>Comedia, 116 minutos</h1>
+        <p>Ha vuelto (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Killing%20Me%20Softly%202002.mkv">
+        <img src="" alt="Killing Me Softly (2015)">
+        <h1>Fantasía, 20 minutos</h1>
+        <p>Killing Me Softly (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Open%20Season%20Scared%20Silly%202016.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/h0qiSWs9phG2rZoH93CuJ09Q0WK.jpg" alt="Colegas en el bosque 4: Una aventura de miedo (2015)">
+        <h1>Animación, Comedia, Familia, Aventura, 76 minutos</h1>
+        <p>Colegas en el bosque 4: Una aventura de miedo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hitman%20agent%2047%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jyJN2aij0laukipJXdJhMH8hEP6.jpg" alt="Hitman: Agente 47 (2015)">
+        <h1>Acción, Crimen, Suspense, 96 minutos</h1>
+        <p>Hitman: Agente 47 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cinderella%201950.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pEZPAykrk8ySdzjRSMfMrd0qtO0.jpg" alt="Cenicienta (2015)">
+        <h1>Romance, Fantasía, Familia, Drama, 112 minutos</h1>
+        <p>Cenicienta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pound%20of%20Flesh%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lhueuMuA1YELzw8xAFUevEKW6iG.jpg" alt="Estado crítico (2015)">
+        <h1>Acción, 104 minutos</h1>
+        <p>Estado crítico (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Eye%20In%20The%20Sky%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9NGQs6IB5DyD3lssfLX0B6YZ7yf.jpg" alt="Espías desde el cielo (2015)">
+        <h1>Drama, Suspense, Bélica, 102 minutos</h1>
+        <p>Espías desde el cielo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bone%20Tomahawk%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rFAE4LhOsjevrhUmYoVtRLuy6I6.jpg" alt="Bone Tomahawk (2015)">
+        <h1>Western, Terror, Drama, 132 minutos</h1>
+        <p>Bone Tomahawk (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20longest%20ride%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fBIqn0Qa1rctlZfIeW1AICgS3Hm.jpg" alt="El viaje más largo (2015)">
+        <h1>Drama, Romance, 139 minutos</h1>
+        <p>El viaje más largo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ronaldo%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qdr6Jx39KErvSeQFVREjxeEK4lk.jpg" alt="Ronaldo (2015)">
+        <h1>Documental, Historia, 80 minutos</h1>
+        <p>Ronaldo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pitch%20perfect%202%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bc2UTKECa9I5Xpm4ujU4xND9EPK.jpg" alt="Dando la nota: aún más alto (2015)">
+        <h1>Comedia, Música, 115 minutos</h1>
+        <p>Dando la nota: aún más alto (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20good%20dinosaur%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AdBRNzPeeQHujTug9y4vSbibWF8.jpg" alt="El viaje de Arlo (2015)">
+        <h1>Aventura, Animación, Familia, 100 minutos</h1>
+        <p>El viaje de Arlo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ted%202%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bO59Vn36fQauTDQpKNlHxvcK9Nw.jpg" alt="Ted 2 (2015)">
+        <h1>Comedia, Fantasía, 115 minutos</h1>
+        <p>Ted 2 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Project%20Almanac%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bQ2UnB7whQr6EJ2WxKOLjnMdCAv.jpg" alt="Bienvenidos al ayer (2015)">
+        <h1>Ciencia ficción, Suspense, 107 minutos</h1>
+        <p>Bienvenidos al ayer (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20lazarus%20effect%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jcjOEPLiI9fnGmznZvQ0lwI06al.jpg" alt="El efecto Lázaro (2015)">
+        <h1>Terror, Ciencia ficción, Suspense, 83 minutos</h1>
+        <p>El efecto Lázaro (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ant%20man%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zwuE28gSXlLFLgueqMe9b7xKy1f.jpg" alt="Ant-Man (2015)">
+        <h1>Ciencia ficción, Acción, Aventura, 117 minutos</h1>
+        <p>Ant-Man (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Beyond%20the%20mask%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/edTehKLNEsqEvdWInwXiwocuRtW.jpg" alt="Tras la máscara (2015)">
+        <h1>Acción, Aventura, Drama, 103 minutos</h1>
+        <p>Tras la máscara (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20SpongeBob%20Movie%20Sponge%20Out%20of%20Water%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/z5aphafm6OEcAq4jwOs5Ml9F384.jpg" alt="Bob Esponja: Un héroe fuera del agua (2015)">
+        <h1>Familia, Comedia, Aventura, Animación, 85 minutos</h1>
+        <p>Bob Esponja: Un héroe fuera del agua (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Minions%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nmqLwaTfgyWLQWbYd82w159cAqJ.jpg" alt="Los Minions (2015)">
+        <h1>Familia, Animación, Aventura, Comedia, 91 minutos</h1>
+        <p>Los Minions (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mission%20impossible%20rogue%20nation%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/q5twcJdIx9Swtl7CyzfvgQckWVK.jpg" alt="Misión imposible: Nación secreta (2015)">
+        <h1>Acción, Aventura, 131 minutos</h1>
+        <p>Misión imposible: Nación secreta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sicario%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/b8mreaBCuAEb3SW5wu3pUMkHV7Z.jpg" alt="Sicario (2015)">
+        <h1>Acción, Crimen, Suspense, 121 minutos</h1>
+        <p>Sicario (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dragon%20Ball%20Z%20Resurrection%20of%20F%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hasMQTJXgv20EyNUDcNKMhQW6gq.jpg" alt="Dragon Ball Z: La resurrección de F (2015)">
+        <h1>Acción, Animación, Ciencia ficción, 93 minutos</h1>
+        <p>Dragon Ball Z: La resurrección de F (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/San%20Andreas%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sgj6jxw1lcGm8E76IMr32im3qQP.jpg" alt="San Andrés (2015)">
+        <h1>Acción, Drama, Suspense, 114 minutos</h1>
+        <p>San Andrés (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lake%20Placid%20vs%20Anaconda%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aNK2NgDf3MPBRbBBmucKOPuBZbb.jpg" alt="Mandíbulas contra Anaconda (2015)">
+        <h1>Acción, Terror, Ciencia ficción, 85 minutos</h1>
+        <p>Mandíbulas contra Anaconda (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blunt%20force%20trauma%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c5bTogJOMXO9Chj9IX3hiHKoMgT.jpg" alt="Disparo letal (2015)">
+        <h1>Acción, Drama, 95 minutos</h1>
+        <p>Disparo letal (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Daddys%20home%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/stFOBXXoEMeGm7S5z7nTNGXJZ4G.jpg" alt="Padres por desigual (2015)">
+        <h1>Comedia, 96 minutos</h1>
+        <p>Padres por desigual (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20visit%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5BL9QUSlIBlNneqRmN9RyeMRW0I.jpg" alt="The Visit (2015)">
+        <h1>Documental, Ciencia ficción, 83 minutos</h1>
+        <p>The Visit (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Furious%20Seven%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yWG5W4tKCQweHEdnKV4YEvqOBGx.jpg" alt="Fast &amp; Furious 7 (2015)">
+        <h1>Acción, Crimen, Suspense, 137 minutos</h1>
+        <p>Fast &amp; Furious 7 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Avengers%20Age%20of%20Ultron%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3Lz6h5rlCFNNyCZRaRJ2ZjtBnAE.jpg" alt="Vengadores: La Era de Ultrón (2015)">
+        <h1>Acción, Aventura, Ciencia ficción, 140 minutos</h1>
+        <p>Vengadores: La Era de Ultrón (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Everest%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7SfhoXCc8LGfKvyNIw2nU0gEi3R.jpg" alt="Everest (2015)">
+        <h1>Aventura, Drama, Historia, 121 minutos</h1>
+        <p>Everest (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jane%20got%20a%20gun%202016.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vGMui8uWun8MGIg3YkJJybXRTgF.jpg" alt="La venganza de Jane (2015)">
+        <h1>Western, Acción, Drama, 98 minutos</h1>
+        <p>La venganza de Jane (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hotel%20transylvania%202%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ndYVcm1k3h81MRDhzZCI4SxDzGp.jpg" alt="Hotel Transilvania 2 (2015)">
+        <h1>Animación, Comedia, Familia, Fantasía, 89 minutos</h1>
+        <p>Hotel Transilvania 2 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hangman%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oFycPIlZahNAodgnOMG9Anv4Hds.jpg" alt="Hangman (2015)">
+        <h1>Terror, Suspense, 85 minutos</h1>
+        <p>Hangman (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20transporter%20Refueled%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eQ8jVLAVUG3XozFcFKyXMaWam2D.jpg" alt="Transporter legacy (2015)">
+        <h1>Acción, Suspense, Crimen, 96 minutos</h1>
+        <p>Transporter legacy (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cinderella%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pEZPAykrk8ySdzjRSMfMrd0qtO0.jpg" alt="Cenicienta (2015)">
+        <h1>Romance, Fantasía, Familia, Drama, 112 minutos</h1>
+        <p>Cenicienta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Maggie2015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/twa9gXjocLM629sJrQYVtmF306R.jpg" alt="Maggie (2015)">
+        <h1>Terror, Drama, Ciencia ficción, 95 minutos</h1>
+        <p>Maggie (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Vatican%20Tapes%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iNVMjGOA7VB91DObBIrP1JG8J6L.jpg" alt="Exorcismo en el Vaticano (2015)">
+        <h1>Suspense, Terror, 91 minutos</h1>
+        <p>Exorcismo en el Vaticano (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/I%20Spit%20on%20Your%20Grave%203%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mYWk0btcYNlxcSy0q29JGhj3eDa.jpg" alt="Escupiré sobre tu tumba 3 (2015)">
+        <h1>Terror, Suspense, 92 minutos</h1>
+        <p>Escupiré sobre tu tumba 3 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Regression%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cuenHtO5dHs6dhcr1MhuzIoNVsz.jpg" alt="Regresión (2015)">
+        <h1>Terror, Misterio, Suspense, 106 minutos</h1>
+        <p>Regresión (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Vacation%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/IgyiSl7RGALVxB64E3kKL5qbn3.jpg" alt="Vacaciones (2015)">
+        <h1>Comedia, 99 minutos</h1>
+        <p>Vacaciones (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/We%20are%20your%20friends%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4iUAMj3iieLAVyKSkhOy0rSAomV.jpg" alt="We Are Your Friends (2015)">
+        <h1>Drama, Música, Romance, Comedia, 96 minutos</h1>
+        <p>We Are Your Friends (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Woodlawn%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/BJ1XNBBEiqaCM4SQhHYTrWqCfn.jpg" alt="Woodlawn (2015)">
+        <h1>Drama, 123 minutos</h1>
+        <p>Woodlawn (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Victor%20frankenstein%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nLCKK7GcIkBQWEs3HqNQbByMIcO.jpg" alt="Victor Frankenstein (2015)">
+        <h1>Drama, Ciencia ficción, Suspense, 110 minutos</h1>
+        <p>Victor Frankenstein (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/War%20room%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5QlSqu03pABknlQtbJkHiAnzHrS.jpg" alt="Un lugar donde rezar (2015)">
+        <h1>Drama, 120 minutos</h1>
+        <p>Un lugar donde rezar (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Tracers%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yHg1JMq3W3cK7NjLKHRPCz2BQWD.jpg" alt="Tracers (2015)">
+        <h1>Acción, 93 minutos</h1>
+        <p>Tracers (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hallow%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/g7AFVBSrdkh3IovdedH5rCSG8Hi.jpg" alt="Los hijos del Diablo (2015)">
+        <h1>Fantasía, Terror, 97 minutos</h1>
+        <p>Los hijos del Diablo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20night%20before%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rohl62VPf5Nb9iUCQIUD9o1AebL.jpg" alt="Los tres reyes malos (2015)">
+        <h1>Comedia, Aventura, Fantasía, 101 minutos</h1>
+        <p>Los tres reyes malos (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20ridiculous%206%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/l6sK4FIxKf3KLHqY5v6aQPYWKiP.jpg" alt="The Ridiculous 6 (2015)">
+        <h1>Western, Comedia, Acción, Aventura, 119 minutos</h1>
+        <p>The Ridiculous 6 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20final%20girls%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qWYt9JKWOt03yvG6nV4Hg9tju5h.jpg" alt="Las últimas supervivientes (2015)">
+        <h1>Comedia, Terror, 88 minutos</h1>
+        <p>Las últimas supervivientes (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20last%20witch%20hunter%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7fwK5selQxZ7XVNBAPdewDjCfCp.jpg" alt="El último cazador de brujas (2015)">
+        <h1>Fantasía, Acción, Aventura, Terror, 106 minutos</h1>
+        <p>El último cazador de brujas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20gallows%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6wW5j1k6rN9s6jgwRKBqIHUs4wH.jpg" alt="La horca (2015)">
+        <h1>Terror, Suspense, 87 minutos</h1>
+        <p>La horca (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20intern%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bpaq572AFnI4JtufuVqcRZrlDdz.jpg" alt="El becario (2015)">
+        <h1>Comedia, 121 minutos</h1>
+        <p>El becario (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20diary%20of%20a%20teenage%20girl%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5YlUrdYKuscD7pwf3yy9duVLbui.jpg" alt="The Diary of a Teenage Girl (2015)">
+        <h1>Drama, Romance, Comedia, 102 minutos</h1>
+        <p>The Diary of a Teenage Girl (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20condemned%202%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jXySxn7QUaBhPlJ2pzT1HViQzZh.jpg" alt="El juego de los condenados (2015)">
+        <h1>Acción, 85 minutos</h1>
+        <p>El juego de los condenados (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%2033%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/428swQoL0VH65ixfsYxnWCJqGrG.jpg" alt="Los 33 (Una Historia De Esperanza) (2015)">
+        <h1>Drama, Historia, 127 minutos</h1>
+        <p>Los 33 (Una Historia De Esperanza) (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Scouts%20guide%20to%20the%20zombie%20apocalypse%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qxYhEeYxRb4MDwTCnCR6QD82gb1.jpg" alt="Zombie camp (2015)">
+        <h1>Comedia, Terror, 95 minutos</h1>
+        <p>Zombie camp (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spotlight%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oejKAjGVxmm8cJLiKQMGe2A2A4g.jpg" alt="Spotlight (2015)">
+        <h1>Drama, Historia, 128 minutos</h1>
+        <p>Spotlight (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spectre%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8NCrCV6tR0Uafp8eVYiZbRsvrAv.jpg" alt="Spectre (2015)">
+        <h1>Acción, Aventura, Suspense, 148 minutos</h1>
+        <p>Spectre (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sinister%202%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fy77hEGu1Sek6oyek2odciegKd1.jpg" alt="Sinister 2 (2015)">
+        <h1>Terror, 97 minutos</h1>
+        <p>Sinister 2 (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Rock%20the%20kasbah%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/v5Jy6Oyv5RI69lzvIdSQ0hoSO5o.jpg" alt="Rock the Kasbah (2015)">
+        <h1>Comedia, Música, Bélica, 106 minutos</h1>
+        <p>Rock the Kasbah (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Straight%20outta%20compton%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bjVN5D5AXjGVTJAJX469aOzGgnc.jpg" alt="Straight Outta Compton: Letras Explicitas (2015)">
+        <h1>Drama, Música, Historia, 147 minutos</h1>
+        <p>Straight Outta Compton: Letras Explicitas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Steve%20jobs%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tifv0KBpDWCcrIwlScgZeUKwq2m.jpg" alt="Steve Jobs (2015)">
+        <h1>Drama, Historia, 122 minutos</h1>
+        <p>Steve Jobs (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Our%20brand%20is%20crisis%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rem3GC2FtHCItfKqnfzb67YrcrG.jpg" alt="Expertos en crisis (2015)">
+        <h1>Comedia, Drama, 107 minutos</h1>
+        <p>Expertos en crisis (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Paper%20towns%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eAFwwjRRgFFL01YJjmsJYsQXsr9.jpg" alt="Ciudades de papel (2015)">
+        <h1>Misterio, Drama, Romance, 109 minutos</h1>
+        <p>Ciudades de papel (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pan%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gV3bDhG5Vn8HX2nJUNYeUqGoXcI.jpg" alt="Pan: Viaje a nunca jamás (2015)">
+        <h1>Fantasía, Aventura, Familia, Acción, 111 minutos</h1>
+        <p>Pan: Viaje a nunca jamás (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pixels%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/d45faoiDeZsrdIdYpLy34vtYf3S.jpg" alt="Pixels (2015)">
+        <h1>Acción, Comedia, Ciencia ficción, Fantasía, 105 minutos</h1>
+        <p>Pixels (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Results%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9mQafhsspuLrlr5RUAKVMZdcZsF.jpg" alt="Results (2015)">
+        <h1>Comedia, 105 minutos</h1>
+        <p>Results (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mr%20holmes%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nNHkoefLcdtaHyG08G8aDn1yFMw.jpg" alt="Mr. Holmes (2015)">
+        <h1>Drama, Crimen, Familia, Misterio, 104 minutos</h1>
+        <p>Mr. Holmes (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lila%20and%20eve%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zGY41KlplvdPcUT0OeTu04ZPHke.jpg" alt="Ángel de venganza (2015)">
+        <h1>Suspense, Drama, 94 minutos</h1>
+        <p>Ángel de venganza (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mistress%20america%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1Y9rlzMIfzwjKI6eaCEV9J2eqfH.jpg" alt="Mistress America (2015)">
+        <h1>Comedia, 84 minutos</h1>
+        <p>Mistress America (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Irrational%20man%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ipAqhEWRzEuD6aXlAWIvEEF1KUe.jpg" alt="Irrational Man (2015)">
+        <h1>Drama, Comedia, 95 minutos</h1>
+        <p>Irrational Man (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Joe%20dirt%202%20beautiful%20loser%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vL4rcQvqClmbTXHJ0zWeAtOF9jh.jpg" alt="Joe Guarro ¡Vaya pringado! (2015)">
+        <h1>Comedia, 107 minutos</h1>
+        <p>Joe Guarro ¡Vaya pringado! (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Krampus%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ylhJfwokavPDC0BPVe5IcM9WdSZ.jpg" alt="Krampus: Maldita Navidad (2015)">
+        <h1>Terror, Comedia, Fantasía, 98 minutos</h1>
+        <p>Krampus: Maldita Navidad (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Last%20knights%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mEMAwrg2KqWBcorjVH0pTvNOBfx.jpg" alt="Los últimos caballeros (2015)">
+        <h1>Acción, Aventura, 115 minutos</h1>
+        <p>Los últimos caballeros (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Goosebumps%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uUK06JoZAcEiEZSxL4qbZTHx4.jpg" alt="Pesadillas (2015)">
+        <h1>Aventura, Terror, Comedia, 103 minutos</h1>
+        <p>Pesadillas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Grandma%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4LW20TF4NfQgHj5rZs0d0cgxRjV.jpg" alt="Grandma (2015)">
+        <h1>Comedia, Drama, 79 minutos</h1>
+        <p>Grandma (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hello%20my%20name%20is%20doris%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/AujnHhniriDLPiAeLUhYO29XyxX.jpg" alt="Hola, mi nombre es Doris (2015)">
+        <h1>Comedia, Drama, Romance, 95 minutos</h1>
+        <p>Hola, mi nombre es Doris (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Inside%20out%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sG3bHZWCMOZwhUq71WbPG9Vrrwc.jpg" alt="Del revés (Inside Out) (2015)">
+        <h1>Animación, Familia, Aventura, Drama, Comedia, 95 minutos</h1>
+        <p>Del revés (Inside Out) (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Freaks%20of%20nature%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fblh9Q2AkYHQNgw1d9z9O45tbFr.jpg" alt="Éramos pocos y llegaron los aliens (2015)">
+        <h1>Ciencia ficción, Comedia, Terror, 92 minutos</h1>
+        <p>Éramos pocos y llegaron los aliens (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dark%20places%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1t5qXa3Xzj2IQLvvbIhldJvRQGT.jpg" alt="Lugares oscuros (2015)">
+        <h1>Suspense, Misterio, Drama, Crimen, 113 minutos</h1>
+        <p>Lugares oscuros (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Black%20mass%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/48Wd3LorzNxOxkmokrN48f6PJs1.jpg" alt="Black Mass: Estrictamente criminal (2015)">
+        <h1>Drama, Crimen, Historia, 122 minutos</h1>
+        <p>Black Mass: Estrictamente criminal (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Carol%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uoJtbHWGPAOY4HHV1RMEr9aXDcZ.jpg" alt="Carol (2015)">
+        <h1>Romance, Drama, 118 minutos</h1>
+        <p>Carol (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Criminal%20activities%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tXRw3CHVBRHHIphtiOTwX4Cv03Y.jpg" alt="Actividades criminales (2015)">
+        <h1>Suspense, Crimen, Drama, 94 minutos</h1>
+        <p>Actividades criminales (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cartel%20land%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bNNP8IYV1VZKsS5CRavRpRDWV06.jpg" alt="Cartel Land (2015)">
+        <h1>Drama, Documental, 100 minutos</h1>
+        <p>Cartel Land (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cop%20car%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vctchuhLkObVFZJVmpPrCtBhEjQ.jpg" alt="Coche policial (2015)">
+        <h1>Crimen, Suspense, 86 minutos</h1>
+        <p>Coche policial (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Brooklyn%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eqVRQcGhl1CRRjjct78tRR2SPrk.jpg" alt="Brooklyn (2015)">
+        <h1>Drama, Música, 83 minutos</h1>
+        <p>Brooklyn (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Alvin%20and%20the%20chipmunks%20the%20road%20chip%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/isz4uh337srL6PIYiKXTS5Htssq.jpg" alt="Alvin y las ardillas: Fiesta sobre ruedas (2015)">
+        <h1>Familia, Comedia, Música, Aventura, 86 minutos</h1>
+        <p>Alvin y las ardillas: Fiesta sobre ruedas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/American%20ultra%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hOhMZ6is0mDnuMqOPs5FRUztU3L.jpg" alt="American Ultra (2015)">
+        <h1>Acción, Comedia, 96 minutos</h1>
+        <p>American Ultra (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Barbie%20her%20sisters%20in%20the%20great%20puppy%20adventure%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/waVDZRtmm5iiJ5rcA2verMUXVwU.jpg" alt="Barbie y sus hermanas: Perritos en busca del tesoro (2015)">
+        <h1>Familia, Animación, Aventura, 76 minutos</h1>
+        <p>Barbie y sus hermanas: Perritos en busca del tesoro (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Concussion%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dQrm52WmdfgcS6bJdD8vzw9927O.jpg" alt="La verdad duele (2015)">
+        <h1>Drama, 123 minutos</h1>
+        <p>La verdad duele (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Equals%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kfgNL0CXlvUHx22NynE4GVNTBql.jpg" alt="Equals (2015)">
+        <h1>Drama, Romance, Ciencia ficción, 101 minutos</h1>
+        <p>Equals (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Oddball%20and%20the%20penguins%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8DoiFnHXzZhkyNyGw6s7DGpaauA.jpg" alt="Oddball (2015)">
+        <h1>Familia, Aventura, 80 minutos</h1>
+        <p>Oddball (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20end%20of%20the%20tour%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oYoCYZCOFpeybvzAPnTyJgr6wdy.jpg" alt="El final de la gira (2015)">
+        <h1>Drama, 106 minutos</h1>
+        <p>El final de la gira (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fathers%20and%20daughters%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bNjDFqcYrHw9peES4cxJXh0Q0s3.jpg" alt="De padres a hijas (2015)">
+        <h1>Drama, 116 minutos</h1>
+        <p>De padres a hijas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Me%20and%20earl%20and%20the%20dying%20girl%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tIBKWAZsP9NGMKnVC5N3RySvTfz.jpg" alt="Yo, él y Raquel (2015)">
+        <h1>Drama, Comedia, 105 minutos</h1>
+        <p>Yo, él y Raquel (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Magic%20mike%20xxl%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sp4qcpHQhoZ6VmidFmgpQ066jWb.jpg" alt="Magic Mike XXL (2015)">
+        <h1>Comedia, Drama, 110 minutos</h1>
+        <p>Magic Mike XXL (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jurassic%20world%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2sbGd7kDhMicDkT097FR9a2JyGU.jpg" alt="Jurassic World: El renacer (2015)">
+        <h1>Ciencia ficción, Aventura, Acción, 133 minutos</h1>
+        <p>Jurassic World: El renacer (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Miss%20you%20already%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4j2apVYXn4820FgAYItKTUeflTO.jpg" alt="Ya te extraño (2015)">
+        <h1>Comedia, Drama, 112 minutos</h1>
+        <p>Ya te extraño (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Z%20for%20zachariah%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c7rdpZlviWAcOOx5bnzfqPPPNvq.jpg" alt="Z for Zachariah (2015)">
+        <h1>Drama, Romance, Ciencia ficción, 97 minutos</h1>
+        <p>Z for Zachariah (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20walk%20in%20the%20woods%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/w5wLafcCD4nNtQLKdQLg4rhynEt.jpg" alt="Un paseo por el bosque (2015)">
+        <h1>Aventura, Comedia, Drama, 104 minutos</h1>
+        <p>Un paseo por el bosque (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20space%20between%20us%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xfP4MzaNMybLdVmo1vx4fNINJnC.jpg" alt="The Space Between Us (2015)">
+        <h1>Ciencia ficción, 13 minutos</h1>
+        <p>The Space Between Us (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Justice%20league%20throne%20of%20atlantis%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hKHWoabqFg7QVS4Xqu5Q84PmuAo.jpg" alt="La Liga de la Justicia: El trono de Atlantis (2015)">
+        <h1>Ciencia ficción, Acción, Animación, Aventura, 80 minutos</h1>
+        <p>La Liga de la Justicia: El trono de Atlantis (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Synchronicity%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8i6Ck6Vwoysu8vAvuFsriV0VlSW.jpg" alt="Synchronicity (2015)">
+        <h1>Suspense, Misterio, Ciencia ficción, 101 minutos</h1>
+        <p>Synchronicity (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ashby%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bij7LIvlhoLnMDmnsxOFrZ5ta94.jpg" alt="Ashby (2015)">
+        <h1>Drama, Romance, Comedia, 100 minutos</h1>
+        <p>Ashby (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dragonheart%203%20the%20sorcerers%20curse%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/e9qdSmhab3Zit9Xy8deMVrKrb3U.jpg" alt="Dragonheart 3: La maldición del brujo (2015)">
+        <h1>Fantasía, 95 minutos</h1>
+        <p>Dragonheart 3: La maldición del brujo (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Southpaw%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vMXldZHhDTkMvw9AYePwHInyJ1n.jpg" alt="Redención (Southpaw) (2015)">
+        <h1>Acción, Drama, 123 minutos</h1>
+        <p>Redención (Southpaw) (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Paranormal%20activity%20the%20ghost%20dimension%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wq7z719J82BvcxYfc4i2CpKvWCU.jpg" alt="Paranormal Activity: Dimensión fantasma (2015)">
+        <h1>Terror, Suspense, 88 minutos</h1>
+        <p>Paranormal Activity: Dimensión fantasma (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blackhat%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/c9FRZfZ3LWMSn6oGuxxXPHkSjH5.jpg" alt="Blackhat: Amenaza en la red (2015)">
+        <h1>Crimen, Suspense, Acción, 133 minutos</h1>
+        <p>Blackhat: Amenaza en la red (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20stanford%20prison%20experiment%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8ZIDsYdugXmKqWi0ktao1kJQxf1.jpg" alt="Experimento en la prisión de Stanford (2015)">
+        <h1>Suspense, Drama, Historia, 122 minutos</h1>
+        <p>Experimento en la prisión de Stanford (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Tremors%205%20bloodlines%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eJ2kxo6yzwYvqUOGOBjXTaO8oYQ.jpg" alt="Temblores 5: El legado (2015)">
+        <h1>Acción, Aventura, Comedia, Terror, Ciencia ficción, 95 minutos</h1>
+        <p>Temblores 5: El legado (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Danny%20collins%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yQXuEhpmZCseCwMxmNaVORHZif0.jpg" alt="Nunca es tarde (2015)">
+        <h1>Música, Comedia, Drama, 106 minutos</h1>
+        <p>Nunca es tarde (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Barney%20thomson%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dPx6UpKJDX2le9Ucd8f8KvVGyR0.jpg" alt="La leyenda de Barney Thomson (2015)">
+        <h1>Comedia, Drama, 96 minutos</h1>
+        <p>La leyenda de Barney Thomson (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Suffragette%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tE7pTdmUADi2lhK6T3n67Qn6CSd.jpg" alt="Sufragistas (2015)">
+        <h1>Drama, Historia, 106 minutos</h1>
+        <p>Sufragistas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20gunman%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/f6ubu3WuGzNy1l0Jin7WlB0YPPZ.jpg" alt="Caza al asesino (2015)">
+        <h1>Acción, Drama, Crimen, 115 minutos</h1>
+        <p>Caza al asesino (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Truth%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/i6Fwk1bH9MYxQn5v8cDdkzLzoIy.jpg" alt="Truth (2015)">
+        <h1>Suspense, Terror, Ciencia ficción, 96 minutos</h1>
+        <p>Truth (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hardcore%20henry%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wqu4G6sghlca1CGBIa5TXKVtGLP.jpg" alt="Hardcore Henry (2015)">
+        <h1>Acción, Aventura, Ciencia ficción, 94 minutos</h1>
+        <p>Hardcore Henry (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Puerto%20ricans%20in%20paris%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mKAYhj9H5hkhZgeCkeTQ3QD2Iwi.jpg" alt="Puerto Ricans in Paris (2015)">
+        <h1>Comedia, 82 minutos</h1>
+        <p>Puerto Ricans in Paris (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Man%20up%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ubvuQ9cJXQRjJswKgpTe3WUbvwM.jpg" alt="Amor sin cita previa (2015)">
+        <h1>Romance, Comedia, 88 minutos</h1>
+        <p>Amor sin cita previa (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20big%20short%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/p8bPJXPOZqGw8khHAAr0yUQxcGz.jpg" alt="La gran apuesta (2015)">
+        <h1>Comedia, Drama, 130 minutos</h1>
+        <p>La gran apuesta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Anomalisa%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iNu6kc0C99hP29JRmg1uDUGmtrw.jpg" alt="Anomalisa (2015)">
+        <h1>Animación, Drama, Romance, Comedia, 91 minutos</h1>
+        <p>Anomalisa (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Survivor%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/npyCpfYyYknFoY2iJPyfqp70FVX.jpg" alt="Survivor (2015)">
+        <h1>Acción, Crimen, Misterio, Suspense, 96 minutos</h1>
+        <p>Survivor (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ominous%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7959EFCHkR8xBF7a9Swv8l6Zixw.jpg" alt="Ominous (2015)">
+        <h1>Terror, Ciencia ficción, Película de TV, 87 minutos</h1>
+        <p>Ominous (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20lady%20in%20the%20van%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7yGGsQdZwM1zboQ4aqDeWYyQ8xC.jpg" alt="The Lady in the Van (2015)">
+        <h1>Comedia, Drama, 104 minutos</h1>
+        <p>The Lady in the Van (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Kidnapping%20mr%20heineken%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aR7olYUR6SKHewhUBLqRFLtfvJM.jpg" alt="El caso Heineken (2015)">
+        <h1>Drama, Acción, Crimen, Suspense, Misterio, 94 minutos</h1>
+        <p>El caso Heineken (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Secret%20in%20their%20eyes%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/biK0cAoIJpnRFg7A7JMIOHY7LMs.jpg" alt="El secreto de una obsesión (2015)">
+        <h1>Suspense, Misterio, Crimen, 111 minutos</h1>
+        <p>El secreto de una obsesión (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jem%20and%20the%20holograms%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qR5XjsTB4zDPaNW1MLnwgcDVN16.jpg" alt="Jem y los hologramas (2015)">
+        <h1>Drama, Música, 118 minutos</h1>
+        <p>Jem y los hologramas (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Tomorrowland%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/go6qA8ksn5gkXcDnW3WtMeqzAg8.jpg" alt="Tomorrowland: El mundo del mañana (2015)">
+        <h1>Aventura, Familia, Misterio, Ciencia ficción, 130 minutos</h1>
+        <p>Tomorrowland: El mundo del mañana (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bridge%20of%20spies%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eEMHaQZGaFqvXa46cdywMDIY1Vg.jpg" alt="El puente de los espías (2015)">
+        <h1>Suspense, Drama, 141 minutos</h1>
+        <p>El puente de los espías (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Crimson%20peak%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5SbIDk0Gkyr0y22ZtydVq9Px423.jpg" alt="La cumbre escarlata (2015)">
+        <h1>Terror, Misterio, Romance, 119 minutos</h1>
+        <p>La cumbre escarlata (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pay%20the%20ghost%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/itOMLyHeTNPLFwFowPhbrKvtSkL.jpg" alt="La noche de los desaparecidos (2015)">
+        <h1>Terror, 94 minutos</h1>
+        <p>La noche de los desaparecidos (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Accidental%20love%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1CfX9Mt8dM0IOZzw1WaiwDIrZry.jpg" alt="Un accidente llamado amor (2015)">
+        <h1>Romance, Comedia, 105 minutos</h1>
+        <p>Un accidente llamado amor (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Burnt%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wKqOrZ7HRRfWHYbsENvJuO7Iql8.jpg" alt="Una buena receta (2015)">
+        <h1>Drama, 101 minutos</h1>
+        <p>Una buena receta (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/R%20L%20stines%20monsterville%20the%20cabinet%20of%20souls%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mmlYirczFuuvBj92gHzfVoTcbYZ.jpg" alt="Bienvenidos a la casa de la muerte (2015)">
+        <h1>Comedia, Terror, Película de TV, 85 minutos</h1>
+        <p>Bienvenidos a la casa de la muerte (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Always%20watching%20a%20marble%20hornets%20story%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gL1OSeSYZc4kcqkYybPAzS21LY2.jpg" alt="Always Watching: A Marble Hornets Story (2015)">
+        <h1>Terror, 91 minutos</h1>
+        <p>Always Watching: A Marble Hornets Story (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dope%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/n6u00imN7AX2NiyWUc5kTgHXmEf.jpg" alt="Dope (2015)">
+        <h1>Crimen, Drama, Comedia, 103 minutos</h1>
+        <p>Dope (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Descendants%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eUkdI96zP64e7JQLgPpVvM9WKGa.jpg" alt="Los descendientes (2015)">
+        <h1>Familia, Aventura, Fantasía, Película de TV, Música, 112 minutos</h1>
+        <p>Los descendientes (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20martian%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hBRK1izFxIH3Nh6vax4ssOHSHVd.jpg" alt="Marte (The Martian) (2015)">
+        <h1>Drama, Aventura, Ciencia ficción, 142 minutos</h1>
+        <p>Marte (The Martian) (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ricki%20and%20the%20flash%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/l7Mx2KUT6BlD5v8t0FAL39vjSS9.jpg" alt="Ricki (2015)">
+        <h1>Comedia, Drama, Música, 101 minutos</h1>
+        <p>Ricki (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Moonwalkers%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/a6qyxuQ3UTxxRQv7LdHHi2liJP1.jpg" alt="Moonwalkers (2015)">
+        <h1>Comedia, 107 minutos</h1>
+        <p>Moonwalkers (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Colonia%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9HoHMkUF5RvG6iWXw7WQey4OFOy.jpg" alt="Colonia (2015)">
+        <h1>Drama, Historia, 110 minutos</h1>
+        <p>Colonia (2015)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Barely%20lethal%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8emz9dKW8KKIqG8WcFG1lJbr2ub.jpg" alt="Barely Lethal (2015)">
+        <h1>Acción, Comedia, Aventura, Romance, 96 minutos</h1>
+        <p>Barely Lethal (2015)</p>
+    </a>
+</div>
+
+<!--    ########################    === AÑO: 2014  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Where%20Hope%20Grows%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ms31qMSUaLr5njJ2Mqsh2Y22uJn.jpg" alt="El poder de la esperanza (2014)">
+        <h1>Drama, 95 minutos</h1>
+        <p>El poder de la esperanza (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Light%20of%20Dawn%20The%20Normandy%20Landings%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xBvbbzb838PAPEWpoj5uLLIk44t.jpg" alt="Luz del amanecer: el Desembarco de Normandía (2014)">
+        <h1>Documental, Bélica, 100 minutos</h1>
+        <p>Luz del amanecer: el Desembarco de Normandía (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Tusk%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zq4v7JPqd9sxHUf0tunYhngygqB.jpg" alt="Tusk (2014)">
+        <h1>Comedia, Terror, 102 minutos</h1>
+        <p>Tusk (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blood%20In%20Blood%20Out%201993.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aMxTWWqX95vEu8T2kfnFjPZlwty.jpg" alt="Exodus ‎- Blood Upon the Goat: The Making of Blood In, Blood Out (2014)">
+        <h1>Música, Documental, 134 minutos</h1>
+        <p>Exodus ‎- Blood Upon the Goat: The Making of Blood In, Blood Out (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Night%20Swim%202024.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6GshCpNveb9X7vuoIpQOcBOGL9g.jpg" alt="Night Swim (2014)">
+        <h1>Terror, 4 minutos</h1>
+        <p>Night Swim (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Outcast%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/XTJSw6Tdy9RCSsaFrNHfuhWvvC.jpg" alt="Desterrado (2014)">
+        <h1>Acción, Aventura, 98 minutos</h1>
+        <p>Desterrado (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Expendables%203%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sQbQo0BcCRWdw7vgwyK3ZdCraJ0.jpg" alt="Los mercenarios 3 (2014)">
+        <h1>Acción, Aventura, Suspense, 123 minutos</h1>
+        <p>Los mercenarios 3 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Penguins%20of%20Madagascar%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lEnUxCpQUyntm2eLBzCTv3bfplV.jpg" alt="Los pingüinos de Madagascar (2014)">
+        <h1>Familia, Animación, Aventura, Comedia, 92 minutos</h1>
+        <p>Los pingüinos de Madagascar (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Interstellar%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cQuuBjG78j4b2r1dFpAjnjbUplv.jpg" alt="Interstellar (2014)">
+        <h1>Aventura, Drama, Ciencia ficción, 169 minutos</h1>
+        <p>Interstellar (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/John%20Wick%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tDl5ac1VJwMRvlgINDCsDCqg9CE.jpg" alt="John Wick (Otro día para matar) (2014)">
+        <h1>Acción, Suspense, 101 minutos</h1>
+        <p>John Wick (Otro día para matar) (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lets%20Be%20Cops%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kZkRMq0zt1cxZI2Fe5A3NypiDBG.jpg" alt="Vamos de polis (2014)">
+        <h1>Comedia, 104 minutos</h1>
+        <p>Vamos de polis (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ghostbusters%202%201989.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lzM5Ee1F2dwRFFHq8WOGicqDsO3.jpg" alt="Time Is But a Window: Ghostbusters 2 and Beyond (2014)">
+        <h1>Documental, 17 minutos</h1>
+        <p>Time Is But a Window: Ghostbusters 2 and Beyond (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Million%20Ways%20to%20Die%20in%20the%20West%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vm0dutP6EqrVf1w7qZPYKkXpkn5.jpg" alt="Mil maneras de morder el polvo (2014)">
+        <h1>Comedia, Western, 116 minutos</h1>
+        <p>Mil maneras de morder el polvo (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Amazing%20Spider%20Man%202%20Rise%20of%20Electro%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pyxjizLYG86Bxl4mntCWaWXZAko.jpg" alt="The Amazing Spider-Man 2: El poder de Electro (2014)">
+        <h1>Acción, Aventura, Ciencia ficción, 142 minutos</h1>
+        <p>The Amazing Spider-Man 2: El poder de Electro (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cowboys%202020.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yW2Pvx0yOAnhZ4mg9ReE3VwAHhG.jpg" alt="Cowboys (2014)">
+        <h1>Comedia, Drama, 20 minutos</h1>
+        <p>Cowboys (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Predestination%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qXabr1nGFE3HCdIlU9xFGqALALg.jpg" alt="Predestination (2014)">
+        <h1>Ciencia ficción, Suspense, 97 minutos</h1>
+        <p>Predestination (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/American%20Sniper%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ntso1nvAVIEdzjc4Tc9nB7MPSKu.jpg" alt="El francotirador (2014)">
+        <h1>Bélica, Acción, 132 minutos</h1>
+        <p>El francotirador (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/300%20Rise%20of%20an%20Empire%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cbt5wY4rCe63JBmNYnJytJpFhnm.jpg" alt="300: El origen de un imperio (2014)">
+        <h1>Acción, Drama, Bélica, 102 minutos</h1>
+        <p>300: El origen de un imperio (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Fault%20in%20Our%20Stars%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wWtK2Kg4afUaQ2LVzQKsdcvJnLa.jpg" alt="Bajo la misma estrella (2014)">
+        <h1>Romance, Drama, 125 minutos</h1>
+        <p>Bajo la misma estrella (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Life%20Itself%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nK4cYTEO2eHLMgMII0Ux0kBOGhG.jpg" alt="Life Itself (2014)">
+        <h1>Documental, 121 minutos</h1>
+        <p>Life Itself (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Taken%203%202015.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hCffcXqpH002rvSFt8AUnIC376s.jpg" alt="V3nganza (2014)">
+        <h1>Suspense, Acción, 109 minutos</h1>
+        <p>V3nganza (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Born%20to%20Race%20Fast%20Track%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sYYQ9kS6Twvt0UcjxGLmBcq5k11.jpg" alt="Máxima velocidad (2014)">
+        <h1>Acción, 94 minutos</h1>
+        <p>Máxima velocidad (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dracula%20Untold%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gEJqywFJ6NC7udiUYoB1Z0we2LV.jpg" alt="Drácula, la leyenda jamás contada (2014)">
+        <h1>Terror, Acción, Fantasía, 92 minutos</h1>
+        <p>Drácula, la leyenda jamás contada (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Equalizer%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7tiub1UB4KF9zpacEldfbWAXDi6.jpg" alt="The equalizer (El protector) (2014)">
+        <h1>Suspense, Acción, Crimen, 128 minutos</h1>
+        <p>The equalizer (El protector) (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jersey%20Boys%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kz956Y83YtT6vTyg0Q40mzRe2UM.jpg" alt="Jersey Boys (2014)">
+        <h1>Música, Drama, 134 minutos</h1>
+        <p>Jersey Boys (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hunger%20Games%20Mockingjay%20Part%201%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wfLsciidZamFPeOb4FD8ywk1Q9c.jpg" alt="Los Juegos del Hambre: Sinsajo - Parte 1 (2014)">
+        <h1>Ciencia ficción, Aventura, Suspense, 123 minutos</h1>
+        <p>Los Juegos del Hambre: Sinsajo - Parte 1 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Left%20Behind%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/d2OrXUnS5K2haCvtGLHxYjuSlDJ.jpg" alt="Desaparecidos sin rastro (2014)">
+        <h1>Suspense, Acción, Ciencia ficción, 104 minutos</h1>
+        <p>Desaparecidos sin rastro (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Brick%20Mansions%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/opWOri0Q6D7aNjE9RICQasUS4ab.jpg" alt="Brick Mansions (La fortaleza) (2014)">
+        <h1>Acción, Crimen, Drama, 90 minutos</h1>
+        <p>Brick Mansions (La fortaleza) (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Horrible%20Bosses%202%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rh1yOUPJCPb64jVF56qPASP7gda.jpg" alt="Cómo acabar sin tu jefe 2 (2014)">
+        <h1>Comedia, 108 minutos</h1>
+        <p>Cómo acabar sin tu jefe 2 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Interview%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qItAUKMSnng8fGUkoQDcHi561cF.jpg" alt="The Interview (2014)">
+        <h1>Acción, Comedia, 112 minutos</h1>
+        <p>The Interview (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ride%20Along%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5UN0Bc7g3uQI2Ms0kvCPPEzyvnF.jpg" alt="¡Vaya patrulla! (2014)">
+        <h1>Acción, Comedia, 100 minutos</h1>
+        <p>¡Vaya patrulla! (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Into%20the%20Woods%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nf27raN8XSqYWAaaRFnlfU8uTws.jpg" alt="Into the Woods (2014)">
+        <h1>Fantasía, Comedia, 124 minutos</h1>
+        <p>Into the Woods (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Haunt%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8WusI9Anntdu3yMKir1zPM2Vhka.jpg" alt="Haunt (2014)">
+        <h1>Terror, 86 minutos</h1>
+        <p>Haunt (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Time%20Trap%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/A4Hdm1ASijF8UVKfQ3x5Hn8mJAu.jpg" alt="Time Trap (2014)">
+        <h1>Comedia, Aventura, Ciencia ficción, 8 minutos</h1>
+        <p>Time Trap (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Gunfighter%201950.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4eIbuaBagTpDXFsckDE80JbuqBR.jpg" alt="The Gunfighter (2014)">
+        <h1>Comedia, Western, 9 minutos</h1>
+        <p>The Gunfighter (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jarhead%202%20Field%20of%20Fire%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bh3vd3Pcxl6lHLcH87F3w8LboSl.jpg" alt="Jarhead 2: Tormenta de Fuego (2014)">
+        <h1>Bélica, Acción, 103 minutos</h1>
+        <p>Jarhead 2: Tormenta de Fuego (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Step%20Up%20All%20In%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4XFIl3s7wiWOSWdZ4uyFwTOP0hX.jpg" alt="Step Up 5 - All In (2014)">
+        <h1>Romance, Drama, Música, 112 minutos</h1>
+        <p>Step Up 5 - All In (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Feedback%202019.mkv">
+        <img src="" alt="Feedback (2014)">
+        <h1>Drama, Terror, 30 minutos</h1>
+        <p>Feedback (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Master%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6JPiYUY8b9wrGoTwQ9tc54TWUFv.jpg" alt="The Master (2014)">
+        <h1>Documental, 80 minutos</h1>
+        <p>The Master (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jack%20Ryan%20Shadow%20Recruit%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eNpySHnJeP8tq5ctN6QCkECe8HI.jpg" alt="Jack Ryan: Operación sombra (2014)">
+        <h1>Acción, Drama, Suspense, 105 minutos</h1>
+        <p>Jack Ryan: Operación sombra (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jingle%20All%20the%20Way%201996.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hPfcIYZk53xnhjkvnia0jSoZmfi.jpg" alt="Otro padre en apuros (2014)">
+        <h1>Familia, Comedia, 93 minutos</h1>
+        <p>Otro padre en apuros (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Salvation%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lpy6fTZo8krKXF3gWy7RkmQME0O.jpg" alt="Venganza fatal (2014)">
+        <h1>Drama, Western, 100 minutos</h1>
+        <p>Venganza fatal (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Haunted%20House%202%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7xvLGlzqlMdJi7b2w1SKycsbpVI.jpg" alt="Paranormal Movie 2 (2014)">
+        <h1>Comedia, Terror, 95 minutos</h1>
+        <p>Paranormal Movie 2 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Non%20Stop%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zxQrlSddw17OsfLP7RsolmjCj0S.jpg" alt="Non-Stop (2014)">
+        <h1>Documental, Acción, Suspense, 27 minutos</h1>
+        <p>Non-Stop (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Creep%202004.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qn53D574tT0YRyLgirEFHQwGUXw.jpg" alt="Creep (2014)">
+        <h1>Terror, Suspense, 82 minutos</h1>
+        <p>Creep (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Unbroken%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/s4i7KnVQQnXM6LvBAlGYFUwJIeh.jpg" alt="Invencible (Unbroken) (2014)">
+        <h1>Drama, Bélica, 132 minutos</h1>
+        <p>Invencible (Unbroken) (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Into%20the%20Storm%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3uXIByYUDDhRgkY4uyIE9bgTdA3.jpg" alt="En el ojo de la tormenta (2014)">
+        <h1>Acción, Suspense, 89 minutos</h1>
+        <p>En el ojo de la tormenta (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Exists%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pfUZN919PZOCbD4HPa9h3nVMij5.jpg" alt="Existe (2014)">
+        <h1>Terror, 81 minutos</h1>
+        <p>Existe (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Automata%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bU9XAANR7WWqRRbXk2Oj5OF6km3.jpg" alt="Autómata (2014)">
+        <h1>Suspense, Ciencia ficción, 110 minutos</h1>
+        <p>Autómata (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hobbit%20The%20Battle%20of%20the%20Five%20Armies%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6OiNSLcRKJsBLXwb6DEi6IQ0JFk.jpg" alt="El hobbit: La batalla de los cinco ejércitos (2014)">
+        <h1>Acción, Aventura, Fantasía, 144 minutos</h1>
+        <p>El hobbit: La batalla de los cinco ejércitos (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Purge%20Anarchy%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tWUUXNxyduZcKODNzCQ1UtzbedL.jpg" alt="Anarchy: La noche de las bestias (2014)">
+        <h1>Terror, Suspense, 100 minutos</h1>
+        <p>Anarchy: La noche de las bestias (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Next%20gen%202018.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8d7upKEsFZHrNh5UP27ppXhDQFc.jpg" alt="宇宙刑事シャリバン NEXT GENERATION (2014)">
+        <h1>Acción, Aventura, Ciencia ficción, 60 minutos</h1>
+        <p>宇宙刑事シャリバン NEXT GENERATION (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Teenage%20Mutant%20Ninja%20Turtles%201990.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8n4ceqgtYeWjcvpzFAb67sG0Ksr.jpg" alt="Ninja Turtles (2014)">
+        <h1>Ciencia ficción, Acción, Aventura, Comedia, 101 minutos</h1>
+        <p>Ninja Turtles (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Teenage%20Mutant%20Ninja%20Turtles%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8n4ceqgtYeWjcvpzFAb67sG0Ksr.jpg" alt="Ninja Turtles (2014)">
+        <h1>Ciencia ficción, Acción, Aventura, Comedia, 101 minutos</h1>
+        <p>Ninja Turtles (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Rio%202%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xx1k3kCfIs95eAMa1pglXv74cRp.jpg" alt="Río 2 (2014)">
+        <h1>Animación, Aventura, Comedia, Familia, 101 minutos</h1>
+        <p>Río 2 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Planes%20Fire%20and%20Rescue%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/i2hmV6YuAgcwIaH8fRhe1of4YL8.jpg" alt="Planes Fire and Rescue: Dipper (2014)">
+        <h1>Animación, 2 minutos</h1>
+        <p>Planes Fire and Rescue: Dipper (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Annabelle%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sFxgTJizaUUI3NByNT80oCVnkA2.jpg" alt="Annabelle (2014)">
+        <h1>Terror, 98 minutos</h1>
+        <p>Annabelle (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/3%20Days%20to%20Kill%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bvuutiVW3i66VA4R9KnGJiCEytu.jpg" alt="3 días para matar (2014)">
+        <h1>Acción, Drama, Suspense, 117 minutos</h1>
+        <p>3 días para matar (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Good%20Lie%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zTORUO55aACt0jPCXwyH1WdJHKC.jpg" alt="La buena mentira (2014)">
+        <h1>Drama, 110 minutos</h1>
+        <p>La buena mentira (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Heaven%20Is%20for%20Real%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7kvXVwpTJW1zhicRVvlmqWnWDyn.jpg" alt="El cielo es real (2014)">
+        <h1>Drama, 96 minutos</h1>
+        <p>El cielo es real (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dumb%20and%20dumber%20to%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zsm4tAiPire8ZlmosySZqywxCvY.jpg" alt="Dos tontos todavía más tontos (2014)">
+        <h1>Comedia, 109 minutos</h1>
+        <p>Dos tontos todavía más tontos (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Blended%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aVLm7uud6Oh1wmhiR4vOrngQKo8.jpg" alt="Juntos y revueltos (2014)">
+        <h1>Comedia, Romance, 117 minutos</h1>
+        <p>Juntos y revueltos (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/22%20Jump%20Street%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yp172JRxaJaRkSyjLO3R9B3tJZJ.jpg" alt="Infiltrados en la universidad (2014)">
+        <h1>Crimen, Comedia, Acción, 120 minutos</h1>
+        <p>Infiltrados en la universidad (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20walk%20among%20the%20tombstones%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nb0L57p0r25ehV46trx86537ByP.jpg" alt="Caminando entre las tumbas (2014)">
+        <h1>Crimen, Drama, Misterio, Suspense, 113 minutos</h1>
+        <p>Caminando entre las tumbas (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/X-men%20days%20of%20future%20past%20the%20rogue%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ggb9nmS5alJuA0ll0iU5YHiGbb0.jpg" alt="X-Men: Días del futuro pasado (2014)">
+        <h1>Acción, Aventura, Ciencia ficción, 130 minutos</h1>
+        <p>X-Men: Días del futuro pasado (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Joy%20Ride%203%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1FGkp8BxwfeY4TSEJsyQHhnMy3Y.jpg" alt="Nunca juegues con extraños 3 (2014)">
+        <h1>Suspense, Terror, 96 minutos</h1>
+        <p>Nunca juegues con extraños 3 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/I%20frankenstein%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mUZh4lHJDUN8tQodoePjTn33S1H.jpg" alt="Yo, Frankenstein (2014)">
+        <h1>Terror, Suspense, 93 minutos</h1>
+        <p>Yo, Frankenstein (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Guardians%20of%20the%20galaxy%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lGR9yjcPctrIxNrnGBiXlEbM6nT.jpg" alt="Guardianes de la galaxia (2014)">
+        <h1>Acción, Ciencia ficción, Aventura, 122 minutos</h1>
+        <p>Guardianes de la galaxia (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fury%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kbtH5G8L8REzy72LkLmKYoBVaGv.jpg" alt="Corazones de acero (2014)">
+        <h1>Bélica, Drama, Acción, 134 minutos</h1>
+        <p>Corazones de acero (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wrong%20Turn%206%20Last%20Resort%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vHliQz7LAI7FRYmnqbcWygkugIK.jpg" alt="Camino sangriento 6 (2014)">
+        <h1>Terror, 91 minutos</h1>
+        <p>Camino sangriento 6 (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Paddington%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mJypxc7GFS98v4GvlS6Z8EcXc9F.jpg" alt="Paddington (2014)">
+        <h1>Comedia, Aventura, Familia, 95 minutos</h1>
+        <p>Paddington (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Home%20Alone%201990.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cd2rCE1nun7CESjBI8PGNEof1tb.jpg" alt="Una chica vuelve a casa sola de noche (2014)">
+        <h1>Terror, Romance, 101 minutos</h1>
+        <p>Una chica vuelve a casa sola de noche (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Judge%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/d89FZk4nID54tKRV5oInKneZgT3.jpg" alt="El juez (2014)">
+        <h1>Drama, 141 minutos</h1>
+        <p>El juez (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Nut%20Job%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jIXmFMnAGpW5nA1czbtIhSrB9Ey.jpg" alt="Operación Cacahuete (2014)">
+        <h1>Animación, Comedia, Familia, Aventura, 86 minutos</h1>
+        <p>Operación Cacahuete (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Transformers%20age%20of%20extinction%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/owqV5Qo2DMMomfB1fS6xYWv3yEh.jpg" alt="Transformers: La era de la extinción (2014)">
+        <h1>Ciencia ficción, Acción, Aventura, 165 minutos</h1>
+        <p>Transformers: La era de la extinción (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Street%20Fighter%20Assassins%20Fist%202014.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9fJ7s0nDU4lPsrx1CpZe6poKEUz.jpg" alt="Street Fighter: Assassin's Fist The Movie (2014)">
+        <h1>Aventura, Acción, 96 minutos</h1>
+        <p>Street Fighter: Assassin's Fist The Movie (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Time%20out%20of%20mind%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/muXispJMra9HHYPkWIFO711OOLE.jpg" alt="Invisibles (2014)">
+        <h1>Drama, 126 minutos</h1>
+        <p>Invisibles (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Alien%20abduction%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/h4Ny82lizNTdTH2MFLjjyOVDWtk.jpg" alt="Abducción Alienígena (2014)">
+        <h1>Terror, Ciencia ficción, Suspense, 86 minutos</h1>
+        <p>Abducción Alienígena (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20pyramid%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/a2N5St0TCmyJy2F8IwPlo2lEbiJ.jpg" alt="La pirámide (2014)">
+        <h1>Terror, 89 minutos</h1>
+        <p>La pirámide (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Self%20less%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sqUqYCfSTkE7z7KhjpKOh8W2M8d.jpg" alt="Autoportrait sans moi (2014)">
+        <h1>98 minutos</h1>
+        <p>Autoportrait sans moi (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20cobbler%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wLwquKAvtJ67KPJ2QskasIpS9uv.jpg" alt="Con la magia en los zapatos (2014)">
+        <h1>Fantasía, Comedia, Drama, 99 minutos</h1>
+        <p>Con la magia en los zapatos (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Edge%20of%20Tomorrow%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/seCPNFlZW1lezA2npWEr2ofqGQx.jpg" alt="Al filo del mañana (2014)">
+        <h1>Acción, Ciencia ficción, 113 minutos</h1>
+        <p>Al filo del mañana (2014)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Beyond%20the%20lights%202014.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5Di9UXTa2bDec68WOFcZzgB1ot3.jpg" alt="Beyond the Lights (2014)">
+        <h1>Romance, Drama, 116 minutos</h1>
+        <p>Beyond the Lights (2014)</p>
+    </a>
+</div>
+
+<!--    ########################    === AÑO: 2013  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Kick-Ass%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wjFX0jaUl7tfgN0CDAbdgqqRwOT.jpg" alt="Kick-Ass 2: Con un par (2013)">
+        <h1>Acción, Aventura, Crimen, 103 minutos</h1>
+        <p>Kick-Ass 2: Con un par (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Curse%20of%20Chucky%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2z19IQyt3rORIxUmTYptVG89bjD.jpg" alt="La maldición de Chucky (2013)">
+        <h1>Terror, Suspense, 97 minutos</h1>
+        <p>La maldición de Chucky (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Gravity%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3CKbEXrw88LNvBU3baISh1I7JP4.jpg" alt="Gravity (2013)">
+        <h1>Ciencia ficción, Suspense, Drama, 93 minutos</h1>
+        <p>Gravity (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Best%20Offer%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/f8mOFP6rfZMLKd2wRTv5AN32c6b.jpg" alt="La mejor oferta (2013)">
+        <h1>Drama, Romance, Crimen, 131 minutos</h1>
+        <p>La mejor oferta (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Heat%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lLIj0HJcGl0OCyEdGE3PjGz8tpn.jpg" alt="Cuerpos especiales (2013)">
+        <h1>Acción, Comedia, Crimen, 117 minutos</h1>
+        <p>Cuerpos especiales (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Despicable%20Me%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hhksXOBVJ6Mu2BwAFgPJwZxNisd.jpg" alt="Gru 2. Mi villano favorito (2013)">
+        <h1>Animación, Comedia, Familia, 94 minutos</h1>
+        <p>Gru 2. Mi villano favorito (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/World%20War%20Z%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/a8ogjWFd0QS6BzBkzfDMWukc26i.jpg" alt="Guerra Mundial Z (2013)">
+        <h1>Acción, Terror, Ciencia ficción, Suspense, 116 minutos</h1>
+        <p>Guerra Mundial Z (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Police%20Story%20Lockdown%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/49tAJI3EgjLUIR8BrZULTbJoHZy.jpg" alt="Acción Policial (2013)">
+        <h1>Acción, Crimen, Drama, 120 minutos</h1>
+        <p>Acción Policial (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Insidious%20Chapter%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ybzJLYR0AbtFphcj6kMqe08Ak1F.jpg" alt="Insidious: Capítulo 2 (2013)">
+        <h1>Terror, Suspense, 105 minutos</h1>
+        <p>Insidious: Capítulo 2 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Smurfs%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vjb5WNkwZJDIcmVrzR4GyPmPRZo.jpg" alt="Los pitufos 2 (2013)">
+        <h1>Fantasía, Familia, Comedia, Animación, 115 minutos</h1>
+        <p>Los pitufos 2 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Evil%20Dead%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/w0BrfbkdKReQsyilSpZtjEE9ZQ5.jpg" alt="Posesión infernal (Evil Dead) (2013)">
+        <h1>Terror, 90 minutos</h1>
+        <p>Posesión infernal (Evil Dead) (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Evil%20Dead%201981.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/w0BrfbkdKReQsyilSpZtjEE9ZQ5.jpg" alt="Posesión infernal (Evil Dead) (2013)">
+        <h1>Terror, 90 minutos</h1>
+        <p>Posesión infernal (Evil Dead) (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/We%20re%20the%20Millers%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/e6ITLpsQP9FMBF4jDyvHpWUYV64.jpg" alt="Somos los Miller (2013)">
+        <h1>Comedia, Crimen, 110 minutos</h1>
+        <p>Somos los Miller (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Turbo%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lDARMqluCrWaFgybY9KHLY96L3n.jpg" alt="Turbo (2013)">
+        <h1>Animación, Familia, 96 minutos</h1>
+        <p>Turbo (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Olympus%20Has%20Fallen%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3AWmaBCfX6x3KTa4w5rGLMevNdU.jpg" alt="Objetivo: La Casa Blanca (2013)">
+        <h1>Acción, Suspense, 120 minutos</h1>
+        <p>Objetivo: La Casa Blanca (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Identity%20Thief%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/83Y1GDLtofCCauB2538IXMntNKU.jpg" alt="Por la cara (2013)">
+        <h1>Comedia, Crimen, 112 minutos</h1>
+        <p>Por la cara (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dead%20Man%20Down%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tkCVMdYWE4QZ9mUY8DCvRDIIxqf.jpg" alt="Dead Man Down (La venganza del hombre muerto) (2013)">
+        <h1>Suspense, Acción, Crimen, Drama, 110 minutos</h1>
+        <p>Dead Man Down (La venganza del hombre muerto) (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Homefront%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3epke5oOH7WRWvaFJeH9SsibBW4.jpg" alt="El protector (2013)">
+        <h1>Acción, Suspense, 100 minutos</h1>
+        <p>El protector (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Warning%202021.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3rhzQYIMZG23GApEPsqpPc4Cp2i.jpg" alt="Warning (2013)">
+        <h1>109 minutos</h1>
+        <p>Warning (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Mama%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/o6K500W5qIZzVDiBcfQ1mCMMnay.jpg" alt="Mama (2013)">
+        <h1>Terror, Suspense, Drama, 96 minutos</h1>
+        <p>Mama (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Iron%20Man%203%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cW0fOIZONkgeiMJDYzqUcgl4MUn.jpg" alt="Iron Man 3 (2013)">
+        <h1>Acción, Aventura, Ciencia ficción, 130 minutos</h1>
+        <p>Iron Man 3 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/2%20Guns%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/A0osDL7XE6v8pseLPoo1P6TaiDx.jpg" alt="2 Guns (2013)">
+        <h1>Acción, Comedia, Crimen, 109 minutos</h1>
+        <p>2 Guns (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Beautiful%20Creatures%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fBkaPqZAGgfuTC4bkRrREJQigZF.jpg" alt="Hermosas criaturas (2013)">
+        <h1>Fantasía, Drama, Romance, 124 minutos</h1>
+        <p>Hermosas criaturas (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Oz%20The%20Great%20and%20Powerful%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/piHFgW1yotlHrewwdlQJG7gRRLu.jpg" alt="Oz, un mundo de fantasía (2013)">
+        <h1>Fantasía, Aventura, Familia, 130 minutos</h1>
+        <p>Oz, un mundo de fantasía (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Conjuring%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/sKuHxkCogdk6YWzTyXYPoo9qd9n.jpg" alt="Expediente Warren: The Conjuring (2013)">
+        <h1>Terror, Suspense, 112 minutos</h1>
+        <p>Expediente Warren: The Conjuring (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hunger%20Games%20Catching%20Fire%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oxnKI1qiHz7xC0mNthC7dSqTcot.jpg" alt="Los Juegos del Hambre: En llamas (2013)">
+        <h1>Aventura, Acción, Ciencia ficción, 146 minutos</h1>
+        <p>Los Juegos del Hambre: En llamas (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Spring%20Breakers%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/iByFbDrqfNK6ldB4C7iVKjgYi4j.jpg" alt="Spring Breakers (2013)">
+        <h1>Drama, Crimen, 94 minutos</h1>
+        <p>Spring Breakers (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Haunted%20House%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pAVGfrADDvKMgoZnJLSCiLBCCiG.jpg" alt="Paranormal Movie (2013)">
+        <h1>Comedia, Terror, 95 minutos</h1>
+        <p>Paranormal Movie (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Cats%20And%20Dogs%202001.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oHA3Z20JNZArkE2OVzLwWwwCVZj.jpg" alt="그 강아지 그 고양이 (2013)">
+        <h1>Drama, Romance, 104 minutos</h1>
+        <p>그 강아지 그 고양이 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Saving%20Mr.%20Banks%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wxJN9aTc6kB14OYaFBC0ylLw2SV.jpg" alt="Al encuentro de Mr. Banks (2013)">
+        <h1>Comedia, Drama, Historia, 125 minutos</h1>
+        <p>Al encuentro de Mr. Banks (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Thor%20the%20dark%20world%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gPAmH41VpK5UPaNhAiNJePzrL8z.jpg" alt="Thor: el mundo oscuro (2013)">
+        <h1>Acción, Aventura, Fantasía, 112 minutos</h1>
+        <p>Thor: el mundo oscuro (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Captain%20Phillips%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mW3rSOoC99HX6tBUEU3j6Mn4d4H.jpg" alt="Capitán Phillips (2013)">
+        <h1>Acción, Drama, Suspense, 134 minutos</h1>
+        <p>Capitán Phillips (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Man%20of%20Tai%20Chi%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2v2zWare31ryOxPWpqORfgSDa7K.jpg" alt="El poder del Tai Chi (2013)">
+        <h1>Acción, Drama, 105 minutos</h1>
+        <p>El poder del Tai Chi (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Parker%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jZ0BBdtHk8HfjR2wdc6iqiXCooY.jpg" alt="Parker (2013)">
+        <h1>Acción, Crimen, 118 minutos</h1>
+        <p>Parker (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Best%20of%20the%20Best%202%201993.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8lGavGQA0AppFedvtiPcgKCuLZi.jpg" alt="WWE: The Best of Raw &amp; SmackDown 2012, Volume 1 (2013)">
+        <h1>130 minutos</h1>
+        <p>WWE: The Best of Raw &amp; SmackDown 2012, Volume 1 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Heaven%20Can%20Wait%201978.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6VRUzg88ynGaRcyjhSfdJOiS2T5.jpg" alt="黑道上錯身 (2013)">
+        <h1>Drama, 105 minutos</h1>
+        <p>黑道上錯身 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dragon%20Ball%20Z%20Battle%20of%20Gods%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cIyPFIeSKNTiWU9Zny0c0IVPQRY.jpg" alt="Dragon Ball Z: La Batalla de los Dioses (2013)">
+        <h1>Animación, Acción, Ciencia ficción, 85 minutos</h1>
+        <p>Dragon Ball Z: La Batalla de los Dioses (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Last%20Stand%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/f9AnP4wawVMyLVLhpul3Myc9s1B.jpg" alt="El último desafío (2013)">
+        <h1>Acción, Crimen, Suspense, 108 minutos</h1>
+        <p>El último desafío (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Kill%20Team%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mJkOjOf51WL5iYb9P6nBSh3HEgj.jpg" alt="The Kill Team (2013)">
+        <h1>Bélica, Documental, 79 minutos</h1>
+        <p>The Kill Team (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Broken%20City%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/7Yjmhe6dpSvqWOYIduJUv19JBzN.jpg" alt="La trama (2013)">
+        <h1>Suspense, Crimen, Drama, 109 minutos</h1>
+        <p>La trama (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Gangster%20Squad%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6tfx4sqBkYqIY6QZPUfUAd7N1oB.jpg" alt="Gangster Squad: Brigada de élite (2013)">
+        <h1>Crimen, Drama, Acción, Suspense, 113 minutos</h1>
+        <p>Gangster Squad: Brigada de élite (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jack%20the%20Giant%20Slayer%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aLfxO1EyOr2pKTyxycxZXrCnJcI.jpg" alt="Jack, el cazagigantes (2013)">
+        <h1>Fantasía, Acción, Aventura, Drama, 114 minutos</h1>
+        <p>Jack, el cazagigantes (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Frozen%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hAKhrHvzQDUHQP5zd5HFeqF2BCN.jpg" alt="Frozen: El reino del hielo (2013)">
+        <h1>Animación, Familia, Aventura, Fantasía, 102 minutos</h1>
+        <p>Frozen: El reino del hielo (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pacific%20Rim%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qGu6CHagpxv1XW6Bn3sUJ9SFaH0.jpg" alt="Pacific Rim (2013)">
+        <h1>Acción, Ciencia ficción, Aventura, 131 minutos</h1>
+        <p>Pacific Rim (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/G.I.%20Joe%20Retaliation%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/heX1PtYdzXgfYpEnuWtRqc4rH4x.jpg" alt="G.I. Joe: la venganza (2013)">
+        <h1>Acción, Ciencia ficción, Aventura, Suspense, 110 minutos</h1>
+        <p>G.I. Joe: la venganza (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Patrick%202018.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/le8T83qFmtPMrxnFTXSvxbevK9Q.jpg" alt="Patrick (2013)">
+        <h1>Terror, Ciencia ficción, Suspense, 100 minutos</h1>
+        <p>Patrick (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Horns%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ig3WmrIfKuzs9EALH43Bu8J4gBN.jpg" alt="Horns (2013)">
+        <h1>Drama, Fantasía, Suspense, 120 minutos</h1>
+        <p>Horns (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lords%20of%20Salem%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9VJ8Y5uXTbiNlTRmUw9I76tW3aw.jpg" alt="The Lords of Salem (2013)">
+        <h1>Terror, Suspense, 101 minutos</h1>
+        <p>The Lords of Salem (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Texas%20Chainsaw%203D%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fAD6zxYjb2IKAEIj52iOYBkCCZ6.jpg" alt="La matanza de Texas 3D (2013)">
+        <h1>Terror, Suspense, 91 minutos</h1>
+        <p>La matanza de Texas 3D (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Red%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gXEj0UG7DBLXinlZrw83XdlolKP.jpg" alt="RED 2 (2013)">
+        <h1>Acción, Comedia, Crimen, Suspense, 116 minutos</h1>
+        <p>RED 2 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Nothing%20Left%20to%20Fear%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/65aDPoEpgFvnAK1bgZysjxgSgyG.jpg" alt="Nada Que Temer (2013)">
+        <h1>Terror, 100 minutos</h1>
+        <p>Nada Que Temer (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Elysium%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zEdwDsEwny5rAZ8WEPA97XBqtru.jpg" alt="Elysium (2013)">
+        <h1>Ciencia ficción, Acción, Drama, Suspense, 109 minutos</h1>
+        <p>Elysium (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Death%20Race%203%20Inferno%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zdOtfDbrHT3l5k7NW1i2hKVeC9A.jpg" alt="Death Race 3 (La carrera de la muerte: Inferno) (2013)">
+        <h1>Acción, Ciencia ficción, Suspense, 105 minutos</h1>
+        <p>Death Race 3 (La carrera de la muerte: Inferno) (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hobbit%20The%20Desolation%20of%20Smaug%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1s8xZDmG5IkDU0m1LeW28YcwTRx.jpg" alt="El hobbit: La desolación de Smaug (2013)">
+        <h1>Fantasía, Aventura, Acción, 161 minutos</h1>
+        <p>El hobbit: La desolación de Smaug (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Purge%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1smw9aHuPiHga2Of5TOJs0Ps1rZ.jpg" alt="The Purge: La noche de las bestias (2013)">
+        <h1>Ciencia ficción, Terror, Suspense, 85 minutos</h1>
+        <p>The Purge: La noche de las bestias (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Riddick%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/kEQgDr7H3oVBTCF2SiirmZjy58W.jpg" alt="Riddick (2013)">
+        <h1>Ciencia ficción, Acción, Suspense, 120 minutos</h1>
+        <p>Riddick (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Fast%20and%20furious%206%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6zUkjB5OtiFhN2DiqdT1IllNJTa.jpg" alt="Fast &amp; Furious 6 (2013)">
+        <h1>Acción, Suspense, Crimen, 130 minutos</h1>
+        <p>Fast &amp; Furious 6 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Labor%20Day%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tl1ZFQk80Ic0vwWHxMruekJHeJ.jpg" alt="Una vida en tres días (2013)">
+        <h1>Drama, Romance, Suspense, 111 minutos</h1>
+        <p>Una vida en tres días (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Jack%20Reacher%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/tcOPca5Ook6aR9mehrnxD9kfk7m.jpg" alt="Jack Reacher: When the Man Comes Around (2013)">
+        <h1>Documental, 27 minutos</h1>
+        <p>Jack Reacher: When the Man Comes Around (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Planes%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6S5JjRheyl3oyLmJVcxcQ8yqDU3.jpg" alt="Aviones (2013)">
+        <h1>Animación, Familia, Aventura, Comedia, 92 minutos</h1>
+        <p>Aviones (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Masterminds%202016.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cCsTJdFnfbQDb0IrxmnB2CG1UZ9.jpg" alt="Masterminds (2013)">
+        <h1>Crimen, Drama, 89 minutos</h1>
+        <p>Masterminds (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Lone%20Survivor2013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5ifKF7FCYdkzt5BoQicfeUvfYuS.jpg" alt="El único superviviente (2013)">
+        <h1>Bélica, Acción, Drama, 121 minutos</h1>
+        <p>El único superviviente (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ninja%20II%20Shadow%20of%20a%20Tear%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/w1nQyDLm1onDbTSnPnalbDIcGnx.jpg" alt="Ninja 2: La sombra de la muerte (2013)">
+        <h1>Acción, Crimen, Suspense, 95 minutos</h1>
+        <p>Ninja 2: La sombra de la muerte (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Grown%20Ups%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6TRhV0E6wDQjMEtvYru0Kel6juW.jpg" alt="Niños grandes 2 (2013)">
+        <h1>Comedia, 100 minutos</h1>
+        <p>Niños grandes 2 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20wolverine%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xsdBlh5Rg673dRmIblDZchuicWi.jpg" alt="Lobezno inmortal (2013)">
+        <h1>Acción, Ciencia ficción, Aventura, 126 minutos</h1>
+        <p>Lobezno inmortal (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Percy%20Jackson%20Sea%20of%20Monsters%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/akbLEdUzQ5T2R7coc5nOEqk7FjE.jpg" alt="Percy Jackson y el mar de los monstruos (2013)">
+        <h1>Aventura, Familia, Fantasía, 106 minutos</h1>
+        <p>Percy Jackson y el mar de los monstruos (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Croods%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3X3qtBTgKt5mCB30RJwbIjgjzdw.jpg" alt="Los Croods (2013)">
+        <h1>Animación, Aventura, Familia, Fantasía, Comedia, Acción, 90 minutos</h1>
+        <p>Los Croods (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/I%20Spit%20on%20Your%20Grave%202%202013.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hC3zDl28waEPRoaweasE4vNfnkf.jpg" alt="Escupiré sobre tu tumba 2 (2013)">
+        <h1>Suspense, Terror, Crimen, 106 minutos</h1>
+        <p>Escupiré sobre tu tumba 2 (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Counterpunch%202017.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uoftI8Bk7f8jrRwOr5xTks3B5K6.jpg" alt="Counterpunch (2013)">
+        <h1>Acción, Aventura, Drama, 97 minutos</h1>
+        <p>Counterpunch (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20wolf%20of%20wall%20street%202013.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uthRoUeTtiep5HCoySlOjQSPCbJ.jpg" alt="El lobo de Wall Street (2013)">
+        <h1>Crimen, Drama, Comedia, 180 minutos</h1>
+        <p>El lobo de Wall Street (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20green%20inferno%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jusadS0u0P0BFAYcUpI1pSBF6IN.jpg" alt="El infierno verde (2013)">
+        <h1>Aventura, Terror, 100 minutos</h1>
+        <p>El infierno verde (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Max%202015.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qROjXKBxOnuNMGLxWmKz1V92ML4.jpg" alt="Max (2013)">
+        <h1>Comedia, Romance, 83 minutos</h1>
+        <p>Max (2013)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Oblivion%202013.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hE8f0jzayDPJjF647OkvC1H3aUp.jpg" alt="Oblivion (2013)">
+        <h1>Acción, Ciencia ficción, Aventura, Misterio, 126 minutos</h1>
+        <p>Oblivion (2013)</p>
+    </a>
+</div>
+
+<!--    ########################    === AÑO: 2012  ===    ##############################    -->
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lucky%20One%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fRvAAnok5idXu42DNVAuXaNxx6x.jpg" alt="Cuando te encuentre (2012)">
+        <h1>Drama, Romance, 101 minutos</h1>
+        <p>Cuando te encuentre (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Expendables%202%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nnx0puR1AvuYH4iAg0WHH1QcYzE.jpg" alt="Los mercenarios 2 (2012)">
+        <h1>Acción, Aventura, Suspense, 102 minutos</h1>
+        <p>Los mercenarios 2 (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/This%20Is%2040%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8rmY5xkQ4ggVLNFTSZkuhBxzeHA.jpg" alt="Si fuera fácil (2012)">
+        <h1>Comedia, 134 minutos</h1>
+        <p>Si fuera fácil (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Madagascar%203%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8fKTIecTVNURB6CRFjYMypggRL2.jpg" alt="Madagascar 3: De marcha por Europa (2012)">
+        <h1>Animación, Familia, Comedia, Aventura, 85 minutos</h1>
+        <p>Madagascar 3: De marcha por Europa (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Musa%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yOts0LVgWjtOhr1Mh4X2w68P8Wp.jpg" alt="Musa (2012)">
+        <h1>Drama, 18 minutos</h1>
+        <p>Musa (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Point%20of%20No%20Return%201993.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lPEJVYyTI6O5n4aV9bwjSKeL7FT.jpg" alt="キリン Point of No-Return! (2012)">
+        <h1>Drama, Acción, Aventura, 106 minutos</h1>
+        <p>キリン Point of No-Return! (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Man%20on%20a%20Ledge%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9TSMZdx0jmZLFRDMaJV81H8bsuo.jpg" alt="Al borde del abismo (2012)">
+        <h1>Acción, Suspense, Crimen, 102 minutos</h1>
+        <p>Al borde del abismo (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dark%20Shadows%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4MVwKquR2GgLXWAR4cyvKUBBYP2.jpg" alt="Sombras tenebrosas (2012)">
+        <h1>Comedia, Fantasía, 113 minutos</h1>
+        <p>Sombras tenebrosas (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/End%20of%20Watch%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/eoXAkRSVP8yVBbYNh0vkDWLvUh.jpg" alt="Sin Tregua (2012)">
+        <h1>Crimen, Drama, Suspense, 109 minutos</h1>
+        <p>Sin Tregua (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lorax%201972.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/b7FMtquHglzxIi938cHIgVQuPx5.jpg" alt="Lorax. En busca de la trúfula perdida (2012)">
+        <h1>Animación, Familia, 94 minutos</h1>
+        <p>Lorax. En busca de la trúfula perdida (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Amazing%20Spider-Man%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4cw1Vpp68ec518BHiS6gfa3yDoU.jpg" alt="The Amazing Spider-Man (2012)">
+        <h1>Acción, Aventura, Ciencia ficción, 136 minutos</h1>
+        <p>The Amazing Spider-Man (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Abraham%20Lincoln%20Vampire%20Hunter%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zcDsS3wnlwXvIRXYPUhsktaFKe4.jpg" alt="Abraham Lincoln: Cazador de vampiros (2012)">
+        <h1>Acción, Fantasía, Terror, 105 minutos</h1>
+        <p>Abraham Lincoln: Cazador de vampiros (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Killing%20Them%20Softly%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3b1Gbv2N13ZaTTEsDyDXUqrsPx6.jpg" alt="Mátalos suavemente (2012)">
+        <h1>Crimen, Suspense, 104 minutos</h1>
+        <p>Mátalos suavemente (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Flight%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cyjYllErGNrju2nwgt7D0XdpYC0.jpg" alt="El vuelo (Flight) (2012)">
+        <h1>Drama, 138 minutos</h1>
+        <p>El vuelo (Flight) (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Taken%202%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/2RQkFjXnqLxc6F8H4VsitxvSyuk.jpg" alt="Venganza: Conexión Estambul (2012)">
+        <h1>Acción, Crimen, Suspense, 91 minutos</h1>
+        <p>Venganza: Conexión Estambul (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Savages%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/fr3hlU5hJz0nAmHbqtwJX9hYw4M.jpg" alt="Salvajes (2012)">
+        <h1>Crimen, Drama, Suspense, 131 minutos</h1>
+        <p>Salvajes (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hunger%20Games%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qSEn7KsGchT7qB08HlviyeTPrEr.jpg" alt="Los Juegos del Hambre (2012)">
+        <h1>Ciencia ficción, Aventura, Acción, Suspense, 142 minutos</h1>
+        <p>Los Juegos del Hambre (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hungover%20Games%202014.mkv">
+        <img src="" alt="The Hungover Games (2012)">
+        <h1>Comedia, 3 minutos</h1>
+        <p>The Hungover Games (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bad%20Ass%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qeBjCgnRMalB6FhWylKj85E9f94.jpg" alt="Tipo duro (2012)">
+        <h1>Acción, Drama, 90 minutos</h1>
+        <p>Tipo duro (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Possession%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6zXLKzdTTTIrTJmyJmHg5aK10A3.jpg" alt="The Possession (El origen del mal) (2012)">
+        <h1>Terror, Suspense, 92 minutos</h1>
+        <p>The Possession (El origen del mal) (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Seven%20Psychopaths%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vtFTwRFJoxNFZi6Lin1RtbY0kXL.jpg" alt="Siete psicópatas (2012)">
+        <h1>Comedia, Crimen, 109 minutos</h1>
+        <p>Siete psicópatas (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dredd%201995.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qXBx3n0e86mjBznuIRz6EmRv8Mv.jpg" alt="Dredd (2012)">
+        <h1>Acción, Ciencia ficción, 95 minutos</h1>
+        <p>Dredd (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Dredd%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qXBx3n0e86mjBznuIRz6EmRv8Mv.jpg" alt="Dredd (2012)">
+        <h1>Acción, Ciencia ficción, 95 minutos</h1>
+        <p>Dredd (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Safe%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nLqtvwAsgGl7QQTkBrGmHI1LzFA.jpg" alt="Safe (2012)">
+        <h1>Acción, Crimen, Suspense, 94 minutos</h1>
+        <p>Safe (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wrong%20Turn%205%20Bloodlines%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8rCVdIzSIDIALXArSjLyw44teD0.jpg" alt="Camino sangriento 5: Linaje caníbal (2012)">
+        <h1>Terror, Suspense, 91 minutos</h1>
+        <p>Camino sangriento 5: Linaje caníbal (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Frankenweenie%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4WZaUjHswR2mak767GEXgiWYxeq.jpg" alt="Frankenweenie (2012)">
+        <h1>Animación, Comedia, Familia, 87 minutos</h1>
+        <p>Frankenweenie (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Sessions%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/omE7lN5w61Vs7EBEgWakjCUYdEu.jpg" alt="Las sesiones (2012)">
+        <h1>Drama, Romance, Comedia, 98 minutos</h1>
+        <p>Las sesiones (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Courier%202019.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bSniLcYwHB3lw5NLP4pFBOIpqUO.jpg" alt="The Courier (2012)">
+        <h1>Acción, Crimen, 91 minutos</h1>
+        <p>The Courier (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Trouble%20with%20the%20Curve%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/enpgtYlUCujV7YsPJFQqcXajr5n.jpg" alt="Golpe de efecto (2012)">
+        <h1>Drama, Romance, 111 minutos</h1>
+        <p>Golpe de efecto (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Looper%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/t6ogdhdjP9KDCLJR9i4HG3bplQL.jpg" alt="Looper (2012)">
+        <h1>Acción, Suspense, Ciencia ficción, 118 minutos</h1>
+        <p>Looper (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Step%20Up%20Revolution%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jMpwxmk3r7Aq36GcqMbCuP9DJYQ.jpg" alt="Step Up 4 Revolution (2012)">
+        <h1>Música, Drama, Romance, 99 minutos</h1>
+        <p>Step Up 4 Revolution (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Argo%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/j1sBm1fZUhlFW5Qe0238H1LjDwA.jpg" alt="Argo (2012)">
+        <h1>Drama, Suspense, 120 minutos</h1>
+        <p>Argo (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Chernobyl%20Diaries%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/i3JsNUnAkwPtdVSWX2FnQJupQYL.jpg" alt="Atrapados en Chernóbil (2012)">
+        <h1>Terror, Suspense, 90 minutos</h1>
+        <p>Atrapados en Chernóbil (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/American%20Reunion%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/prurn3HioMykwlFMZdfvJ88iPlM.jpg" alt="American Pie: El reencuentro (2012)">
+        <h1>Comedia, 113 minutos</h1>
+        <p>American Pie: El reencuentro (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Dictator%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/oQZGHRqZnVAMYCVKjWFoyszINqj.jpg" alt="El dictador (2012)">
+        <h1>Comedia, 83 minutos</h1>
+        <p>El dictador (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Contraband%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/bmIphBwlYwChptmUH8UYzBO6yBh.jpg" alt="Contraband (2012)">
+        <h1>Suspense, Acción, Drama, Crimen, 109 minutos</h1>
+        <p>Contraband (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Bourne%20Legacy%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pWVaLBdcVrTqSTBKIJLinmuxRso.jpg" alt="El legado de Bourne (2012)">
+        <h1>Acción, Suspense, 135 minutos</h1>
+        <p>El legado de Bourne (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Twilight%20Saga%20Breaking%20Dawn%20Part%202%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/pPB3rQx0oBOmj5CHZxLWgexo5nS.jpg" alt="La saga Crepúsculo: Amanecer - Parte 2 (2012)">
+        <h1>Aventura, Fantasía, Drama, Romance, 115 minutos</h1>
+        <p>La saga Crepúsculo: Amanecer - Parte 2 (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/John%20Carter%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lRvQP1wLqyPJEgBjjn35bInO7it.jpg" alt="John Carter (2012)">
+        <h1>Acción, Aventura, Ciencia ficción, 132 minutos</h1>
+        <p>John Carter (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Home%20Alone%20The%20Holiday%20Heist%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nxxcHTbqNrEkrJvtCzxzm3TDtU.jpg" alt="Solo en casa 5 (2012)">
+        <h1>Comedia, Familia, Película de TV, 87 minutos</h1>
+        <p>Solo en casa 5 (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Life%20of%20Pi%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/9jpQ6BRScQmTULj10mUkjEKelhX.jpg" alt="La vida de Pi (2012)">
+        <h1>Aventura, Drama, 127 minutos</h1>
+        <p>La vida de Pi (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Snow%20White%20and%20the%20Huntsman%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/aXDkg5obS59srKM2IefPIZMGF4b.jpg" alt="Blancanieves y la leyenda del cazador (2012)">
+        <h1>Aventura, Fantasía, Drama, 127 minutos</h1>
+        <p>Blancanieves y la leyenda del cazador (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/A%20Thousand%20Words%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/xSyy1DZLH7VomGWCInTZeyndMXP.jpg" alt="Mil palabras (2012)">
+        <h1>Drama, Comedia, Fantasía, 91 minutos</h1>
+        <p>Mil palabras (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Chasing%20Mavericks%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1V39xREcDkSvFXTKprYnGK5R0FR.jpg" alt="Persiguiendo Mavericks (2012)">
+        <h1>Drama, 116 minutos</h1>
+        <p>Persiguiendo Mavericks (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Red%20Tails%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uuQW1ukIF3aCmAF6FPvM9kbXNX6.jpg" alt="Escuadrón rojo (2012)">
+        <h1>Drama, Acción, Aventura, Historia, Bélica, 125 minutos</h1>
+        <p>Escuadrón rojo (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Men%20in%20Black%203%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rcVJtZCGnp39obbDKYred2mT9sE.jpg" alt="Men in Black 3 (2012)">
+        <h1>Acción, Comedia, Ciencia ficción, 103 minutos</h1>
+        <p>Men in Black 3 (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Total%20recall%201990.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vX5aHvyyRgyjrSNnBRWuSfPcjOQ.jpg" alt="Desafío total (2012)">
+        <h1>Acción, Ciencia ficción, Suspense, 121 minutos</h1>
+        <p>Desafío total (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Total%20Recall%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/vX5aHvyyRgyjrSNnBRWuSfPcjOQ.jpg" alt="Desafío total (2012)">
+        <h1>Acción, Ciencia ficción, Suspense, 121 minutos</h1>
+        <p>Desafío total (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Wreck%20it%20ralph%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/lTpE4JQ2C09NicqvDhwi70IRz62.jpg" alt="¡Rompe Ralph! (2012)">
+        <h1>Familia, Animación, Comedia, Aventura, 101 minutos</h1>
+        <p>¡Rompe Ralph! (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Pitch%20perfect%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/nuopXlrClCnw85IDZoSFbW1MjbV.jpg" alt="Dando la nota (2012)">
+        <h1>Comedia, Música, Romance, 112 minutos</h1>
+        <p>Dando la nota (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ted%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/1DY7eSoQLoTNhJTT455N74VuHHx.jpg" alt="Ted (2012)">
+        <h1>Comedia, Fantasía, 107 minutos</h1>
+        <p>Ted (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Prometheus%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/6a1c2DhgkajssrdukOEtRd3KWK3.jpg" alt="Prometheus (2012)">
+        <h1>Ciencia ficción, Aventura, Misterio, 124 minutos</h1>
+        <p>Prometheus (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Bullet%20to%20the%20Head%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/jeYOMwcWeZTvmepmSYmxLjJfIyh.jpg" alt="Una bala en la cabeza (2012)">
+        <h1>Acción, Crimen, Suspense, 91 minutos</h1>
+        <p>Una bala en la cabeza (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Hobbit%20An%20Unexpected%20Journey%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/3dJELUqdpGEkXVrMj7V3BiOjrtf.jpg" alt="El hobbit: Un viaje inesperado (2012)">
+        <h1>Aventura, Fantasía, Acción, 169 minutos</h1>
+        <p>El hobbit: Un viaje inesperado (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Hotel%20Transylvania%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/zvWlwBGQWuJ0wog65q1uS37BApC.jpg" alt="Hotel Transilvania (2012)">
+        <h1>Animación, Comedia, Familia, Fantasía, 91 minutos</h1>
+        <p>Hotel Transilvania (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Journey%202%20The%20Mysterious%20Island%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/hAy2yUav8QPnDzfOGihNI527NjY.jpg" alt="Viaje al centro de la Tierra 2: La isla misteriosa (2012)">
+        <h1>Aventura, Acción, Ciencia ficción, 94 minutos</h1>
+        <p>Viaje al centro de la Tierra 2: La isla misteriosa (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Lorax%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/b7FMtquHglzxIi938cHIgVQuPx5.jpg" alt="Lorax. En busca de la trúfula perdida (2012)">
+        <h1>Animación, Familia, 94 minutos</h1>
+        <p>Lorax. En busca de la trúfula perdida (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/The%20Avengers%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/ugX4WZJO3jEvTOerctAWJLinujo.jpg" alt="Los Vengadores (2012)">
+        <h1>Ciencia ficción, Acción, Aventura, 143 minutos</h1>
+        <p>Los Vengadores (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Freelancers%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qCvA4Cw7lsYGR5fatVcoPEIYolU.jpg" alt="Unidad de élite (2012)">
+        <h1>Misterio, Drama, Acción, Crimen, 96 minutos</h1>
+        <p>Unidad de élite (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Stronger%202017.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/uaT6rruCPwwbJ57rB8oaIEwsdI5.jpg" alt="Stronger (2012)">
+        <h1>7 minutos</h1>
+        <p>Stronger (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Ice%20Age%20Continental%20Drift%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/qYiZOCXkOYtYfolUUdJKoZ8xPsL.jpg" alt="Ice Age 4: La formación de los continentes (2012)">
+        <h1>Animación, Comedia, Aventura, Familia, 94 minutos</h1>
+        <p>Ice Age 4: La formación de los continentes (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/This%20Means%20War%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/goBcQAm5ESa6cjfNo99yXQonujY.jpg" alt="Esto es la guerra (2012)">
+        <h1>Acción, Comedia, Romance, 98 minutos</h1>
+        <p>Esto es la guerra (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/21%20Jump%20Street%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/wnznvBLkpin6L8D4plfAS8EbJx3.jpg" alt="Infiltrados en clase (2012)">
+        <h1>Acción, Comedia, Crimen, 109 minutos</h1>
+        <p>Infiltrados en clase (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/XMen%20first%20class%202011.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/gionQv04AWnRaDMNvBF24uJMSTf.jpg" alt="X-Men: First Class 35mm Special (2012)">
+        <h1>Documental, Película de TV, 23 minutos</h1>
+        <p>X-Men: First Class 35mm Special (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Resident%20evil%20damnation%202012.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/5ennmMGznmICN6woVOZt1IewoYM.jpg" alt="Resident Evil: La maldición (2012)">
+        <h1>Animación, Terror, Acción, Ciencia ficción, 97 minutos</h1>
+        <p>Resident Evil: La maldición (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Resident%20evil%20retribution%202012.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/yYZQXdfGNPMjBi18suxPuWii6MP.jpg" alt="Resident Evil: Venganza (2012)">
+        <h1>Acción, Terror, Ciencia ficción, 96 minutos</h1>
+        <p>Resident Evil: Venganza (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Underworld%20awakening%202012.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/8qh7I05jfRlDpk5GLvBZjINGxk2.jpg" alt="Underworld: El despertar (2012)">
+        <h1>Fantasía, Acción, Terror, 88 minutos</h1>
+        <p>Underworld: El despertar (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Sinister%202012.mkv">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/rLcHfQ4fnwaFcElMMCWNfJtIecf.jpg" alt="Sinister (2012)">
+        <h1>Terror, Suspense, Misterio, 110 minutos</h1>
+        <p>Sinister (2012)</p>
+    </a>
+</div>
+
+<div class="menu-item" tabindex="0">
+    <a href="http://144.217.70.79/VODS-M/1080P/Morgan%202016.mp4">
+        <img src="https://image.tmdb.org/t/p/w188_and_h282_bestv2/cEa6QfUOqq4Tuz1kQKm2aQHboUt.jpg" alt="Morgan (2012)">
+        <h1>Drama, 89 minutos</h1>
+        <p>Morgan (2012)</p>
+    </a>
+</div>
+
+
+
+
+
+    <!-- Agrega más items aquí -->
+
+
+
+  </div>
+
+  <!-- Script -->
+
+<script>
+// Detectar si es Android
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
+// Aplicar solo si es Android
+if (isAndroid()) {
+  // Modificar todos los enlaces de video
+  document.querySelectorAll('.menu-item a').forEach(link => {
+    const videoUrl = link.getAttribute('href');
+    // Verificar si es un enlace de video
+    if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.mkv') || videoUrl.endsWith('.webm'))) {
+      // Evitar que el enlace haga algo por defecto
+      link.removeAttribute('href');
+      link.style.cursor = 'pointer';
+
+      // Guardar la URL original como atributo de datos
+      link.setAttribute('data-video-url', videoUrl);
+
+      // Evento de clic
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+        window.location.href = intentUrl;
+      });
+
+      // Soporte para Enter en teclado o control remoto
+      link.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+          e.preventDefault();
+          const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+          window.location.href = intentUrl;
+        }
+      });
+    }
+  });
+}
+
+// #############   COLORES DEL CONTROL REMOTO
+window.addEventListener('keydown', (event) => {
+  const keyCode = event.keyCode;
+  switch (keyCode) {
+    case 403: // Rojo
+      document.getElementById('homeButton')?.focus();
+      break;
+    case 404: // Verde
+      const help = document.getElementById('helpOverlay');
+      if (help) help.style.display = help.style.display === 'none' ? 'block' : 'none';
+      break;
+    case 405: // Amarillo
+      document.getElementById('searchInput')?.focus();
+      break;
+    case 406: // Azul
+      document.body.classList.toggle('light-mode');
+      break;
+  }
+});
+
+// #############   BUSCADOR
+document.getElementById('searchInput').addEventListener('input', function () {
+  const searchTerm = this.value.toLowerCase();
+  const items = document.querySelectorAll('.menu-item');
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(searchTerm) ? 'inline-block' : 'none';
+  });
+});
+
+// #############   BOTON INICIO
+document.addEventListener("keydown", function (event) {
+  if (event.keyCode === 403) {
+    const homeBtn = document.getElementById("homeButton");
+    if (homeBtn) {
+      homeBtn.focus();
+    }
+  }
+  if (document.activeElement.id === "homeButton" && (event.key === "Enter" || event.keyCode === 13)) {
+    window.location.href = document.getElementById("homeButton").href;
+  }
+});
+
+// #############   PAGINACIÓN Y NAVEGACIÓN
+document.addEventListener("DOMContentLoaded", () => {
+  const itemsPerPage = 35;
+  const allItems = Array.from(document.querySelectorAll(".menu-item"));
+  const totalItems = allItems.length;
+  let totalPages = Math.ceil(totalItems / itemsPerPage);
+  let currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+  currentPage = Math.max(1, Math.min(currentPage, totalPages));
+  const pageNumbersContainer = document.getElementById("pageNumbers");
+  const prevBtn = document.getElementById("prevPage");
+  const nextBtn = document.getElementById("nextPage");
+
+  function createPagination() {
+    if (!pageNumbersContainer.childElementCount) {
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLink = document.createElement("a");
+        pageLink.href = `?page=${i}`;
+        pageLink.textContent = i;
+        pageLink.classList.add("pageNumber");
+        pageLink.setAttribute("tabindex", "0");
+        if (i === currentPage) pageLink.classList.add("active");
+        pageLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (currentPage !== i) {
+            currentPage = i;
+            showCurrentPage();
+            history.pushState({}, "", `?page=${currentPage}`);
+            focusIndex((currentPage - 1) * itemsPerPage);
+          }
+        });
+        pageNumbersContainer.appendChild(pageLink);
+      }
+    }
+  }
+
+  function updatePaginationUI() {
+    document.querySelectorAll(".pageNumber").forEach(p => p.classList.remove("active"));
+    const active = document.querySelector(`.pageNumber[href="?page=${currentPage}"]`);
+    if (active) active.classList.add("active");
+    prevBtn.classList.toggle("disabled", currentPage === 1);
+    nextBtn.classList.toggle("disabled", currentPage === totalPages);
+  }
+
+  function showCurrentPage() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    for (let i = 0; i < totalItems; i++) {
+      allItems[i].style.display = (i >= start && i < end) ? "inline-block" : "none";
+    }
+    updatePaginationUI();
+  }
+
+  function focusIndex(i) {
+    requestAnimationFrame(() => {
+      if (allItems[i]) {
+        allItems[i].focus();
+        localStorage.setItem("lastFocusIndex", i);
+      }
+    });
+  }
+
+  createPagination();
+  showCurrentPage();
+
+  const lastIndex = parseInt(localStorage.getItem("lastFocusIndex"));
+  if (!isNaN(lastIndex) && allItems[lastIndex]) {
+    const inPage = (lastIndex >= (currentPage - 1) * itemsPerPage && lastIndex < currentPage * itemsPerPage);
+    setTimeout(() => {
+      if (inPage) {
+        focusIndex(lastIndex);
+      } else {
+        focusIndex((currentPage - 1) * itemsPerPage);
+      }
+    }, 100);
+  }
+
+  // Navegación con flechas
+  document.addEventListener("keydown", e => {
+    const focused = document.activeElement;
+    const currentRect = focused?.getBoundingClientRect?.() || {};
+
+    function findClosestItem(direction) {
+      let minDistance = Infinity;
+      let target = null;
+      for (let item of allItems) {
+        if (item.offsetParent === null) continue;
+        const rect = item.getBoundingClientRect();
+        let valid = false;
+        let distance = Infinity;
+        if (direction === "ArrowRight" && rect.left > currentRect.right) {
+          distance = Math.abs(rect.top - currentRect.top) + (rect.left - currentRect.right);
+          valid = true;
+        }
+        if (direction === "ArrowLeft" && rect.right < currentRect.left) {
+          distance = Math.abs(rect.top - currentRect.top) + (currentRect.left - rect.right);
+          valid = true;
+        }
+        if (direction === "ArrowDown" && rect.top > currentRect.bottom) {
+          distance = Math.abs(rect.left - currentRect.left) + (rect.top - currentRect.bottom);
+          valid = true;
+        }
+        if (direction === "ArrowUp" && rect.bottom < currentRect.top) {
+          distance = Math.abs(rect.left - currentRect.left) + (currentRect.top - rect.bottom);
+          valid = true;
+        }
+        if (valid && distance < minDistance) {
+          minDistance = distance;
+          target = item;
+        }
+      }
+      return target;
+    }
+
+    switch (e.key) {
+      case "ArrowRight":
+      case "ArrowLeft":
+      case "ArrowDown":
+      case "ArrowUp": {
+        const next = findClosestItem(e.key);
+        if (next) {
+          next.focus();
+          localStorage.setItem("lastFocusIndex", allItems.indexOf(next));
+        }
+        break;
+      }
+      case "Enter": {
+        const link = focused?.querySelector("a");
+        if (link) {
+          // En Android, ya no tiene href, pero manejamos el Enter
+          if (isAndroid() && link.hasAttribute('data-video-url')) {
+            const videoUrl = link.getAttribute('data-video-url');
+            const intentUrl = `intent:${videoUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end;`;
+            window.location.href = intentUrl;
+          } else {
+            // En PC o TV: sigue el enlace normal
+            link.click();
+          }
+        }
+        break;
+      }
+      case "ChannelUp":
+      case "MediaTrackPrevious":
+      case "PageUp": {
+        const prev = currentPage > 1 ? currentPage - 1 : totalPages;
+        if (currentPage !== prev) {
+          currentPage = prev;
+          showCurrentPage();
+          history.pushState({}, "", `?page=${currentPage}`);
+          focusIndex((currentPage - 1) * itemsPerPage);
+        }
+        break;
+      }
+      case "ChannelDown":
+      case "MediaTrackNext":
+      case "PageDown": {
+        const next = currentPage < totalPages ? currentPage + 1 : 1;
+        if (currentPage !== next) {
+          currentPage = next;
+          showCurrentPage();
+          history.pushState({}, "", `?page=${currentPage}`);
+          focusIndex((currentPage - 1) * itemsPerPage);
+        }
+        break;
+      }
+    }
+  });
+
+  // Swipe
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let lastSwipeTime = 0;
+  document.addEventListener("touchstart", e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener("touchend", e => {
+    touchEndX = e.changedTouches[0].screenX;
+    const now = Date.now();
+    if (now - lastSwipeTime > 400) {
+      handleSwipe();
+      lastSwipeTime = now;
+    }
+  });
+  function handleSwipe() {
+    const deltaX = touchEndX - touchStartX;
+    if (Math.abs(deltaX) < 50) return;
+    const newPage = deltaX < 0
+      ? (currentPage < totalPages ? currentPage + 1 : 1)
+      : (currentPage > 1 ? currentPage - 1 : totalPages);
+    if (newPage !== currentPage) {
+      currentPage = newPage;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  }
+
+  allItems.forEach((item, i) => {
+    item.addEventListener("focus", () => localStorage.setItem("lastFocusIndex", i));
+  });
+
+  prevBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const prev = currentPage > 1 ? currentPage - 1 : totalPages;
+    if (prev !== currentPage) {
+      currentPage = prev;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  });
+  nextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const next = currentPage < totalPages ? currentPage + 1 : 1;
+    if (next !== currentPage) {
+      currentPage = next;
+      showCurrentPage();
+      history.pushState({}, "", `?page=${currentPage}`);
+      focusIndex((currentPage - 1) * itemsPerPage);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
