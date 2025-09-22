@@ -1,13 +1,50 @@
 #EXTM3U
+#EXTINF:-1,   -NUEVO-
+#EXTM3U
 
-#EXTINF:-1,Viejitas Pero Sabrosas mx
+
+#EXTINF:-1, Los Grandes Grupos -NUEVO-
+https://stream.zeno.fm/e2gfut13km5tv
+#EXTINF:-1,Temerarios-Bronco-Bukis mx -NUEVO-
+https://stream.zeno.fm/6rxz6uc0dtzuv
+#EXTINF:-1,Bandas Mexicanas   -NUEVO-
+https://servidorstreamingradio.com/listen/bandas/mx
+#EXTINF:-1, Amor de Divas mx -NUEVO-
+https://playerservices.streamtheworld.com/api/livestream-redirect/ACIR01_s01AAC.aac
+#EXTINF:-1,Viejitas Pero Sabrosas mx -NUEVO-
 https://stream.zeno.fm/ca7zdiczwcauv
-#EXTINF:-1,baladas del recuerdo
+#EXTINF:-1,baladas del recuerdo -NUEVO-
 https://stream-165.zeno.fm/g7vk70rqr68uv?zt
-#EXTINF:-1,Cumbias Inmortales  Mix
+#EXTINF:-1,Cumbias Inmortales  Mix -NUEVO-
 https://stream.zeno.fm/a1r491n45qzuv
-#EXTINF:-1, cumbias mezcladas mx
+#EXTINF:-1, cumbias mezcladas mx -NUEVO-
 https://stream-172.zeno.fm/xpe0b2f42mzuv?zt
+#EXTINF:-1, Cumbias Inmortales Corsa mx  -NUEVO-
+https://stream.zeno.fm/a1r491n45qzuv
+#EXTINF:-1, Radio Cafe Romantico -NUEVO-
+https://panel.retrolandigital.com/listen/cafe_romantico_radio/listen
+#EXTINF:-1, La Bestia Grupera mx -NUEVO-
+https://ss1.audiorama.com.mx:6584/;stream
+#EXTINF:-1, Radio Baladas Viejitas Romànticas -NUEVO-
+https://servidorstreamingradio.com/listen/viejitas/stream
+#EXTINF:-1, Siempre Gruperos -NUEVO-
+https://playerservices.streamtheworld.com/api/livestream-redirect/ACIR07_s01AAC.aac?dist=onlineradiobox
+#EXTINF:-1, Divas 89.9 -NUEVO-
+https://stream.xweb.ar/8032/stream
+#EXTINF:-1, La Super Llegadora -NUEVO-
+https://stream.zeno.fm/55udg3sy72quv
+#EXTINF:-1, Estrellas de los 80s  -NUEVO-
+https://panel.retrolandigital.com/listen/estrellas_de_los_80s/listen
+#EXTINF:-1, Exitos Varios 88.2 -NUEVO-
+https://stream.zeno.fm/3gdc4vyvutzuv
+#EXTINF:-1, La Estación Del Amor  -NUEVO-
+https://cast1.my-control-panel.com/proxy/feelingm/stream
+#EXTINF:-1,Solo Baladas   -NUEVO-
+https://c15.radioboss.fm:18222/stream
+#EXTINF:-1,Radio Baladas Viejitas Bonitas   -NUEVO-
+https://servidorstreamingradio.com/listen/bonitas/stream
+
+
 #EXTINF:-1,AutoDJ
 http://192.95.39.65:5798/stream
 #EXTINF:-1,laradiomasgrupera
