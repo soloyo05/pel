@@ -1,6 +1,4 @@
 #EXTM3U
-#EXTINF:-1,   -NUEVO-
-#EXTM3U
 
 
 #EXTINF:-1, Los Grandes Grupos -NUEVO-
@@ -43,8 +41,19 @@ https://cast1.my-control-panel.com/proxy/feelingm/stream
 https://c15.radioboss.fm:18222/stream
 #EXTINF:-1,Radio Baladas Viejitas Bonitas   -NUEVO-
 https://servidorstreamingradio.com/listen/bonitas/stream
+#EXTINF:-1, Cumbias Mezcladas  -NUEVO-
+https://stream.zeno.fm/nh4671f42mzuv
+#EXTINF:-1, Cumbias Inmortales -NUEVO-
+https://stream.zeno.fm/c1td41n45qzuv
+#EXTINF:-1, Cumbias del Sureste y Más Ritmos -NUEVO-
+https://stream.zeno.fm/xnoti8wufrgtv
+#EXTINF:-1,Viejitas Pero Sabrosas Radio -NUEVO-
+https://stream.zeno.fm/ca7zdiczwcauv
 
-
+#EXTINF:-1,Joyas del recuerdo -NUEVO-
+https://stream.zeno.fm/aw8bu3emys8uv
+#EXTINF:-1, Disco Exitos Clasicos 70s 80s 90s Minimix -NUEVO-
+https://stream.zeno.fm/rpueoo0qnu0tv
 #EXTINF:-1,AutoDJ
 http://192.95.39.65:5798/stream
 #EXTINF:-1,laradiomasgrupera
