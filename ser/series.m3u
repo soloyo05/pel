@@ -73,55 +73,80 @@ http://series.tuxchannel.mx/series/juan_gabriel_debo_puedo_y_quiero/s_01_e_03.mk
 #EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/mHj6BA1TWnNRy8OnEkbBiRSYZH9.jpg" group-title="juan gabriel debo puedo y quiero T01",Cap. 04 juan gabriel debo puedo y quiero T01
 http://series.tuxchannel.mx/series/juan_gabriel_debo_puedo_y_quiero/s_01_e_04.mkv
 
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 01
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-01.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 02
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-02.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 03
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-03.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 04
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-04.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 05
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-05.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 06
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-06.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 07
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-07.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 08
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-08.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 09
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-09.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 10
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-10.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 11
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-11.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T01",Cap. 12
-https://archive.org/download/res3nias5tograd0/Res3n%2Bias5tograd0/C0lof1ll/C0lof1ll-12.mp4
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 01 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2001.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 02 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2002.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 03 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2003.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 04 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2004.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 05 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2005.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 06 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2006.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 07 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2007.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 08 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2008.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 09 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2009.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 10 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2010.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 11 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2011.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T01",Cap. 12 one-punch man T01
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2012.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 02 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2002.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 03 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2003.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 04 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2004.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 05 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2005.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 06 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2006.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 07 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2007.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 08 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2008.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 09 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2009.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 10 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2010.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 11 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2011.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 12 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2012.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T02",Cap. 13 one-punch man T02
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2013.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 03 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2003.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 04 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2004.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 05 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2005.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 06 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2006.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 07 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2007.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 08 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2008.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 09 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2009.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 10 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2010.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 11 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2011.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 12 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2012.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 13 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2013.mkv
+#EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/dT10AxJIXVvRwFAew4tt2RhzJrD.jpg" group-title="one-punch man T03",Cap. 14 one-punch man T03
+http://series.tuxchannel.mx/series/one-punch%20man/s%2001%20e%2014.mkv
 
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 01
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-01.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 02
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-02.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 03
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-03.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 04
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-04.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 05
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-05.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 06
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-06.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 07
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-07.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 08
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-08.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 09
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-09.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 10
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-10.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 11
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-11.mp4
-#EXTINF:-1 tvg-logo="" group-title="One Punch Man T02",Cap. 12
-https://archive.org/download/juanpunch-m3n02-09/juanpunch-m3n/juanpunch-m3n02-12.mp4
+
 
 #EXTINF:-1 tvg-logo="https://image.tmdb.org/t/p/w188_and_h282_bestv2/4S2gS1mECZ5wDRBVAZE6KWmJHI3.jpg" group-title="the last frontier T01",Cap. 01 the last frontier T01
 http://series.tuxchannel.mx/series/the_last_frontier/s_01_e_01.mkv
